@@ -1,0 +1,64 @@
+<div class="dashboard">
+  <div class="backdrop-2 hide" onClick={this.closeModal}></div>
+  <div class="backdrop" onClick={this.removeOption}></div>
+      <nav class="nav-container">
+          <div class="logo-1">
+              <img src='assets/kaar.svg' alt="D"/>
+          </div>
+          <div class="directory-name">
+              <span>Dashboard</span>
+          </div>
+          <div class="profile">
+              <img src='assets/profile.svg' alt="P"/>
+          </div>
+      </nav>
+      <div class="dashboard-container">
+          <div class="side-bar">
+              <div class="option-list">
+                  <div class="recents">
+                      <div class="icon">
+                          <img src='assets/documents.svg' alt=""/>
+                      </div>
+                      <span>Portals</span>
+                  </div>
+              </div>
+          </div>
+          <div class="dashboard-content">
+              <div id="custom-scroll" class="scroll">
+                  <div  class="cards">
+                    <!-- <div class="loading-portals">
+
+                    </div> -->
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/customer.svg' alt="">
+                      <span>Customer Portal</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/vendor.svg' alt="">
+                      <span>Vendor Portal</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/quality.svg' alt="">
+                      <span>Quality check</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/engineer.svg' alt="">
+                      <span>EHSM - Safety  Ticket</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/employee.svg' alt="">
+                      <span>Employee Portal</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/maintenance.svg' alt="">
+                      <span>Maintenance  Portal</span>
+                    </div>
+                    <div class="portal-card" (click)="addBorder($event)">
+                      <img src='assets/portals/shop.svg' alt="">
+                      <span>Shop floor  Portal</span>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>

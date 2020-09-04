@@ -8,7 +8,6 @@ import { addMailEvent, validateCredentials } from '../controllers';
 })
 export class LoginComponent implements OnInit {
   constructor() {
-    addMailEvent();
     localStorage.clear();
   }
   processCredentials = () => {
@@ -32,5 +31,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    addMailEvent();
+  }
 }
