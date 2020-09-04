@@ -1,1 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0;
+}
+
+
+.m-t-10{
+  margin-top: 10px;
+}
+
+.m-t-15{
+  margin-top: 15px;
+}
+
+.m-t-20{
+  margin-top: 20px;
+}
+
+.m-t-25{
+  margin-top: 25px;
+}
+
+.m-t-50{
+  margin-top: 50px;
+}
+
+.m-b-10{
+  margin-bottom: 10px;
+}
+
+.m-b-15{
+  margin-bottom: 15px;
+}
+
+.m-b-20{
+  margin-bottom: 20px;
+}
+
+.m-b-25{
+  margin-bottom: 25px;
+}
+
+.m-b-50{
+  margin-bottom: 50px;
+}
