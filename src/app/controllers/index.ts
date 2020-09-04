@@ -59,11 +59,17 @@ function validateCredentials(
   const emailElem = document.querySelector('#email-id') as HTMLInputElement;
   const passwordElem = document.querySelector('#password-id') as HTMLInputElement;
   const confirmElem = document.querySelector('#confirm-id') as HTMLInputElement;
+  // tslint:disable-next-line: variable-name
   const errorElem_1 = document.querySelector('.error-message-1');
+  // tslint:disable-next-line: variable-name
   const errorElem_2 = document.querySelector('.error-message-2');
+  // tslint:disable-next-line: variable-name
   const errorElem_3 = document.querySelector('.error-message-3');
+  // tslint:disable-next-line: variable-name
   const validateElem_1 = document.querySelector('.input-validate');
+  // tslint:disable-next-line: variable-name
   const validateElem_2 = document.querySelector('.password-validate');
+  // tslint:disable-next-line: variable-name
   const validateElem_3 = document.querySelector('.confirm-validate');
   let validationFlag = false;
   if (emailElem) {
