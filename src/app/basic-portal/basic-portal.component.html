@@ -1,1 +1,81 @@
-<p>basic-portal works!</p>
+<div class="dashboard">
+  <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
+  <nav class="nav-container">
+    <div class="logo-1">
+      <img src="assets/kaar.svg" alt="D" />
+    </div>
+    <div class="directory-name">
+      <span>Dashboard</span>
+    </div>
+    <div class="profile">
+      <img src="assets/profile.svg" alt="P" />
+    </div>
+  </nav>
+  <div class="dashboard-container">
+    <div class="basic-sidebar">
+      <div class="collapse-container">
+        <div class="collapse">
+          <img (click)="collapseSidebar()" rotated="false" src="assets/collapse-icon.svg" alt="">
+        </div>
+        <div class="sidebar-items">
+          <div class="sidebar-item sidebar-item-active" full-form="BASIC" short-form="B">BASIC</div>
+          <div class="sidebar-item" full-form="ADDITIONAL DETAILS" short-form="A">ADDITIONAL DETAILS</div>
+        </div>
+      </div>
+    </div>
+    <div class="basic-portal-side-bar">
+      <div class="list-heading m-b-10 m-t-20">
+        <span>Portal Records</span>
+        <div class="sort-by">
+          <span>&nbsp;Sort by:</span>
+          <div class="category-filter m-t-5">
+            <div name="filter" id="filter-id">
+              <div (click)="toggleSelect($event)" class="selected-option">
+                <span>{{ selectedOption != null ? selectedOption : "SELECT A FIELD" }}</span>
+                <img src="assets/down-arrow.svg" alt=">" style="margin-top:-3px">
+              </div>
+              <div class="option-list-container">
+                <input
+                  type="text"
+                  (input)='updateSelectList($event)'
+                  class="search-option"
+                  placeholder="Field name"
+                />
+                <div class="option-list"  id="custom-scroll">
+                  <div (click)="updateSelectedOption($event)" *ngFor="let option of optionList" class="option-item">
+                    {{ option }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-search">
+        <img src="assets/search.svg" alt="🔍">
+        <input type="text" class="search-field" placeholder="Search" (input)="updateCardlist($event)" />
+
+      </div>
+      <div class="data-cards-container" id="custom-scroll">
+        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of sampleData">
+          <div class="card-column">
+            <div class="data-heading">MATNR</div>
+            <div class="data-heading">MANDT</div>
+            <div class="data-heading">ERSDA</div>
+          </div>
+          <div class="card-column">
+            <div class="data-item">{{card.matnr}}</div>
+            <div class="data-item">{{card.mandt}}</div>
+            <div class="data-item">{{card.ersda}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-content dashboard-content-unshrink">
+      <div class="getting-started">
+        <img src="assets/portals/illustration.svg" alt="90">
+        <span>SELECT A RECORD TO GET STARTED</span>
+      </div>
+    </div>
+  </div>
+</div>

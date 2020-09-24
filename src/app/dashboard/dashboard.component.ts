@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
           this.currentSelected.style.border = '1px solid #E0E0E0';
         }
         this.currentSelected = target;
-        this.currentSelected.style.border = '1px solid #2041737c';
+        this.currentSelected.style.border = '1px solid #204173';
       }
     }
   }
