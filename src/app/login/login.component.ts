@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { addMailEvent, validateCredentials } from '../controllers';
 
 @Component({
@@ -7,9 +8,10 @@ import { addMailEvent, validateCredentials } from '../controllers';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor() {
+  constructor(private router: ActivatedRoute) {
     localStorage.clear();
   }
+  loginType: string;
   processCredentials = () => {
     if (validateCredentials(true, false, false)) {
       const emailElem = document.querySelector('#email-id') as HTMLInputElement;
@@ -33,5 +35,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     addMailEvent();
+    this.loginType = (this.router.snapshot.params.type).charAt(0).toUpperCase() + (this.router.snapshot.params.type).slice(1);
   }
 }

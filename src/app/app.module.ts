@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BasicPortalComponent } from './basic-portal/basic-portal.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ProfileComponent } from './profile/profile.component';
     LoginComponent,
     DashboardComponent,
     BasicPortalComponent,
-    ProfileComponent
+    ProfileComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 <div class="dashboard">
   <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
+  <div class="profile-option-backdrop hide" (click)="toggleProfileOption($event)"></div>
   <nav class="nav-container">
     <div class="logo-1">
       <img src="assets/kaar.svg" alt="D" />
@@ -7,8 +8,12 @@
     <div class="directory-name">
       <span>Dashboard</span>
     </div>
-    <div class="profile">
+    <div class="profile" (click)="toggleProfileOption()">
       <img src="assets/profile.svg" alt="P" />
+      <div class="profile-options">
+        <div class="options">hello</div>
+        <div class="options">world</div>
+      </div>
     </div>
   </nav>
   <div class="dashboard-container">

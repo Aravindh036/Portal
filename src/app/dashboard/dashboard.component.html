@@ -6,58 +6,82 @@
               <img src='assets/kaar.svg' alt="D"/>
           </div>
           <div class="directory-name">
-              <span>Dashboard</span>
+              <span>HOME</span>
           </div>
           <div class="profile">
-              <img src='assets/profile.svg' alt="P"/>
+              <!-- <img src='assets/profile.svg' alt="P"/> -->
           </div>
       </nav>
       <div class="dashboard-container">
-          <div class="dashboard-content">
+        <div class="dashboard-content">
+          <div class="available-portals">Available Portals</div>
               <div id="custom-scroll" class="scroll">
                   <div  class="cards">
                     <!-- <div class="loading-portals">
 
                     </div> -->
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div card-data="customer" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/customer.svg' alt="">
                       <div class="card-content">
                         <span>Customer Portal</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="vendor" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/vendor.svg' alt="">
                       <div class="card-content">
                         <span>Vendor Portal</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="quality-check" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/quality.svg' alt="">
                       <div class="card-content">
                         <span>Quality check</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="EHSM" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/engineer.svg' alt="">
                       <div class="card-content">
                         <span>EHSM - Safety  Ticket</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="employee" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/employee.svg' alt="">
                       <div class="card-content">
                         <span>Employee Portal</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="maintenance" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/maintenance.svg' alt="">
                       <div class="card-content">
                         <span>Maintenance  Portal</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
                       </div>
                     </div>
-                    <div class="portal-card" (click)="addBorder($event)">
+                    <div  card-data="shop-floor" class="portal-card" (click)="addBorder($event)" (dblclick)="navigateToPortal($event)">
                       <img src='assets/portals/shop.svg' alt="">
-                      <span>Shop floor  Portal</span>
+                      <div class="card-content">
+                        <span>Shop floor  Portal</span>
+                        <div>
+                          Why end might ask civil again spoil. She dinner she our horses depend. Remember at children by reserved to vicinity. In affronting unreserved delightful simplicity ye
+                        </div>
+                      </div>
                     </div>
                   </div>
               </div>

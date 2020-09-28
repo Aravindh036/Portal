@@ -56,6 +56,16 @@ export class BasicPortalComponent implements OnInit {
     target.classList.toggle('show-select-option');
     backdrop.classList.toggle('hide');
   }
+  toggleProfileOption = (event?: MouseEvent) =>{
+    const target = document.querySelector(
+      '.profile-options'
+    ) as HTMLDivElement;
+    const backdrop = document.querySelector(
+      '.profile-option-backdrop'
+    ) as HTMLDivElement;
+    target.classList.toggle('show-select-option');
+    backdrop.classList.toggle('hide');
+  }
   updateSelectList = (event: Event) => {
     const target = event.target as HTMLInputElement;
     console.log(target.value);
