@@ -83,3 +83,10 @@ body{
 .btn-primary:active{
   background: #142947;
 }
+
+
+.sidebar-item-active{
+  background-color: #fff!important;
+  color: #204173!important;
+}
+

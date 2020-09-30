@@ -1,6 +1,9 @@
 <div class="dashboard">
   <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
-  <div class="profile-option-backdrop hide" (click)="toggleProfileOption($event)"></div>
+  <div
+    class="profile-option-backdrop hide"
+    (click)="toggleProfileOption($event)"
+  ></div>
   <nav class="nav-container">
     <div class="logo-1">
       <img src="assets/kaar.svg" alt="D" />
@@ -11,8 +14,8 @@
     <div class="profile" (click)="toggleProfileOption()">
       <img src="assets/profile.svg" alt="P" />
       <div class="profile-options">
-        <div class="options">hello</div>
-        <div class="options">world</div>
+        <div [routerLink]="[profileTypeUrl, 'profile']" class="options">Profile Settings</div>
+        <div routerLink="/" class="options m-t-5">Logout</div>
       </div>
     </div>
   </nav>
@@ -20,11 +23,26 @@
     <div class="basic-sidebar">
       <div class="collapse-container">
         <div class="collapse">
-          <img (click)="collapseSidebar()" rotated="false" src="assets/collapse-icon.svg" alt="">
+          <img
+            (click)="collapseSidebar()"
+            rotated="false"
+            src="assets/collapse-icon.svg"
+            alt=""
+          />
         </div>
         <div class="sidebar-items">
-          <div class="sidebar-item sidebar-item-active" full-form="BASIC" short-form="B">BASIC</div>
-          <div class="sidebar-item" full-form="ADDITIONAL DETAILS" short-form="A">ADDITIONAL DETAILS</div>
+          <div *ngFor="let data of portalDetails[profileType]">
+            <div
+              *ngFor="let portalName of data.portal_list"
+              [routerLink]="[profileTypeUrl, 'portal', portalName.url]"
+              routerLinkActive="sidebar-item-active"
+              class="sidebar-item"
+              attr.full-form="{{ portalName.full_form }}"
+              attr.short-form="{{ portalName.short_form }}"
+            >
+              {{ portalName.full_form }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -36,18 +54,28 @@
           <div class="category-filter m-t-5">
             <div name="filter" id="filter-id">
               <div (click)="toggleSelect($event)" class="selected-option">
-                <span>{{ selectedOption != null ? selectedOption : "SELECT A FIELD" }}</span>
-                <img src="assets/down-arrow.svg" alt=">" style="margin-top:-3px">
+                <span>{{
+                  selectedOption != null ? selectedOption : "SELECT A FIELD"
+                }}</span>
+                <img
+                  src="assets/down-arrow.svg"
+                  alt=">"
+                  style="margin-top: -3px"
+                />
               </div>
               <div class="option-list-container">
                 <input
                   type="text"
-                  (input)='updateSelectList($event)'
+                  (input)="updateSelectList($event)"
                   class="search-option"
                   placeholder="Field name"
                 />
-                <div class="option-list"  id="custom-scroll">
-                  <div (click)="updateSelectedOption($event)" *ngFor="let option of optionList" class="option-item">
+                <div class="option-list" id="custom-scroll">
+                  <div
+                    (click)="updateSelectedOption($event)"
+                    *ngFor="let option of optionList"
+                    class="option-item"
+                  >
                     {{ option }}
                   </div>
                 </div>
@@ -57,28 +85,36 @@
         </div>
       </div>
       <div class="list-search">
-        <img src="assets/search.svg" alt="🔍">
-        <input type="text" class="search-field" placeholder="Search" (input)="updateCardlist($event)" />
-
+        <img src="assets/search.svg" alt="🔍" />
+        <input
+          type="text"
+          class="search-field"
+          placeholder="Search"
+          (input)="updateCardlist($event)"
+        />
       </div>
       <div class="data-cards-container" id="custom-scroll">
-        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of sampleData">
+        <div
+          class="data-cards"
+          (click)="updateRecordDetails($event)"
+          *ngFor="let card of sampleData"
+        >
           <div class="card-column">
             <div class="data-heading">MATNR</div>
             <div class="data-heading">MANDT</div>
             <div class="data-heading">ERSDA</div>
           </div>
           <div class="card-column">
-            <div class="data-item">{{card.matnr}}</div>
-            <div class="data-item">{{card.mandt}}</div>
-            <div class="data-item">{{card.ersda}}</div>
+            <div class="data-item">{{ card.matnr }}</div>
+            <div class="data-item">{{ card.mandt }}</div>
+            <div class="data-item">{{ card.ersda }}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="dashboard-content dashboard-content-unshrink">
       <div class="getting-started">
-        <img src="assets/portals/illustration.svg" alt="90">
+        <img src="assets/portals/illustration.svg" alt="90" />
         <span>SELECT A RECORD TO GET STARTED</span>
       </div>
     </div>

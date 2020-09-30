@@ -1,0 +1,181 @@
+{
+  "customer": [
+    {
+      "type": "Sales and Distribution",
+      "portal_list": [
+        {
+          "full_form": "INQUIRY DATA",
+          "url": "inquiry",
+          "short_form": "I"
+        },
+        {
+          "full_form": "SALE ORDER DATA",
+          "url": "sale-order",
+          "short_form": "SO"
+        },
+        {
+          "full_form": "LIST OF DELIVERY",
+          "url": "delivery",
+          "short_form": "LD"
+        }
+      ]
+    },
+    {
+      "type": "Finance",
+      "portal_list": [
+        {
+          "full_form": "INVOICE DETAILS",
+          "url": "invoice",
+          "short_form": "ID"
+        },
+        {
+          "full_form": "PAYMENTS AND AGING",
+          "url": "payments-aging",
+          "short_form": "PA"
+        },
+        {
+          "full_form": "CREDIT MEMO",
+          "url": "credit-memo",
+          "short_form": "CM"
+        },
+        {
+          "full_form": "OVERALL SALES DATA",
+          "url": "orverall-sales",
+          "short_form": "OS"
+        }
+      ]
+    }
+  ],
+  "vendor": [
+    {
+      "type": "Material Management",
+      "portal_list": [
+        {
+          "full_form": "QUOTATION DETAILS",
+          "url": "quotation",
+          "short_form": "Q"
+        },
+        {
+          "full_form": "PURCHASE ORDER",
+          "url": "purchase-order",
+          "short_form": "PO"
+        },
+        {
+          "full_form": "GOODS RECEIPT DETAILS",
+          "url": "goods-receipt",
+          "short_form": "GR"
+        }
+      ]
+    },
+    {
+      "type": "Finance",
+      "portal_list": [
+        {
+          "full_form": "INVOICE DETAILS",
+          "url": "invoice",
+          "short_form": "ID"
+        },
+        {
+          "full_form": "PAYMENTS OVERDUES",
+          "url": "payments-overdues",
+          "short_form": "P"
+        },
+        {
+          "full_form": "CREDIT MEMO",
+          "url": "credit-memo",
+          "short_form": "CM"
+        }
+      ]
+    }
+  ],
+  "employee": [
+    {
+      "type": "Human Resource",
+      "portal_list": [
+        {
+          "full_form": "LEAVE DATA",
+          "url": "leave-data",
+          "short_form": "LD"
+        },
+        {
+          "full_form": "SALARY PAY COMPONENT",
+          "url": "salary-pay",
+          "short_form": "SP"
+        }
+      ]
+    }
+  ],
+  "maintenance": [
+    {
+      "type": "Plant Maintenance",
+      "portal_list": [
+        {
+          "full_form": "NOTIFICATION",
+          "url": "notification",
+          "short_form": "N"
+        },
+        {
+          "full_form": "WORK ORDER",
+          "url": "work-order",
+          "short_form": "WO"
+        }
+      ]
+    }
+  ],
+  "shop_floor": [
+    {
+      "type": "Production Planning",
+      "portal_list": [
+        {
+          "full_form": "PLANNED ORDER",
+          "url": "planned-order",
+          "short_form": "PO"
+        },
+        {
+          "full_form": "PRODUCTION ORDER",
+          "url": "production-order",
+          "short_form": "PR"
+        }
+      ]
+    }
+  ],
+  "EHSM": [
+    {
+      "type": "Environmental Health and Safety Management",
+      "portal_list": [
+        {
+          "full_form": "INCIDENT MANAGEMENT",
+          "url": "incident-management",
+          "short_form": "IN"
+        },
+        {
+          "full_form": "RISK ASSESSMENT",
+          "url": "risk-assessment",
+          "short_form": "RA"
+        }
+      ]
+    }
+  ],
+  "quality_check": [
+    {
+      "type": "Quality Management",
+      "portal_list": [
+        {
+          "full_form": "INSPECTION LOTS",
+          "url": "inspection-lots",
+          "short_form": "IL"
+        },
+        {
+          "full_form": "RESULT RECORDING",
+          "url": "result-recording",
+          "short_form": "RR"
+        },
+        {
+          "full_form": "USAGE DECISION",
+          "url": "usage-Decision",
+          "short_form": "UD"
+        }
+      ]
+    }
+  ]
+}

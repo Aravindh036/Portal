@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Event, Router } from '@angular/router';
+import portalDetails from '../basic-portal/all-portal-details.json';
+import { getContainerElement } from '../controllers';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +12,7 @@ export class DashboardComponent implements OnInit {
   currentSelected: HTMLElement;
   constructor(private router: Router) {}
   addBorder = (event: MouseEvent) => {
-    const target = this.getCardElement(event.target as HTMLElement, 'portal-card');
+    const target = getContainerElement(event.target as HTMLDivElement, 'portal-card');
     if (target) {
       if (target.classList.length !== 0) {
         if (this.currentSelected !== undefined) {
@@ -22,17 +24,12 @@ export class DashboardComponent implements OnInit {
     }
   }
   navigateToPortal = (event: MouseEvent) => {
-    const target = this.getCardElement(event.target as HTMLElement, 'portal-card');
-    this.router.navigate([target.getAttribute('card-data'), 'portal']);
-  }
-  getCardElement = (target: HTMLElement, parentString: string) => {
-    while (1) {
-      if (target.classList.contains(parentString)) {
-        return target;
-      } else {
-        target = target.parentElement as HTMLDivElement;
-      }
-    }
+    const target = getContainerElement(event.target as HTMLDivElement, 'portal-card');
+    this.router.navigate([
+      target.getAttribute('card-data'),
+      'portal',
+      portalDetails[target.getAttribute('card-data')][0].portal_list[0].url
+    ]);
   }
   ngOnInit(): void {}
 }

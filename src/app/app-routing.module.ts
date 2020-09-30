@@ -9,7 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'login/:type', component: LoginComponent},
-  {path: ':type/portal', component: BasicPortalComponent},
+  {path: ':type/portal/:portal_type', component: BasicPortalComponent},
   {path: ':type/profile', component: ProfileComponent},
   {path: '**', component: ErrorComponent}
 ];
