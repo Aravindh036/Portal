@@ -1,0 +1,103 @@
+.edit-save {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 50px;
+}
+
+.employee-profile-container{
+  display: flex;
+  justify-content:center;
+  padding-right: 220px;
+}
+
+.current-profile-pic{
+  width: 126px;
+  height: 126px;
+  border-radius: 50%;
+  background-color: grey;
+  position: relative;
+  background-size:cover;
+  background-position: center;
+}
+
+.profile-pic{
+  width: 300px;
+  display: flex;
+  justify-content:center;
+
+}
+
+.current-profile-pic img{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.basic-details-container {
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+}
+
+.basic-details-container .row{
+  display: flex;
+}
+
+.basic-details{
+  width: 300px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.col .name{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000000;
+}
+
+.col .email{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #000000;
+}
+
+.basic-details-heading {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 20px;
+  color: #000000;
+  margin: 50px 0;
+  padding:0 50px;
+}
+
+.current-profile-pic input{
+  opacity: 0;
+  visibility: hidden;
+}
+.edit{
+  padding: 16px 36px;
+}
+
+.input-div{
+  border: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+
+}
+
+.input-div:focus{
+  border-bottom: 1px solid #7070709f;
+}

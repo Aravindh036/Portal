@@ -5,7 +5,6 @@
   outline: none;
   user-select:none;
   transition: all 0.2s ease-in-out;
-
 }
 
 body{
@@ -30,6 +29,18 @@ body{
 
 .m-t-25{
   margin-top: 25px;
+}
+
+.m-t-30{
+  margin-top: 30px;
+}
+
+.m-t-35{
+  margin-top: 35px;
+}
+
+.m-t-40{
+  margin-top: 40px;
 }
 
 .m-t-50{
@@ -61,6 +72,9 @@ body{
 }
 
 
+.nav-container .logo-1{
+  cursor: pointer;
+}
 
 .highlight{
   background: orange;
@@ -84,9 +98,34 @@ body{
   background: #142947;
 }
 
+.btn-a{
+  color: #204173;
+  border: 0;
+  font-family: 'Roboto';
+  background-color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
 .sidebar-item-active{
   background-color: #fff!important;
   color: #204173!important;
 }
 
+.label-light-grey{
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 16px;
+  color: #8F8F8F;
+}
+
+.input-light-grey {
+  border: 0;
+  background: #FFFFFF;
+  border: 2px solid #BDBDBD;
+  border-radius: 3px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: 'Inter';
+}

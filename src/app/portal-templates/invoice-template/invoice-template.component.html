@@ -1,0 +1,23 @@
+<div class="invoice-template">
+  <div class="heading">INVOICE</div>
+  <div class="contact-details">
+    <div class="column-1">
+      <div class="name">
+        {{profileType}}
+        <div *ngIf="invoiceData">
+          {{invoiceData.about}}
+        </div>
+      </div>
+      <!-- <div class="date">
+        Date Issued : <strong>{{invoiceData.dateIssued}}</strong>
+      </div>
+      <div class="invoice-no">
+        Invoice No : <strong>{{invoiceData.invoiceNumber}}</strong>
+      </div> -->
+    </div>
+    <div class="column-2">
+      <!-- <div class="vendor-name">{{invoiceData.vendor}}</div>
+      <div class="vendor-address">{{invoiceData.vendorAddress}}</div> -->
+    </div>
+  </div>
+</div>

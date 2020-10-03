@@ -1,0 +1,15 @@
+.invoice-template {
+
+}
+
+.heading {
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.contact-details {
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+}

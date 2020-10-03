@@ -11,7 +11,8 @@ const routes: Routes = [
   {path: 'login/:type', component: LoginComponent},
   {path: ':type/portal/:portal_type', component: BasicPortalComponent},
   {path: ':type/profile', component: ProfileComponent},
-  {path: '**', component: ErrorComponent}
+  {path: '**', component: ErrorComponent},
+  {path: 'error', component: ErrorComponent}
 ];
 
 @NgModule({

@@ -9,6 +9,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { BasicPortalComponent } from './basic-portal/basic-portal.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ErrorComponent } from './error/error.component';
+import { PortalDetailsComponent } from './portal-details/portal-details.component';
+import { InvoiceTemplateComponent } from './portal-templates/invoice-template/invoice-template.component';
+import { LoadingComponent } from './loading/loading.component';
+import { EmployeeProfileComponent } from './profile-templates/employee-profile/employee-profile.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,11 @@ import { ErrorComponent } from './error/error.component';
     DashboardComponent,
     BasicPortalComponent,
     ProfileComponent,
-    ErrorComponent
+    ErrorComponent,
+    PortalDetailsComponent,
+    InvoiceTemplateComponent,
+    LoadingComponent,
+    EmployeeProfileComponent,
   ],
   imports: [
     BrowserModule,

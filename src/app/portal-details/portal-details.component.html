@@ -1,0 +1,9 @@
+<div class="portal-details">
+  <div *ngIf="cardSelected" class="portal-container" [ngSwitch]="profileType">
+    <app-invoice-template [invoiceData]="selectedCardJson" [profileType]="profileType" *ngSwitchCase='invoice' ></app-invoice-template>
+  </div>
+  <div *ngIf="!cardSelected" class="getting-started">
+    <img src="assets/portals/illustration.svg" alt="90" />
+    <span>SELECT A RECORD TO GET STARTED</span>
+  </div>
+</div>

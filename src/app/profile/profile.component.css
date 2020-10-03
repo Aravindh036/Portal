@@ -108,3 +108,34 @@
 .sidebar-item img{
   width: 30px;
 }
+
+
+.profile-content{
+  width: 100%;
+  height: calc(100vh - 80px);
+}
+
+.go-to-btn{
+  padding: 13px 24px;
+  color: #204173;
+  font-family: 'Roboto';
+  font-size: 15px;
+  border: 0;
+  border-radius: 5px;
+  margin: 0 15px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #fff;
+}
+
+.go-to-btn:hover{
+  background-color: #20417320;
+}
+
+
+
+.profile{
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}

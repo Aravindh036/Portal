@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import sampleData from '../sample-data.json';
 // const cloneDeep = require('lodash/clonedeep');
 import mark from 'mark.js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
 import { collapseSidebar, getContainerElement } from '../controllers';
 
@@ -19,10 +19,22 @@ export class BasicPortalComponent implements OnInit {
   profileTypeUrl: string;
   markInstance: any;
   portalDetails: any;
-  constructor(private router: ActivatedRoute) {
-    this.sampleData = (sampleData);
-    this.sampleDataOriginal = (sampleData);
+  selectedCardJson: any;
+  cardSelected = false;
+  loading = true;
+  portalType: any;
+  constructor(private activeRouter: ActivatedRoute, private router: Router) {
+    this.sampleData = sampleData;
+    this.sampleDataOriginal = sampleData;
     this.portalDetails = portalDetails;
+    router.events.subscribe((data) => {
+      this.cardSelected = false;
+      // console.log(data);
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+      }, 4000);
+    });
   }
   selectedOption: string;
   originalOptionList = [
@@ -52,9 +64,15 @@ export class BasicPortalComponent implements OnInit {
   optionList = this.originalOptionList;
 
   ngOnInit(): void {
-    this.profileType = this.router.snapshot.params.type;
+    this.profileType = this.activeRouter.snapshot.params.type;
     this.profileTypeUrl = '/' + this.profileType;
-    console.log();
+    this.portalType = this.activeRouter.snapshot.params.portal_type;
+    setTimeout(() => {
+      this.loading = false;
+    }, 4000);
+    if (!(this.profileType in portalDetails) || !(this.portalType in portalDetails)) {
+      this.router.navigate(['error']);
+    }
   }
   toggleSelect = (event?: MouseEvent) => {
     const target = document.querySelector(
@@ -67,9 +85,7 @@ export class BasicPortalComponent implements OnInit {
     backdrop.classList.toggle('hide');
   }
   toggleProfileOption = (event?: MouseEvent) => {
-    const target = document.querySelector(
-      '.profile-options'
-    ) as HTMLDivElement;
+    const target = document.querySelector('.profile-options') as HTMLDivElement;
     const backdrop = document.querySelector(
       '.profile-option-backdrop'
     ) as HTMLDivElement;
@@ -78,7 +94,6 @@ export class BasicPortalComponent implements OnInit {
   }
   updateSelectList = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    console.log(target.value);
     this.optionList = this.originalOptionList.filter(
       (option) => option.toLowerCase().search(target.value.toLowerCase()) === 0
     );
@@ -89,15 +104,49 @@ export class BasicPortalComponent implements OnInit {
     this.toggleSelect();
   }
   updateRecordDetails = (event: MouseEvent) => {
-    const target = getContainerElement(event.target as HTMLDivElement, 'data-cards');
+    const target = getContainerElement(
+      event.target as HTMLDivElement,
+      'data-cards'
+    );
     if (this.currentCard && this.currentCard !== target) {
       this.currentCard.classList.toggle('data-cards-selected');
       target.classList.toggle('data-cards-selected');
+      const CardBG = this.currentCard.lastChild as HTMLDivElement;
+      CardBG.classList.toggle('card-bg-selected');
+      const CardContainerBG = this.currentCard.firstChild as HTMLDivElement;
+      CardContainerBG.classList.toggle('card-container-bg-selected');
+      const newCardBG = target.lastChild as HTMLDivElement;
+      newCardBG.classList.toggle('card-bg-selected');
+      const newCardContainerBG = target.firstChild as HTMLDivElement;
+      newCardContainerBG.classList.toggle('card-container-bg-selected');
       this.currentCard = target;
+      this.updateSelectedJson(target);
+      if (this.cardSelected === false) {
+        this.cardSelected = true;
+      }
     }
     if (this.currentCard === undefined && this.currentCard !== target) {
       this.currentCard = target;
       this.currentCard.classList.toggle('data-cards-selected');
+      const cardBG = target.lastChild as HTMLDivElement;
+      cardBG.classList.toggle('card-bg-selected');
+      const CardContainerBG = target.firstChild as HTMLDivElement;
+      CardContainerBG.classList.toggle('card-container-bg-selected');
+      this.updateSelectedJson(target);
+      if (this.cardSelected === false) {
+        this.cardSelected = true;
+      }
+    }
+  }
+  updateSelectedJson = (target: HTMLDivElement) => {
+    let i: any;
+    // tslint:disable-next-line: forin
+    for (i of this.sampleData) {
+      if (
+        i.matnr === target.firstChild.childNodes[1].childNodes[0].textContent
+      ) {
+        this.selectedCardJson = i;
+      }
     }
   }
   updateCardlist = (event: InputEvent) => {
@@ -116,7 +165,6 @@ export class BasicPortalComponent implements OnInit {
   }
   highlightResult = (value: string) => {
     const cardsArray = document.querySelector('.data-cards-container');
-    console.log(cardsArray);
     this.markInstance = new mark(
       document.querySelector('.data-cards-container')
     );

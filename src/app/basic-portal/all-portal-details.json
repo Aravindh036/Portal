@@ -177,5 +177,26 @@
         }
       ]
     }
-  ]
+  ],
+  "sale-order": "url",
+  "delivery": "url",
+  "payments-aging": "url",
+  "orverall-sales": "url",
+  "quotation": "url",
+  "purchase-order": "url",
+  "goods-receipt": "url",
+  "invoice": "url",
+  "payments-overdues": "url",
+  "credit-memo": "url",
+  "leave-data": "url",
+  "salary-pay": "url",
+  "notification": "url",
+  "work-order": "url",
+  "planned-order": "url",
+  "production-order": "url",
+  "incident-management": "url",
+  "risk-assessment": "url",
+  "inspection-lots": "url",
+  "result-recording": "url",
+  "usage-Decision": "url"
 }
