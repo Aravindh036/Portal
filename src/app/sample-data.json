@@ -7,12 +7,12 @@
     "balance": "$1,647.58",
     "picture": "http://placehold.it/32x32",
     "age": 34,
-    "eyeColor": "blue",
+    "vpsta": "blue",
     "name": {
       "first": "Sherrie",
       "last": "Rogers"
     },
-    "company": "RECRITUBE",
+    "company": "  ",
     "email": "sherrie.rogers@recritube.com",
     "phone": "+1 (898) 570-3457",
     "address": "730 Lawrence Avenue, Coloma, Massachusetts, 8585",
@@ -29,7 +29,7 @@
     "balance": "$3,953.46",
     "picture": "http://placehold.it/32x32",
     "age": 30,
-    "eyeColor": "blue",
+    "vpsta": "blue",
     "name": {
       "first": "Kaitlin",
       "last": "Mathis"

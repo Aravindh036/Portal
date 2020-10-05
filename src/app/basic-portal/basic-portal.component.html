@@ -14,7 +14,7 @@
     <div class="profile" (click)="toggleProfileOption()">
       <img src="assets/profile.svg" alt="P" />
       <div class="profile-options">
-        <div [routerLink]="[profileTypeUrl, 'profile']" class="options">Profile Settings</div>
+        <div [routerLink]="[routerData.profileTypeUrl, 'profile']" class="options">Profile Settings</div>
         <div routerLink="/" class="options m-t-5">Logout</div>
       </div>
     </div>
@@ -31,10 +31,10 @@
           />
         </div>
         <div class="sidebar-items">
-          <div *ngFor="let data of portalDetails[profileType]">
+          <div *ngFor="let data of jsonDetails.portalDetails[routerData.profileType]">
             <div
               *ngFor="let portalName of data.portal_list"
-              [routerLink]="[profileTypeUrl, 'portal', portalName.url]"
+              [routerLink]="[routerData.profileTypeUrl, 'portal', portalName.url]"
               routerLinkActive="sidebar-item-active"
               class="sidebar-item"
               attr.full-form="{{ portalName.full_form }}"
@@ -61,25 +61,21 @@
                   <span>{{
                     selectedOption != null ? selectedOption : "SELECT A FIELD"
                   }}</span>
-                  <img
-                    src="assets/down-arrow.svg"
+                  <img src="assets/down-arrow.svg"
                     alt=">"
-                    style="margin-top: -3px"
-                  />
+                    style="margin-top: -3px"/>
                 </div>
                 <div class="option-list-container">
                   <input
                     type="text"
                     (input)="updateSelectList($event)"
                     class="search-option"
-                    placeholder="Field name"
-                  />
+                    placeholder="Field name"/>
                   <div class="option-list" id="custom-scroll">
                     <div
                       (click)="updateSelectedOption($event)"
                       *ngFor="let option of optionList"
-                      class="option-item"
-                    >
+                      class="option-item">
                       {{ option }}
                     </div>
                   </div>
@@ -90,29 +86,32 @@
         </div>
         <div class="list-search">
           <img src="assets/search.svg" alt="🔍" />
-          <input
-            type="text"
-            class="search-field"
+          <input type="text" class="search-field"
             placeholder="Search"
-            (input)="updateCardlist($event)"
-          />
+            (input)="updateCardlist($event)"/>
         </div>
         <div class="data-cards-container" id="custom-scroll">
+          <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
           <div
             class="data-cards"
             (click)="updateRecordDetails($event)"
-            *ngFor="let card of sampleData"
-          >
+            *ngFor="let card of jsonDetails.sampleData; let i=index">
             <div class="card-container">
               <div class="card-column">
-                <div class="data-heading">MATNR</div>
-                <div class="data-heading">MANDT</div>
-                <div class="data-heading">ERSDA</div>
+                <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                  {{label | uppercase}}
+                </div>
+                <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                  {{[jsonDetails.additionalSearchKeys[i]]}}
+                </div>
               </div>
               <div class="card-column">
-                <div class="data-item">{{ card.matnr }}</div>
-                <div class="data-item">{{ card.mandt }}</div>
-                <div class="data-item">{{ card.ersda }}</div>
+                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                  {{card[data]}}
+                </div>
+                <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                  {{card[jsonDetails.additionalSearchKeys[i]]}}
+                </div>
               </div>
             </div>
             <div class="card-bg"></div>
@@ -120,7 +119,7 @@
         </div>
       </div>
       <div class="dashboard-content dashboard-content-unshrink">
-        <app-portal-details [selectedCardJson] = "selectedCardJson" [profileType]="profileType" [cardSelected]="cardSelected"></app-portal-details>
+        <app-portal-details [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.profileType" [cardSelected]="cardSelected"></app-portal-details>
       </div>
     </div>
   </div>

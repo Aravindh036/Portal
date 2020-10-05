@@ -522,3 +522,10 @@
     transform: translateY(0)
   }
 }
+
+.no-cards-found{
+  font-family: 'Roboto';
+  font-size: 20px;
+  color: #535252;
+  margin-top: 50px;
+}

@@ -178,25 +178,70 @@
       ]
     }
   ],
-  "sale-order": "url",
-  "delivery": "url",
-  "payments-aging": "url",
-  "orverall-sales": "url",
-  "quotation": "url",
-  "purchase-order": "url",
-  "goods-receipt": "url",
-  "invoice": "url",
-  "payments-overdues": "url",
-  "credit-memo": "url",
-  "leave-data": "url",
-  "salary-pay": "url",
-  "notification": "url",
-  "work-order": "url",
-  "planned-order": "url",
-  "production-order": "url",
-  "incident-management": "url",
-  "risk-assessment": "url",
-  "inspection-lots": "url",
-  "result-recording": "url",
-  "usage-Decision": "url"
+  "sale-order": {
+    "primary_fields": []
+  },
+  "delivery": {
+    "primary_fields": []
+  },
+  "payments-aging": {
+    "primary_fields": []
+  },
+  "orverall-sales": {
+    "primary_fields": []
+  },
+  "quotation": {
+    "primary_fields": []
+  },
+  "purchase-order": {
+    "primary_fields": []
+  },
+  "goods-receipt": {
+    "primary_fields": []
+  },
+  "invoice": {
+    "primary_fields": []
+  },
+  "payments-overdues": {
+    "primary_fields": []
+  },
+  "credit-memo": {
+    "primary_fields": []
+  },
+  "leave-data": {
+    "primary_fields": []
+  },
+  "salary-pay": {
+    "primary_fields": []
+  },
+  "notification": {
+    "primary_fields": []
+  },
+  "work-order": {
+    "primary_fields": []
+  },
+  "planned-order": {
+    "primary_fields": []
+  },
+  "production-order": {
+    "primary_fields": []
+  },
+  "incident-management": {
+    "primary_fields": []
+  },
+  "risk-assessment": {
+    "primary_fields": []
+  },
+  "inspection-lots": {
+    "primary_fields": []
+  },
+  "result-recording": {
+    "primary_fields": []
+  },
+  "usage-Decision": {
+    "primary_fields": []
+  },
+  "inquiry": {
+    "primary_fields": ["matnr","mandt","ersda"]
+  }
 }

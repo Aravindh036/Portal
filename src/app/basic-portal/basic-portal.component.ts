@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import sampleData from '../sample-data.json';
-// const cloneDeep = require('lodash/clonedeep');
 import mark from 'mark.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
 import { collapseSidebar, getContainerElement } from '../controllers';
+import { jsonDetailsType, routerType } from '../controllers/interface';
 
 @Component({
   selector: 'app-basic-portal',
@@ -12,28 +12,29 @@ import { collapseSidebar, getContainerElement } from '../controllers';
   styleUrls: ['./basic-portal.component.css'],
 })
 export class BasicPortalComponent implements OnInit {
-  sampleData: any;
-  sampleDataOriginal: any;
+  jsonDetails: jsonDetailsType = {
+    sampleData: null,
+    sampleDataOriginal: null,
+    portalDetails: null,
+    selectedCardJson: null,
+    additionalSearchKeys: null,
+  };
   currentCard: HTMLDivElement;
-  profileType: string;
-  profileTypeUrl: string;
+  routerData: routerType = {
+    profileType: null,
+    profileTypeUrl: null,
+    portalType: null,
+  };
   markInstance: any;
-  portalDetails: any;
-  selectedCardJson: any;
   cardSelected = false;
   loading = true;
-  portalType: any;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
-    this.sampleData = sampleData;
-    this.sampleDataOriginal = sampleData;
-    this.portalDetails = portalDetails;
     router.events.subscribe((data) => {
       this.cardSelected = false;
-      // console.log(data);
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
-      }, 4000);
+      }, 1000);
     });
   }
   selectedOption: string;
@@ -64,13 +65,27 @@ export class BasicPortalComponent implements OnInit {
   optionList = this.originalOptionList;
 
   ngOnInit(): void {
-    this.profileType = this.activeRouter.snapshot.params.type;
-    this.profileTypeUrl = '/' + this.profileType;
-    this.portalType = this.activeRouter.snapshot.params.portal_type;
+    this.routerData = {
+      profileType: this.activeRouter.snapshot.params.type,
+      profileTypeUrl: '/' + this.activeRouter.snapshot.params.type,
+      portalType: this.activeRouter.snapshot.params.portal_type,
+    };
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: sampleData,
+      // tslint:disable-next-line: object-literal-shorthand
+      sampleData: sampleData,
+      // tslint:disable-next-line: object-literal-shorthand
+      portalDetails: portalDetails,
+    };
     setTimeout(() => {
       this.loading = false;
     }, 4000);
-    if (!(this.profileType in portalDetails) || !(this.portalType in portalDetails)) {
+    if (
+      !(this.routerData.profileType in portalDetails) ||
+      !(this.routerData.portalType in portalDetails)
+    ) {
       this.router.navigate(['error']);
     }
   }
@@ -83,6 +98,7 @@ export class BasicPortalComponent implements OnInit {
     ) as HTMLDivElement;
     target.classList.toggle('show-select-option');
     backdrop.classList.toggle('hide');
+    (document.querySelector('.search-option') as HTMLInputElement).focus();
   }
   toggleProfileOption = (event?: MouseEvent) => {
     const target = document.querySelector('.profile-options') as HTMLDivElement;
@@ -141,37 +157,84 @@ export class BasicPortalComponent implements OnInit {
   updateSelectedJson = (target: HTMLDivElement) => {
     let i: any;
     // tslint:disable-next-line: forin
-    for (i of this.sampleData) {
+    for (i of this.jsonDetails.sampleData) {
       if (
         i.matnr === target.firstChild.childNodes[1].childNodes[0].textContent
       ) {
-        this.selectedCardJson = i;
+        this.jsonDetails.selectedCardJson = i;
       }
     }
   }
   updateCardlist = (event: InputEvent) => {
     const target = event.target as HTMLInputElement;
-    this.sampleData = this.sampleDataOriginal.filter((data) => {
-      if (
-        this.selectedOption &&
-        data[this.selectedOption.toLowerCase()].toString().search(target.value)
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-    this.highlightResult(target.value);
+    const searchResult = [];
+    if (target.value.length >= 3 && this.selectedOption !== undefined) {
+      this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
+        (data) => {
+          // console.log(data, [this.selectedOption.toLowerCase()]);
+          if (
+            this.selectedOption &&
+            data[this.selectedOption.toLowerCase()]
+              .toString()
+              .search(target.value)
+          ) {
+            return false;
+          } else {
+            if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
+                .primary_fields.includes(this.selectedOption.toLowerCase()))) {
+                  searchResult.push(this.selectedOption.toLowerCase());
+              }
+              else{
+                searchResult.push(undefined);
+              }
+            return true;
+          }
+        }
+      );
+      this.highlightResult(target.value);
+      this.jsonDetails.additionalSearchKeys = searchResult;
+    } else if (target.value.length >= 3) {
+      this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
+        (data) => {
+          for (const [key, value] of Object.entries(data)) {
+            if (!value.toString().search(target.value)) {
+              if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
+                .primary_fields.includes(key))) {
+                  searchResult.push(key);
+              }
+              else{
+                searchResult.push(undefined);
+              }
+              return true;
+            }
+          }
+          return false;
+        }
+      );
+      this.jsonDetails.additionalSearchKeys = searchResult;
+      this.highlightResult(target.value);
+    } else {
+      this.clearHighlight();
+      this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal;
+      this.jsonDetails.additionalSearchKeys = [];
+    }
   }
   highlightResult = (value: string) => {
-    const cardsArray = document.querySelector('.data-cards-container');
-    this.markInstance = new mark(
-      document.querySelector('.data-cards-container')
-    );
+    if (this.markInstance === undefined) {
+      this.markInstance = new mark(
+        document.querySelector('.data-cards-container')
+      );
+    }
+    this.clearHighlight();
     this.markInstance.mark(value, {
       element: 'span',
       className: 'highlight',
     });
+  }
+  clearHighlight = () => {
+    if (this.markInstance !== undefined) {
+      this.markInstance.unmark();
+    }
   }
   collapseSidebar = () => {
     collapseSidebar();
