@@ -165,6 +165,10 @@ function collapseSidebar(){
       // item.innerHTML = '';
       // item.appendChild(img);
       item.innerHTML = item.getAttribute('short-form');
+      const tooltip = document.createElement('span');
+      tooltip.className = 'tooltiptext';
+      tooltip.innerHTML =  item.getAttribute('full-form');
+      item.appendChild(tooltip);
     } else {
       console.log('hehe', item, item.getAttribute('full-form'));
       item.innerHTML = item.getAttribute('full-form');
@@ -173,6 +177,7 @@ function collapseSidebar(){
   toggleButtonState.getAttribute('rotated') === 'true'
     ? toggleButtonState.setAttribute('rotated', 'false')
     : toggleButtonState.setAttribute('rotated', 'true');
+  localStorage.setItem('sidebar-status', toggleButtonState.getAttribute('rotated'));
 }
 
 // tslint:disable-next-line: typedef

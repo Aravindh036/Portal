@@ -25,6 +25,7 @@ export class BasicPortalComponent implements OnInit {
     profileTypeUrl: null,
     portalType: null,
   };
+  sidebarShrink: boolean;
   markInstance: any;
   cardSelected = false;
   loading = true;
@@ -87,6 +88,15 @@ export class BasicPortalComponent implements OnInit {
       !(this.routerData.portalType in portalDetails)
     ) {
       this.router.navigate(['error']);
+    }
+    if (localStorage.getItem('sidebar-status') !== undefined){
+      this.sidebarShrink = localStorage.getItem('sidebar-status') === 'true' ? true : false;
+      if(this.sidebarShrink){
+        this.collapseSidebar();
+      }
+    }
+    else{
+      this.sidebarShrink = false;
     }
   }
   toggleSelect = (event?: MouseEvent) => {

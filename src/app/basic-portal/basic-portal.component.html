@@ -25,7 +25,7 @@
         <div class="collapse">
           <img
             (click)="collapseSidebar()"
-            rotated="false"
+            attr.rotated="{{sidebarShrink}}"
             src="assets/collapse-icon.svg"
             alt=""
           />
@@ -36,11 +36,18 @@
               *ngFor="let portalName of data.portal_list"
               [routerLink]="[routerData.profileTypeUrl, 'portal', portalName.url]"
               routerLinkActive="sidebar-item-active"
-              class="sidebar-item"
+              [ngClass]="{'sidebar-item':true,'tooltip':true,'sidebar-item-shrink':sidebarShrink}"
               attr.full-form="{{ portalName.full_form }}"
               attr.short-form="{{ portalName.short_form }}"
             >
-              {{ portalName.full_form }}
+              <div *ngIf="sidebarShrink">
+                {{ portalName.short_form }}
+              </div>
+              <div *ngIf="!sidebarShrink">
+                {{ portalName.full_form }}
+              </div>
+              <span class="tooltiptext">Tooltip text</span>
+
             </div>
           </div>
         </div>
