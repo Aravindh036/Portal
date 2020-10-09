@@ -12,31 +12,44 @@ export class EmployeeProfileComponent implements OnInit {
   employeeFormElem = ['.col .name', '.col .email', '.col .company', '.col .role'];
   name: string;
   company: string;
-  role: string;
+  phoneNo: string;
   email: string;
   constructor() {
     this.edit = false;
-    this.name = sampleData[0].name.first;
-    this.company = sampleData[0].company;
-    this.role = 'Software Engineer';
-    this.email = sampleData[0].email;
   }
 
   ngOnInit(): void {
-    // get profile details
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    fetch("http://localhost:8000/customer/profileDisplay", requestOptions as unknown)
+        .then(response => response.json())
+        .then(result => {
+          console.log("result",result);
+          this.name = result.NAME._text;
+          this.company = result.COMPANY_NAME._text;
+          this.email = (result.MAIL_ID._text).toLowerCase();
+          this.phoneNo = result.PHONE_NUMBER._text;
+        })
+        .catch(error => console.log('error', error));
   }
 
   toggleEdit = () => {
-    this.edit = true;
+    this.edit = !this.edit;
     for (const i of this.employeeFormElem){
       const input = document.querySelector(i) as HTMLInputElement;
-      input.readOnly = false;
+      input.readOnly = !this.edit;
     }
   }
 
   toggleSave = () => {
-    this.edit = false;
-    console.log(this.name);
+    this.toggleEdit();
   }
 
   updateProfilePic = (event: Event) => {

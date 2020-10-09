@@ -26,10 +26,9 @@ export class DashboardComponent implements OnInit {
   navigateToPortal = (event: MouseEvent) => {
     const target = getContainerElement(event.target as HTMLDivElement, 'portal-card');
     this.router.navigate([
+      'login',
       target.getAttribute('card-data'),
-      'portal',
-      portalDetails[target.getAttribute('card-data')][0].portal_list[0].url
-    ]);
+    ])
   }
   ngOnInit(): void {}
 }

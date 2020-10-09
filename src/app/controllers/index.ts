@@ -79,7 +79,7 @@ function validateCredentials(
         emailElem.style.border = '1.5px solid #FF0212';
         emailElem.style.boxShadow = '0px 2px 4px rgba(255, 0, 0, 0.14)';
         if (errorElem_1) {
-          errorElem_1.innerHTML = '<span style="font-size: 10px;color: #FF0212;font-weight: 500;">Please Enter a valid Email-id</span>';
+          // errorElem_1.innerHTML = '<span style="font-size: 10px;color: #FF0212;font-weight: 500;">Please Enter a valid Email-id</span>';
         }
         if (validateElem_1) {
           const img = document.createElement('img');
@@ -98,7 +98,7 @@ function validateCredentials(
       passwordElem.style.border = '1.5px solid #FF0212';
       passwordElem.style.boxShadow = '0px 2px 4px rgba(255, 0, 0, 0.14)';
       if (errorElem_2) {
-        errorElem_2.innerHTML = '<span style="font-size: 10px;color: #FF0212;font-weight: 500;">Please Enter a valid Password</span>';
+        errorElem_2.innerHTML = '<span style="font-size: 10px;color: #FF0212;font-weight: 500;">Incorrect UserID or Password</span>';
       }
       if (validateElem_2) {
         const img = document.createElement('img');

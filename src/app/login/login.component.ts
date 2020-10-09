@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { addMailEvent, validateCredentials } from '../controllers';
+import portalDetails from '../basic-portal/all-portal-details.json';
 
 @Component({
   selector: 'app-login',
@@ -8,13 +9,14 @@ import { addMailEvent, validateCredentials } from '../controllers';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private router: ActivatedRoute) {
+  constructor(private activeRouter: ActivatedRoute, private router: Router) {
     localStorage.clear();
   }
   loginType: string;
   processCredentials = () => {
-    if (validateCredentials(true, false, false)) {
-      const emailElem = document.querySelector('#email-id') as HTMLInputElement;
+    console.log("out fun")
+    console.log("in fun")
+    const emailElem = document.querySelector('#email-id') as HTMLInputElement;
       const passwordElem = document.querySelector(
         '#password-id'
       ) as HTMLInputElement;
@@ -24,17 +26,41 @@ export class LoginComponent implements OnInit {
         email = emailElem.value;
         password = passwordElem.value;
       }
-      console.log(email, password);
       const obj = {
         email,
         password,
       };
-      // fetch the login credentials from SAP
-    }
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const raw = JSON.stringify({ userID:email, password: password });
+      let requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+      };
+      fetch("http://localhost:8000/customer/login", requestOptions as unknown)
+          .then(response => response.json())
+          .then(result => {
+            console.log("result",result);
+            if(result.status === "1 "){
+              localStorage.setItem("user_id", email);
+              this.router.navigate([
+                this.activeRouter.snapshot.params.type,
+                'portal',
+                portalDetails[this.activeRouter.snapshot.params.type][0].portal_list[0].url
+              ]);
+            }
+            else if(result.status === "0 "){
+              validateCredentials(true,true,false);
+              console.log("wrong password")
+            }
+          })
+          .catch(error => console.log('error', error));
   }
 
   ngOnInit(): void {
-    addMailEvent();
-    this.loginType = (this.router.snapshot.params.type).charAt(0).toUpperCase() + (this.router.snapshot.params.type).slice(1);
+    // addMailEvent();
+    this.loginType = (this.activeRouter.snapshot.params.type).charAt(0).toUpperCase() + (this.activeRouter.snapshot.params.type).slice(1);
   }
 }

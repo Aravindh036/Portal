@@ -12,9 +12,6 @@ export class InvoiceTemplateComponent implements OnInit {
   @Input() cardSelected: any;
   constructor() { }
   ngOnInit(): void {
-  }
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes);
+    
   }
 }
