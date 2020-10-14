@@ -1,4 +1,7 @@
 <div class="employee-profile">
+  <div [ngClass]="{'backdrop-loading':true,'backdrop-loading-show':loading}">
+    <app-loading></app-loading>
+  </div>
   <div class="edit-save m-t-50">
     <button (click)="toggleEdit()" *ngIf="!edit" class="edit btn-a">Edit</button>
     <button (click)="toggleSave()" *ngIf="edit" class="save btn-primary">Save</button>
@@ -15,18 +18,18 @@
         </div>
         <div class="basic-details">
           <div class="col">
-            <input type="text" [(ngModel)]="name" readonly class="input-div name">
-            <input type="text" [(ngModel)]="email" readonly class="input-div email m-t-10">
+            <input type="text" [(ngModel)]="profileDetails.name" readonly class="input-div name">
+            <input type="text" [(ngModel)]="profileDetails.mailID" readonly class="input-div email m-t-10">
             <!-- <div class="">Maran</div>
             <div class="">maran@kaartech.com</div> -->
           </div>
           <div class="col m-t-40">
             <label class="label-light-grey">Company Name</label>
-            <input [(ngModel)]="company" type="text" readonly class="input-light-grey company m-t-25">
+            <input [(ngModel)]="profileDetails.companyName" type="text" readonly class="input-light-grey company m-t-25">
           </div>
           <div class="col m-t-40">
             <label  class="label-light-grey">Phone Number</label>
-            <input [(ngModel)]="phoneNo" type="text" readonly class="input-light-grey role m-t-25">
+            <input [(ngModel)]="profileDetails.phoneNumber" type="text" readonly class="input-light-grey role m-t-25">
           </div>
         </div>
       </div>

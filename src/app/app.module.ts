@@ -13,6 +13,7 @@ import { PortalDetailsComponent } from './portal-details/portal-details.componen
 import { InvoiceTemplateComponent } from './portal-templates/invoice-template/invoice-template.component';
 import { LoadingComponent } from './loading/loading.component';
 import { EmployeeProfileComponent } from './profile-templates/employee-profile/employee-profile.component';
+import { InquiryTemplateComponent } from './portal-templates/inquiry-template/inquiry-template.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { EmployeeProfileComponent } from './profile-templates/employee-profile/e
     InvoiceTemplateComponent,
     LoadingComponent,
     EmployeeProfileComponent,
+    InquiryTemplateComponent,
   ],
   imports: [
     BrowserModule,

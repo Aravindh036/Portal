@@ -8,14 +8,16 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 export class PortalDetailsComponent implements OnInit {
   @Input() selectedCardJson;
   @Input() profileType;
-  @Input() cardSelected;
+  @Input() cardJson;
   invoice = 'customer';
-  constructor() {}
+  constructor() {
+
+  }
 
   ngOnInit(): void {
   }
   // tslint:disable-next-line: use-lifecycle-interface
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes);
+    console.log(changes, this.profileType, this.selectedCardJson);
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import sampleData from '../../sample-data.json';
 
 @Component({
   selector: 'app-employee-profile',
@@ -7,14 +6,25 @@ import sampleData from '../../sample-data.json';
   styleUrls: ['./employee-profile.component.css'],
 })
 export class EmployeeProfileComponent implements OnInit {
-  edit: any;
+  edit: boolean;
+  loading: boolean;
   profilePic: File = null;
   employeeFormElem = ['.col .name', '.col .email', '.col .company', '.col .role'];
-  name: string;
-  company: string;
-  phoneNo: string;
-  email: string;
+ 
+  profileDetails = {
+    name: '...',
+    companyName: '...',
+    address: '...',
+    mailID: '...',
+    city: '...',
+    country: '...',
+    phoneNumber: '...',
+    faxNumber: '...',
+    gstinNumber: '...',
+    userId: '...'
+  }
   constructor() {
+    this.loading = true;
     this.edit = false;
   }
 
@@ -32,14 +42,22 @@ export class EmployeeProfileComponent implements OnInit {
         .then(response => response.json())
         .then(result => {
           console.log("result",result);
-          this.name = result.NAME._text;
-          this.company = result.COMPANY_NAME._text;
-          this.email = (result.MAIL_ID._text).toLowerCase();
-          this.phoneNo = result.PHONE_NUMBER._text;
+          this.profileDetails = {
+            address: result.ADDRESS._text,
+            city: result.CITY._text,
+            companyName: result.COMPANY_NAME._text,
+            country: result.COUNTRY._text,
+            faxNumber: result.FAX_NUMBER._text,
+            gstinNumber: result.GSTIN_NUMBER._text,
+            mailID: (result.MAIL_ID._text).toLowerCase(),
+            name: result.NAME._text,
+            phoneNumber: result.PHONE_NUMBER._text,
+            userId: result.CUSTOMER_ID._text
+          }
+          this.loading = false;
         })
         .catch(error => console.log('error', error));
   }
-
   toggleEdit = () => {
     this.edit = !this.edit;
     for (const i of this.employeeFormElem){
@@ -49,7 +67,35 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   toggleSave = () => {
-    this.toggleEdit();
+    this.loading = true;
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const raw = JSON.stringify({
+       userID: this.profileDetails.userId,
+       name: this.profileDetails.name,
+       companyName: this.profileDetails.companyName,
+       address: this.profileDetails.address,
+       mailID: this.profileDetails.mailID,
+       city: this.profileDetails.city,
+       country: this.profileDetails.country,
+       phoneNumber: this.profileDetails.phoneNumber,
+       faxNumber: this.profileDetails.faxNumber,
+       gstinNumber: this.profileDetails.gstinNumber,
+      });
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    fetch("http://localhost:8000/customer/profileUpdate", requestOptions as unknown)
+        .then(response => response.json())
+        .then(result => {
+          console.log("result",result);
+          this.toggleEdit();
+          this.loading = false;
+        })
+        .catch(error => console.log('error', error));
   }
 
   updateProfilePic = (event: Event) => {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import sampleData from '../sample-data.json';
 import mark from 'mark.js';
 import { ActivatedRoute, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
@@ -13,9 +12,9 @@ import { jsonDetailsType, routerType } from '../controllers/interface';
 })
 export class BasicPortalComponent implements OnInit {
   jsonDetails: jsonDetailsType = {
-    sampleData: null,
-    sampleDataOriginal: null,
-    portalDetails: null,
+    sampleData: [],
+    sampleDataOriginal: [],
+    portalDetails: portalDetails,
     selectedCardJson: null,
     additionalSearchKeys: null,
   };
@@ -28,61 +27,48 @@ export class BasicPortalComponent implements OnInit {
   sidebarShrink: boolean;
   markInstance: any;
   cardSelected = false;
+  originalOptionList: any;
+  optionList: any;
   loading = true;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
     router.events.subscribe((data) => {
       this.cardSelected = false;
       this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-      }, 1000);
+      this.jsonDetails.portalDetails = portalDetails;
+      this.originalOptionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
+      this.optionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
+      let requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+      };
+      fetch("http://localhost:8000/customer/inquiryData", requestOptions as unknown)
+        .then(response => response.json())
+        .then(result => {
+          console.log("result",result);
+          this.jsonDetails = {
+            selectedCardJson: null,
+            additionalSearchKeys: null,
+            sampleDataOriginal: result.records,
+            sampleData: result.records,
+            portalDetails: portalDetails,
+          };
+          this.loading = false;
+        })
+        .catch(error => console.log('error', error));
     });
   }
   selectedOption: string;
-  originalOptionList = [
-    'MANDT',
-    'MATNR',
-    'ERSDA',
-    'ERNAM',
-    'LAEDA',
-    'AENAM',
-    'VPSTA',
-    'PSTAT',
-    'LVORM',
-    'MTART',
-    'MBRSH',
-    'MATKL',
-    'BISMT',
-    'MEINS',
-    'BSTME',
-    'ZEINR',
-    'ZEIAR',
-    'ZEIVR',
-    'ZEIFO',
-    'AESZN',
-    'BLATT',
-    'BLANZ',
-  ];
-  optionList = this.originalOptionList;
-
   ngOnInit(): void {
     this.routerData = {
       profileType: this.activeRouter.snapshot.params.type,
       profileTypeUrl: '/' + this.activeRouter.snapshot.params.type,
       portalType: this.activeRouter.snapshot.params.portal_type,
     };
-    this.jsonDetails = {
-      selectedCardJson: null,
-      additionalSearchKeys: null,
-      sampleDataOriginal: sampleData,
-      // tslint:disable-next-line: object-literal-shorthand
-      sampleData: sampleData,
-      // tslint:disable-next-line: object-literal-shorthand
-      portalDetails: portalDetails,
-    };
-    setTimeout(() => {
-      this.loading = false;
-    }, 4000);
     if (
       !(this.routerData.profileType in portalDetails) ||
       !(this.routerData.portalType in portalDetails)
@@ -146,7 +132,7 @@ export class BasicPortalComponent implements OnInit {
       const newCardContainerBG = target.firstChild as HTMLDivElement;
       newCardContainerBG.classList.toggle('card-container-bg-selected');
       this.currentCard = target;
-      this.updateSelectedJson(target);
+      this.jsonDetails.selectedCardJson = target.getAttribute("card-id");
       if (this.cardSelected === false) {
         this.cardSelected = true;
       }
@@ -158,23 +144,13 @@ export class BasicPortalComponent implements OnInit {
       cardBG.classList.toggle('card-bg-selected');
       const CardContainerBG = target.firstChild as HTMLDivElement;
       CardContainerBG.classList.toggle('card-container-bg-selected');
-      this.updateSelectedJson(target);
+      this.jsonDetails.selectedCardJson = target.getAttribute("card-id");
       if (this.cardSelected === false) {
         this.cardSelected = true;
       }
     }
   }
-  updateSelectedJson = (target: HTMLDivElement) => {
-    let i: any;
-    // tslint:disable-next-line: forin
-    for (i of this.jsonDetails.sampleData) {
-      if (
-        i.matnr === target.firstChild.childNodes[1].childNodes[0].textContent
-      ) {
-        this.jsonDetails.selectedCardJson = i;
-      }
-    }
-  }
+
   updateCardlist = (event: InputEvent) => {
     const target = event.target as HTMLInputElement;
     const searchResult = [];
@@ -248,5 +224,9 @@ export class BasicPortalComponent implements OnInit {
   }
   collapseSidebar = () => {
     collapseSidebar();
+  }
+  getDate = (data: string) =>{
+    let date = new Date(parseInt(data.slice(0,3)), parseInt(data.slice(4,5)), parseInt(data.slice(6,7)))
+    return date.toDateString();
   }
 }

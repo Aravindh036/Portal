@@ -1,4 +1,7 @@
 <div class="auth-bg">
+    <div [ngClass]="{'backdrop-loading':true,'backdrop-loading-show':loading}">
+        <app-loading></app-loading>
+    </div>
   <div class="auth-container">
       <div class="auth-heading">
           <div class="auth-top m-t-10 m-b-25">

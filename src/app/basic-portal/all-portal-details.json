@@ -179,69 +179,103 @@
     }
   ],
   "sale-order": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "delivery": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "payments-aging": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "orverall-sales": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "quotation": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "purchase-order": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "goods-receipt": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "invoice": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "payments-overdues": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "credit-memo": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "leave-data": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "salary-pay": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "notification": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "work-order": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "planned-order": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "production-order": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "incident-management": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "risk-assessment": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "inspection-lots": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "result-recording": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "usage-Decision": {
-    "primary_fields": []
+    "primary_fields": [],
+    "detailed_name":{}
   },
   "inquiry": {
-    "primary_fields": ["matnr","mandt","ersda"]
+    "primary_fields": ["vbeln","audat","netwr"],
+    "detailed_name":{
+      "vbeln": "Sales Doc No.",
+      "audat": "Created on",
+      "netwr": "Net value",
+      "ANGDT": "Valid from",
+      "BSTNK": "PO Number",
+      "ZTERM": "Terms of Payment",
+      "POSNR": "Sales Document Item",
+      "MATNR": "Material No.",
+      "MATKL": "Material Group",
+      "KWMENG": "Order quantity",
+      "NETPR": "Price/unit"
+    }
   }
 }

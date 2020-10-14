@@ -61,7 +61,7 @@
         <div class="list-heading m-b-10 m-t-20">
           <span>Portal Records</span>
           <div class="sort-by">
-            <span>&nbsp;Sort by:</span>
+            <span>&nbsp;Search by:</span>
             <div class="category-filter m-t-5">
               <div name="filter" id="filter-id">
                 <div (click)="toggleSelect($event)" class="selected-option">
@@ -81,7 +81,7 @@
                   <div class="option-list" id="custom-scroll">
                     <div
                       (click)="updateSelectedOption($event)"
-                      *ngFor="let option of optionList"
+                      *ngFor="let option of (optionList)"
                       class="option-item">
                       {{ option }}
                     </div>
@@ -102,19 +102,23 @@
           <div
             class="data-cards"
             (click)="updateRecordDetails($event)"
-            *ngFor="let card of jsonDetails.sampleData; let i=index">
+            *ngFor="let card of jsonDetails.sampleData; let i=index" 
+            attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
             <div class="card-container">
               <div class="card-column">
                 <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
-                  {{label | uppercase}}
+                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
                 </div>
                 <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
                   {{[jsonDetails.additionalSearchKeys[i]]}}
                 </div>
               </div>
               <div class="card-column">
-                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields">
-                  {{card[data]}}
+                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                  <div *ngSwitchCase="'netwr'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  <div *ngSwitchCase="'audat'">{{getDate(card[data | uppercase]._text)}}</div>
+                  <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+
                 </div>
                 <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
                   {{card[jsonDetails.additionalSearchKeys[i]]}}
@@ -126,7 +130,7 @@
         </div>
       </div>
       <div class="dashboard-content dashboard-content-unshrink">
-        <app-portal-details [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.profileType" [cardSelected]="cardSelected"></app-portal-details>
+        <app-portal-details [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
       </div>
     </div>
   </div>

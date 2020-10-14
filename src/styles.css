@@ -159,3 +159,28 @@ body{
   transform: translateX(0px);
   opacity: 1;
 }
+
+
+.backdrop-loading{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-30px);
+  transition: all 0.3s ease;
+  background-color: #00000025;
+  z-index: -100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.backdrop-loading-show{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  z-index: 100;
+}

@@ -124,7 +124,7 @@
 
 .selected-option {
   border: 1px solid #a6a6a6;
-  width: 150px;
+  width: 180px;
   height: 30px;
   border-radius: 4px;
   display: flex;
@@ -136,7 +136,7 @@
   color: rgb(85, 84, 84);
   font-weight: 600;
   background-color: #fff;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 #filter-id {
@@ -155,7 +155,7 @@
   margin-top: 5px;
   border-radius: 3px;
   box-shadow: 0 2px 4px #a6a6a6;
-  width: 170px;
+  width: 190px;
   z-index: 100;
 }
 
@@ -301,6 +301,7 @@
   overflow: hidden;
   width: 220px;
   white-space: nowrap;
+  display: flex;
 }
 
 .card-column {
@@ -348,7 +349,9 @@
 }
 
 .data-cards .card-column:first-child {
+  width: 200px!important;
   margin-right: 20px;
+  white-space: nowrap;
 }
 
 .data-cards-selected {

@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
     localStorage.clear();
   }
+  loading: boolean;
   loginType: string;
   processCredentials = () => {
     console.log("out fun")
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
           body: raw,
           redirect: 'follow'
       };
+      this.loading = true;
       fetch("http://localhost:8000/customer/login", requestOptions as unknown)
           .then(response => response.json())
           .then(result => {
