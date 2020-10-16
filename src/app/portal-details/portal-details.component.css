@@ -15,3 +15,9 @@
   color: #6b6b6b;
   font-weight: 700;
 }
+
+.loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

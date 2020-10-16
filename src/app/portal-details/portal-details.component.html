@@ -1,10 +1,15 @@
 <div class="portal-details">
-  <div *ngIf="selectedCardJson" class="portal-container" [ngSwitch]="profileType">
-    <app-inquiry-template [invoiceData]="selectedCardJson" [profileType]="profileType" *ngSwitchCase="'inquiry'" ></app-inquiry-template>
-    
+  <div *ngIf="loading" class="loading-container" style="width: 100%;">
+    <app-loading></app-loading>
   </div>
-  <div *ngIf="!selectedCardJson" class="getting-started">
-    <img src="assets/portals/illustration.svg" alt="90" />
-    <span>SELECT A RECORD TO GET STARTED</span>
+  <div *ngIf="!loading" class="portal-container">
+    <div *ngIf="selectedCardJson" class="portal-container" [ngSwitch]="profileType">
+      <app-inquiry-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'inquiry'" ></app-inquiry-template>
+      
+    </div>
+    <div *ngIf="!selectedCardJson" class="getting-started">
+      <img src="assets/portals/illustration.svg" alt="90" />
+      <span>SELECT A RECORD TO GET STARTED</span>
+    </div>
   </div>
 </div>

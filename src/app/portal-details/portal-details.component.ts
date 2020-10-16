@@ -9,7 +9,7 @@ export class PortalDetailsComponent implements OnInit {
   @Input() selectedCardJson;
   @Input() profileType;
   @Input() cardJson;
-  invoice = 'customer';
+  loading = false;
   constructor() {
 
   }
@@ -18,6 +18,8 @@ export class PortalDetailsComponent implements OnInit {
   }
   // tslint:disable-next-line: use-lifecycle-interface
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, this.profileType, this.selectedCardJson);
+    console.log(changes);
+    this.loading = true;
+    setTimeout(() => this.loading = false, 1500)
   }
 }

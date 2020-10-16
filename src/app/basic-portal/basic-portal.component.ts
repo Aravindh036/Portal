@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
 import { collapseSidebar, getContainerElement } from '../controllers';
 import { jsonDetailsType, routerType } from '../controllers/interface';
+// import json from './all-portal-details.json';
+import { getDate, toggleProfileOption, toggleSelect } from './helper';
 
 @Component({
   selector: 'app-basic-portal',
@@ -31,38 +33,26 @@ export class BasicPortalComponent implements OnInit {
   optionList: any;
   loading = true;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
+    this.fetchFun();
     router.events.subscribe((data) => {
       this.cardSelected = false;
       this.loading = true;
       this.jsonDetails.portalDetails = portalDetails;
       this.originalOptionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
       this.optionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
-      let requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
-      };
-      fetch("http://localhost:8000/customer/inquiryData", requestOptions as unknown)
-        .then(response => response.json())
-        .then(result => {
-          console.log("result",result);
-          this.jsonDetails = {
-            selectedCardJson: null,
-            additionalSearchKeys: null,
-            sampleDataOriginal: result.records,
-            sampleData: result.records,
-            portalDetails: portalDetails,
-          };
-          this.loading = false;
-        })
-        .catch(error => console.log('error', error));
+      
     });
   }
   selectedOption: string;
+  selectedOptionCode: string;
+  getInquiryData = (docType: string) => {
+    this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
+      if(data.ZTERM._text === docType){
+        console.log("in filter")
+        return true;
+      }
+    })
+  }
   ngOnInit(): void {
     this.routerData = {
       profileType: this.activeRouter.snapshot.params.type,
@@ -85,25 +75,37 @@ export class BasicPortalComponent implements OnInit {
       this.sidebarShrink = false;
     }
   }
-  toggleSelect = (event?: MouseEvent) => {
-    const target = document.querySelector(
-      '.option-list-container'
-    ) as HTMLDivElement;
-    const backdrop = document.querySelector(
-      '.filter-backdrop'
-    ) as HTMLDivElement;
-    target.classList.toggle('show-select-option');
-    backdrop.classList.toggle('hide');
-    (document.querySelector('.search-option') as HTMLInputElement).focus();
+  fetchFun = () =>{
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    fetch("http://localhost:8000/customer/inquiryData", requestOptions as unknown)
+      .then(response => response.json())
+      .then(result => {
+        console.log("result",result);
+        this.jsonDetails = {
+          selectedCardJson: null,
+          additionalSearchKeys: null,
+          sampleDataOriginal: result.records,
+          sampleData: result.records,
+          portalDetails: portalDetails,
+        };
+        this.loading = false;
+        if(this.activeRouter.snapshot.params.portal_type === 'inquiry'){
+          console.log("in inquiry")
+          this.getInquiryData('A');
+        }
+      })
+      .catch(error => console.log('error', error));
   }
-  toggleProfileOption = (event?: MouseEvent) => {
-    const target = document.querySelector('.profile-options') as HTMLDivElement;
-    const backdrop = document.querySelector(
-      '.profile-option-backdrop'
-    ) as HTMLDivElement;
-    target.classList.toggle('show-select-option');
-    backdrop.classList.toggle('hide');
-  }
+  toggleSelect = toggleSelect;
+  toggleProfileOption = toggleProfileOption;
   updateSelectList = (event: Event) => {
     const target = event.target as HTMLInputElement;
     this.optionList = this.originalOptionList.filter(
@@ -113,9 +115,16 @@ export class BasicPortalComponent implements OnInit {
   updateSelectedOption = (event: MouseEvent) => {
     const target = event.target as HTMLDivElement;
     this.selectedOption = target.innerHTML.toUpperCase().trim();
+    for(let [key, value] of Object.entries(this.jsonDetails.portalDetails[this.routerData.portalType].detailed_name)){
+      console.log(value, target.innerHTML);
+      if((value as string).trim() == target.innerHTML.trim()){
+        this.selectedOptionCode = (key as string).toUpperCase();
+      }
+    }
     this.toggleSelect();
   }
   updateRecordDetails = (event: MouseEvent) => {
+    console.log("updated")
     const target = getContainerElement(
       event.target as HTMLDivElement,
       'data-cards'
@@ -154,21 +163,21 @@ export class BasicPortalComponent implements OnInit {
   updateCardlist = (event: InputEvent) => {
     const target = event.target as HTMLInputElement;
     const searchResult = [];
-    if (target.value.length >= 3 && this.selectedOption !== undefined) {
+    if (target.value.length >= 3 && this.selectedOptionCode !== undefined) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
-          // console.log(data, [this.selectedOption.toLowerCase()]);
+          console.log(data, [this.selectedOptionCode.toLowerCase()]);
           if (
-            this.selectedOption &&
-            data[this.selectedOption.toLowerCase()]
+            this.selectedOptionCode &&
+            data[this.selectedOptionCode]._text
               .toString()
               .search(target.value)
           ) {
             return false;
           } else {
             if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
-                .primary_fields.includes(this.selectedOption.toLowerCase()))) {
-                  searchResult.push(this.selectedOption.toLowerCase());
+                .primary_fields.includes(this.selectedOptionCode.toLowerCase()))) {
+                  searchResult.push(this.selectedOptionCode.toLowerCase());
               }
               else{
                 searchResult.push(undefined);
@@ -182,8 +191,10 @@ export class BasicPortalComponent implements OnInit {
     } else if (target.value.length >= 3) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
+          console.log(data)
           for (const [key, value] of Object.entries(data)) {
-            if (!value.toString().search(target.value)) {
+            console.log((value as any));
+            if (!(value as any)._text.toString().search(target.value)) {
               if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
                 .primary_fields.includes(key))) {
                   searchResult.push(key);
@@ -225,8 +236,5 @@ export class BasicPortalComponent implements OnInit {
   collapseSidebar = () => {
     collapseSidebar();
   }
-  getDate = (data: string) =>{
-    let date = new Date(parseInt(data.slice(0,3)), parseInt(data.slice(4,5)), parseInt(data.slice(6,7)))
-    return date.toDateString();
-  }
+  getDate = getDate;
 }
