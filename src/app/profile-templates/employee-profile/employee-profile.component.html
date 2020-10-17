@@ -1,4 +1,4 @@
-<div class="employee-profile">
+<div class="employee-profile" id="custom-scroll">
   <div [ngClass]="{'backdrop-loading':true,'backdrop-loading-show':loading}">
     <app-loading></app-loading>
   </div>
@@ -30,6 +30,30 @@
           <div class="col m-t-40">
             <label  class="label-light-grey">Phone Number</label>
             <input [(ngModel)]="profileDetails.phoneNumber" type="text" readonly class="input-light-grey role m-t-25">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="employee-profile-container">
+    <div class="basic-details-container">
+      <div class="basic-details-heading">Additional Details</div>
+      <div class="row">
+        <div class="profile-pic">
+          
+        </div>
+        <div class="basic-details">
+          <div class="col m-t-40">
+            <label  class="label-light-grey">Billing Address</label>
+            <textarea readonly class="textarea-light-grey address m-t-25" cols="30" rows="2" [(ngModel)]="profileDetails.address"></textarea>
+          </div>
+          <div class="col m-t-40">
+            <label  class="label-light-grey">Fax Number</label>
+            <input [(ngModel)]="profileDetails.faxNumber" type="text" readonly class="input-light-grey fax m-t-25">
+          </div>
+          <div class="col m-t-40 m-b-50">
+            <label  class="label-light-grey">GSTIN Number</label>
+            <input [(ngModel)]="profileDetails.gstinNumber" type="text" readonly class="input-light-grey gstin m-t-25">
           </div>
         </div>
       </div>

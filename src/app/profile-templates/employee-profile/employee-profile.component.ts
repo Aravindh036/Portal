@@ -9,7 +9,7 @@ export class EmployeeProfileComponent implements OnInit {
   edit: boolean;
   loading: boolean;
   profilePic: File = null;
-  employeeFormElem = ['.col .name', '.col .email', '.col .company', '.col .role'];
+  employeeFormElem = ['.col .name', '.col .email', '.col .company', '.col .role', '.col .fax', '.col .gstin'];
  
   profileDetails = {
     name: '...',
@@ -64,6 +64,8 @@ export class EmployeeProfileComponent implements OnInit {
       const input = document.querySelector(i) as HTMLInputElement;
       input.readOnly = !this.edit;
     }
+    const textarea = document.querySelector('.col .address') as HTMLTextAreaElement;
+    textarea.readOnly = !this.edit;
   }
 
   toggleSave = () => {

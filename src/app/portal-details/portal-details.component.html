@@ -5,7 +5,10 @@
   <div *ngIf="!loading" class="portal-container">
     <div *ngIf="selectedCardJson" class="portal-container" [ngSwitch]="profileType">
       <app-inquiry-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'inquiry'" ></app-inquiry-template>
-      
+      <app-credit-memo-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'credit-memo'" ></app-credit-memo-template>
+      <app-sale-order-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'sale-order'" ></app-sale-order-template>
+      <app-delivery-list-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'delivery'" ></app-delivery-list-template>
+      <app-invoice-template style="width: 100%" [selectedCardJson]="selectedCardJson" [cardJson]="cardJson" *ngSwitchCase="'invoice'" ></app-invoice-template>
     </div>
     <div *ngIf="!selectedCardJson" class="getting-started">
       <img src="assets/portals/illustration.svg" alt="90" />

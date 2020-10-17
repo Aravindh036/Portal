@@ -179,12 +179,38 @@
     }
   ],
   "sale-order": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["VBELN","AUDAT","NETWR"],
+    "detailed_name":{
+      "VBELN": "Sales Doc No.",
+      "AUDAT": "Created on",
+      "NETWR": "Net value",
+      "ANGDT": "Valid from",
+      "BSTNK": "PO Number",
+      "ZTERM": "Terms of Payment",
+      "POSNR": "Sales Document Item",
+      "MATNR": "Material No.",
+      "MATKL": "Material Group",
+      "KWMENG": "Order quantity",
+      "NETPR": "Price/unit"
+    }
   },
   "delivery": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["VBELN","ERDAT","LFIMG"],
+    "detailed_name":{
+      "VBELN":"Delivery ID",
+      "ERZET": "Time Created On",
+      "ERDAT": "Created On",
+      "LFDAT":"Delivery Date" ,
+      "INCOI": "Incoterms",
+      "TRAGR": "Transport Group",
+      "FKDAT": "Billing Date",
+      "LFIMG": "Delivery Quantity",
+      "NTGEW": "Net Weight",
+      "GEWEI": "Weight Unit",
+      "ARKTX": "Description",
+      "MBDAT": "Mat. Availability Date",
+      "MTART": "Material Type"
+    }
   },
   "payments-aging": {
     "primary_fields": [],
@@ -207,16 +233,52 @@
     "detailed_name":{}
   },
   "invoice": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["VBELN","ERDAT","netwr"],
+    "detailed_name":{
+      "ALAND": "Country",
+      "ARKTX": "Product Description",
+      "BRGEW": "Weight Unit",
+      "BUKRS":"Company Code",
+      "ERDAT":"Created On",
+      "ERZET":"Time Created On",
+      "FKDAT":"Billing Date",
+      "FKIMG": "Billed Quantity",
+      "KUNRG":"Payer",
+      "LMENG": "Required Quantity",
+      "MATNR": "Material No.",
+      "netwr": "Net value",
+      "NTGEW": "Net Weight",
+      "VBELN":"Billing Doc No.",
+      "VSTEL":"Shipping/Receiving Point",
+      "VTWEG":"Distribution Channel",
+      "ZR01":"A.G Shipping Point",
+      "KT01":"Shipping Point"
+    }
   },
   "payments-overdues": {
     "primary_fields": [],
     "detailed_name":{}
   },
   "credit-memo": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["VBELN","LMENG","netwr"],
+    "detailed_name":{
+      "ALAND": "Country",
+      "ARKTX": "Product Description",
+      "BRGEW": "Weight Unit",
+      "BUKRS":"Company Code",
+      "ERDAT":"Created On",
+      "ERZET":"Time Created On",
+      "FKDAT":"Billing Date",
+      "FKIMG": "Billed Quantity",
+      "KUNRG":"Payer",
+      "LMENG": "Required Quantity",
+      "MATNR": "Material No.",
+      "netwr": "Net value",
+      "NTGEW": "Net Weight",
+      "VBELN":"Billing Doc No.",
+      "VSTEL":"Shipping/Receiving Point",
+      "VTWEG":"Distribution Channel"
+    }
   },
   "leave-data": {
     "primary_fields": [],
@@ -263,11 +325,11 @@
     "detailed_name":{}
   },
   "inquiry": {
-    "primary_fields": ["vbeln","audat","netwr"],
+    "primary_fields": ["VBELN","AUDAT","NETWR"],
     "detailed_name":{
-      "vbeln": "Sales Doc No.",
-      "audat": "Created on",
-      "netwr": "Net value",
+      "VBELN": "Sales Doc No.",
+      "AUDAT": "Created on",
+      "NETWR": "Net value",
       "ANGDT": "Valid from",
       "BSTNK": "PO Number",
       "ZTERM": "Terms of Payment",

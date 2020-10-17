@@ -1,23 +1,62 @@
-<div class="invoice-template">
-  <div class="heading">INVOICE</div>
-  <div class="contact-details">
-    <div class="column-1">
-      <div class="name">
-        {{profileType}}
-        <div *ngIf="invoiceData">
-          {{invoiceData.about}}
+<div class="inquiry">
+  <div class="inquiry-text m-t-50 m-b-50">INVOICE DOCUMENT</div>
+  <div class="customer-details">
+      <div class="customer-id flex">
+          <div class="label">CUSTOMER ID: &nbsp;</div>
+          <div class="value">{{cardJson.KUNRG._text}}</div>
+      </div>
+      <div class="name flex">
+          <div class="label">NAME: &nbsp;</div>
+          <div class="value">Aravindh S</div>
+      </div>
+  </div>
+  <div class="inquiry-details">
+      <div class="inquiry-id flex">
+          <div class="label">INVOICE ID: &nbsp;</div>
+          <div class="value">{{cardJson.VBELN._text}}</div>
+      </div>
+      <div class="created-on flex">
+          <div class="label">CREATED ON: &nbsp;</div>
+          <div class="value">{{getDate(cardJson.ERDAT._text)}}</div>
+      </div>
+      <div class="created-on flex">
+          <div class="label">BILLING DATE &nbsp;</div>
+          <div class="value">{{getDate(cardJson.FKDAT._text)}}</div>
+      </div>
+
+  </div>
+  <div class="inquiry-container m-t-50">
+      <div class="heading">
+          <div class="row">
+              <div class="mat-name">NAME</div>
+              <div class="quantity">QUANTITY</div>
+              <div class="price">PRICE/UNIT ({{cardJson.KUNAG._text}})</div>
+          </div>
+      </div>
+      <div class="container">
+          <div class="row m-t-25">
+              <div class="mat-name">{{cardJson.ARKTX._text}}</div>
+              <div class="quantity">{{deleteDecimal(cardJson.FKIMG._text)}}</div>
+              <div class="price">{{getUnitPrice(cardJson.NETWR._text,cardJson.FKIMG._text)}}</div>
+          </div>
+          <div class="total-container m-t-50">
+              <div class="total-label">TOTAL</div>
+              <div class="total">{{cardJson.KUNAG._text}}&nbsp;{{cardJson.NETWR._text}}</div>
+          </div>
+      </div>
+      <div class="inquiry-details m-t-50">
+        <div class="inquiry-id flex payed m-t-30">
+            <div class="label">PAYED BY: &nbsp;</div>
+            <div class="value">{{cardJson.KUNRG._text}}</div>
         </div>
-      </div>
-      <!-- <div class="date">
-        Date Issued : <strong>{{invoiceData.dateIssued}}</strong>
-      </div>
-      <div class="invoice-no">
-        Invoice No : <strong>{{invoiceData.invoiceNumber}}</strong>
-      </div> -->
-    </div>
-    <div class="column-2">
-      <!-- <div class="vendor-name">{{invoiceData.vendor}}</div>
-      <div class="vendor-address">{{invoiceData.vendorAddress}}</div> -->
+        <div class="created-on payed flex m-t-30">
+            <div class="label">{{'Shipping/Receiving Point :' | uppercase}} &nbsp;</div>
+            <div class="value">{{portalDetails["invoice"].detailed_name[cardJson.VSTEL._text]}}&nbsp; ({{cardJson.VSTEL._text}})</div>
+        </div>
+        <div class="created-on payed flex m-t-30">
+            <div class="label">{{'Net Weight:' | uppercase}} &nbsp;</div>
+            <div class="value">{{(cardJson.NTGEW._text)}}&nbsp;{{(cardJson.BRGEW._text)}}</div>
+        </div>
     </div>
   </div>
 </div>

@@ -14,6 +14,9 @@ import { InvoiceTemplateComponent } from './portal-templates/invoice-template/in
 import { LoadingComponent } from './loading/loading.component';
 import { EmployeeProfileComponent } from './profile-templates/employee-profile/employee-profile.component';
 import { InquiryTemplateComponent } from './portal-templates/inquiry-template/inquiry-template.component';
+import { SaleOrderTemplateComponent } from './portal-templates/sale-order-template/sale-order-template.component';
+import { CreditMemoTemplateComponent } from './portal-templates/credit-memo-template/credit-memo-template.component';
+import { DeliveryListTemplateComponent } from './portal-templates/delivery-list-template/delivery-list-template.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { InquiryTemplateComponent } from './portal-templates/inquiry-template/in
     LoadingComponent,
     EmployeeProfileComponent,
     InquiryTemplateComponent,
+    SaleOrderTemplateComponent,
+    CreditMemoTemplateComponent,
+    DeliveryListTemplateComponent,
   ],
   imports: [
     BrowserModule,

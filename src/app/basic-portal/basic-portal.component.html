@@ -115,8 +115,12 @@
               </div>
               <div class="card-column">
                 <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
-                  <div *ngSwitchCase="'netwr'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngSwitchCase="'audat'">{{getDate(card[data | uppercase]._text)}}</div>
+                  <div *ngSwitchCase="'NETWR'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  <div *ngSwitchCase="'netwr'">{{card['KUNAG']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}</div>
+                  <div *ngSwitchCase="'ERDAT'">{{getDate(card[data | uppercase]._text)}}</div>
+                  <div *ngSwitchCase="'LMENG'">{{deleteDecimal(card[data | uppercase]._text)}}&nbsp; UNITS</div>
+                  <div *ngSwitchCase="'LFIMG'">{{(card[data | uppercase]._text)}}&nbsp;{{card['GEWEI']._text}}</div>
                   <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
 
                 </div>

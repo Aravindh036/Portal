@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import mark from 'mark.js';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
 import { collapseSidebar, getContainerElement } from '../controllers';
 import { jsonDetailsType, routerType } from '../controllers/interface';
@@ -33,32 +33,60 @@ export class BasicPortalComponent implements OnInit {
   optionList: any;
   loading = true;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
-    this.fetchFun();
     router.events.subscribe((data) => {
-      this.cardSelected = false;
-      this.loading = true;
-      this.jsonDetails.portalDetails = portalDetails;
-      this.originalOptionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
-      this.optionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
-      
+      if (data instanceof NavigationEnd){
+        this.cardSelected = false;
+        this.loading = true;
+        this.originalOptionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
+        this.optionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
+        this.routerData = {
+          profileType: this.activeRouter.snapshot.params.type,
+          profileTypeUrl: '/' + this.activeRouter.snapshot.params.type,
+          portalType: this.activeRouter.snapshot.params.portal_type,
+        };
+        this.updatePortal();
+        console.log(this.activeRouter.snapshot.params.portal_type)
+      }
     });
+  }
+  updatePortal = () => {
+    console.log(this.activeRouter, this.optionList )
+    if(this.activeRouter.snapshot.params.portal_type === 'inquiry') {
+      this.fetchInquirySale("A");
+    }
+    else if (this.activeRouter.snapshot.params.portal_type === 'delivery'){
+      this.fetchDeliveryList();
+    }
+    else if (this.activeRouter.snapshot.params.portal_type === 'sale-order'){
+      this.fetchInquirySale("C");
+    }
+    else if (this.activeRouter.snapshot.params.portal_type === 'invoice'){
+      this.fetchInvoiceCredit("M");
+    }
+    else if (this.activeRouter.snapshot.params.portal_type === 'credit-memo'){
+      this.fetchInvoiceCredit("O");
+    }
+  }
+  deleteDecimal = (data) => {
+    return data.split('.')[0];
   }
   selectedOption: string;
   selectedOptionCode: string;
   getInquiryData = (docType: string) => {
     this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
       if(data.ZTERM._text === docType){
-        console.log("in filter")
+        return true;
+      }
+    })
+  }
+  getInvoiceData = (docType: string) => {
+    this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
+      if(data.VTWEG._text === docType){
         return true;
       }
     })
   }
   ngOnInit(): void {
-    this.routerData = {
-      profileType: this.activeRouter.snapshot.params.type,
-      profileTypeUrl: '/' + this.activeRouter.snapshot.params.type,
-      portalType: this.activeRouter.snapshot.params.portal_type,
-    };
     if (
       !(this.routerData.profileType in portalDetails) ||
       !(this.routerData.portalType in portalDetails)
@@ -75,7 +103,7 @@ export class BasicPortalComponent implements OnInit {
       this.sidebarShrink = false;
     }
   }
-  fetchFun = () =>{
+  buildHeader = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
@@ -85,24 +113,51 @@ export class BasicPortalComponent implements OnInit {
         body: raw,
         redirect: 'follow'
     };
-    fetch("http://localhost:8000/customer/inquiryData", requestOptions as unknown)
-      .then(response => response.json())
-      .then(result => {
-        console.log("result",result);
-        this.jsonDetails = {
-          selectedCardJson: null,
-          additionalSearchKeys: null,
-          sampleDataOriginal: result.records,
-          sampleData: result.records,
-          portalDetails: portalDetails,
-        };
-        this.loading = false;
-        if(this.activeRouter.snapshot.params.portal_type === 'inquiry'){
-          console.log("in inquiry")
-          this.getInquiryData('A');
-        }
-      })
-      .catch(error => console.log('error', error));
+    return requestOptions;
+  }
+  async fetchInvoiceCredit(type:string){
+    let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader() as unknown)
+    response = await response.json();
+    let result = response.records;
+    console.log("result",result);
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.loading = false;
+    this.getInvoiceData(type);
+  }
+  async fetchInquirySale(type: string){
+    let response:any = await fetch("http://localhost:8000/customer/inquiryData", this.buildHeader() as unknown)
+    response = await response.json();
+    let result = response.records;
+    console.log("result",result);
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.loading = false;
+    this.getInquiryData(type);
+  }
+  async fetchDeliveryList(){
+    let response:any = await fetch("http://localhost:8000/customer/deliveryList", this.buildHeader() as unknown)
+    response = await response.json();
+    let result = response.records;
+    console.log("result",result);
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.loading = false;
   }
   toggleSelect = toggleSelect;
   toggleProfileOption = toggleProfileOption;
