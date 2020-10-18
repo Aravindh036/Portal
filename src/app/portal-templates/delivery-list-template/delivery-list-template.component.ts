@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { getDate } from 'src/app/basic-portal/helper';
+import portalDetails from '../../basic-portal/all-portal-details.json'
 
 @Component({
   selector: 'app-delivery-list-template',
@@ -9,6 +10,7 @@ import { getDate } from 'src/app/basic-portal/helper';
 export class DeliveryListTemplateComponent implements OnInit {
   @Input() selectedCardJson: any;
   @Input() cardJson: any;
+  portalDetails = portalDetails;
   constructor() { }
 
   ngOnInit(): void {

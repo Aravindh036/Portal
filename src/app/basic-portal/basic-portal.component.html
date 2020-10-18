@@ -56,7 +56,11 @@
     <div *ngIf="loading" class="loading-container" style="width: 100%;">
       <app-loading></app-loading>
     </div>
-    <div *ngIf="!loading" class="portal-content">
+    <div *ngIf="!loading && barGraph" class="bar-graph">
+      <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
+      <button class="print btn btn-primary" printSectionId="portal-container-id" ngxPrint [useExistingCss]="true">PRINT</button>
+    </div>
+    <div *ngIf="!loading && !barGraph" class="portal-content">
       <div class="basic-portal-side-bar">
         <div class="list-heading m-b-10 m-t-20">
           <span>Portal Records</span>

@@ -1,1 +1,55 @@
-<p>delivery-list-template works!</p>
+<div class="inquiry">
+    <div class="inquiry-text m-t-50 m-b-50">DELIVERY DOCUMENT</div>
+    <div class="customer-details">
+        <div class="customer-id flex">
+            <div class="label">DELIVERY ID: &nbsp;</div>
+            <div class="value">{{cardJson.VBELN._text}}</div>
+        </div>
+        <div class="name flex">
+            <div class="label">NAME: &nbsp;</div>
+            <div class="value">Aravindh S</div>
+        </div>
+    </div>
+    <div class="inquiry-details">
+        <div class="created-on flex">
+            <div class="label">CREATED ON : &nbsp;</div>
+            <div class="value">{{getDate(cardJson.ERDAT._text)}}</div>
+        </div>
+        <div class="created-on flex">
+            <div class="label">DELIVERY DATE :&nbsp;</div>
+            <div class="value">{{getDate(cardJson.LFDAT._text)}}</div>
+        </div>
+        <div class="created-on flex">
+            <div class="label">BILLING DATE : &nbsp;</div>
+            <div class="value">{{getDate(cardJson.FKDAT._text)}}</div>
+        </div>
+    </div>
+    <div class="inquiry-container ">
+        <div class="inquiry-details m-t-20">
+            <div class="inquiry-id flex payed m-t-20">
+                <div class="label">{{'Incoterms :' | uppercase}}&nbsp;</div>
+                <div class="value">{{portalDetails['delivery'].code[cardJson.INCOI._text]}}</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Transport Group :' | uppercase}}&nbsp;</div>
+                <div class="value">{{cardJson.TRAGR._text}}</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Delivery Quantity :' | uppercase}}&nbsp;</div>
+                <div class="value">{{cardJson.LFIMG._text}}</div>
+            </div>
+            <div class="created-on payed flex m-t-30">
+                <div class="label">{{'Net Weight :' | uppercase}} &nbsp;</div>
+                <div class="value">{{[cardJson.NTGEW._text]}}&nbsp; ({{cardJson.GEWEI._text}})</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Material Description :' | uppercase}}&nbsp;</div>
+                <div class="value">{{cardJson.ARKTX._text}}</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Material Availability Date :' | uppercase}}&nbsp;</div>
+                <div class="value">{{getDate(cardJson.MBDAT._text)}}</div>
+            </div>
+      </div>
+    </div>
+</div>

@@ -1,1 +1,69 @@
-<p>credit-memo-template works!</p>
+<div class="inquiry">
+    <div class="inquiry-text m-t-50 m-b-50">CREDIT MEMO DOCUMENT</div>
+    <div class="customer-details">
+        <div class="customer-id flex">
+            <div class="label">CUSTOMER ID: &nbsp;</div>
+            <div class="value">{{cardJson.KUNRG._text}}</div>
+        </div>
+        <div class="name flex">
+            <div class="label">NAME: &nbsp;</div>
+            <div class="value">Aravindh S</div>
+        </div>
+    </div>
+    <div class="inquiry-details">
+        <div class="row">
+            <div class="inquiry-id flex">
+                <div class="label">CREDIT MEMO ID: &nbsp;</div>
+                <div class="value">{{cardJson.VBELN._text}}</div>
+            </div>
+            <div class="created-on flex">
+                <div class="label">CREATED ON: &nbsp;</div>
+                <div class="value">{{getDate(cardJson.ERDAT._text)}}</div>
+            </div>
+            <div class="created-on flex">
+                <div class="label">TIME: &nbsp;</div>
+                <div class="value">{{getTime(cardJson.ERZET._text)}}</div>
+            </div>
+            <div class="created-on flex">
+                <div class="label">ORDER REASON: &nbsp;</div>
+                <div class="value">{{portalDetails["credit-memo"].code[(cardJson.POSNR._text)] | uppercase}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="inquiry-id flex">
+                <div class="label">REQUIRED QUANTITY: &nbsp;</div>
+                <div class="value">{{cardJson.LMENG._text}}</div>
+            </div>
+            <div class="inquiry-id flex">
+                <div class="label">BILLED QUANTITY: &nbsp;</div>
+                <div class="value">{{cardJson.FKIMG._text}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="inquiry-container m-t-50">
+        <div class="heading">
+            <div class="row">
+                <div class="mat-name">NAME</div>
+                <div class="quantity">QUANTITY</div>
+                <div class="price">PRICE/UNIT ({{cardJson.KUNAG._text}})</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row m-t-25">
+                <div class="mat-name">{{cardJson.ARKTX._text}}</div>
+                <div class="quantity">{{deleteDecimal(cardJson.FKIMG._text)}}</div>
+                <div class="price">{{getUnitPrice(cardJson.NETWR._text,cardJson.FKIMG._text)}}</div>
+            </div>
+            <div class="total-container m-t-50">
+                <div class="total-label">TOTAL</div>
+                <div class="total">{{cardJson.KUNAG._text}}&nbsp;{{cardJson.NETWR._text}}</div>
+            </div>
+        </div>
+        <div class="inquiry-details m-t-50">
+          <div class="created-on payed flex m-t-30">
+              <div class="label">{{'Net Weight:' | uppercase}} &nbsp;</div>
+              <div class="value">{{(cardJson.NTGEW._text)}}&nbsp;{{(cardJson.BRGEW._text)}}</div>
+          </div>
+      </div>
+    </div>
+  </div>

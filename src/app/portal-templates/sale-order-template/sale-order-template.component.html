@@ -1,1 +1,56 @@
-<p>sale-order-template works!</p>
+<div class="inquiry">
+    <div class="inquiry-text m-t-50 m-b-50">SALES ORDER DOCUMENT</div>
+    <div class="customer-details">
+        <div class="customer-id flex">
+            <div class="label">CUSTOMER ID: &nbsp;</div>
+            <div class="value">{{cardJson.KUNNR._text}}</div>
+        </div>
+        <div class="name flex">
+            <div class="label">NAME: &nbsp;</div>
+            <div class="value">Aravindh S</div>
+        </div>
+    </div>
+    <div class="inquiry-details">
+        <div class="inquiry-id flex">
+            <div class="label">SALES ORDER DOCUMENT NO: &nbsp;</div>
+            <div class="value">{{cardJson.VBELN._text}}</div>
+        </div>
+        <div class="inquiry-id flex">
+            <div class="label">PURCHASE ORDER NO.: &nbsp;</div>
+            <div class="value">{{cardJson.BSTNK._text}}</div>
+        </div>
+        <div class="created-on flex">
+            <div class="label">CREATED ON: &nbsp;</div>
+            <div class="value">{{getDate(cardJson.AUDAT._text)}}</div>
+        </div>
+    </div>
+    <div class="inquiry-container m-t-50">
+        <div class="heading">
+            <div class="row">
+                <div class="mat-no">MATERAIL NO.</div>
+                <div class="mat-name">NAME</div>
+                <div class="quantity">QUANTITY</div>
+                <div class="price">PRICE/UNIT ({{cardJson.WAERK._text}})</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row m-t-25">
+                <div class="mat-no">{{cardJson.MATNR._text}}</div>
+                <div class="mat-name">{{cardJson.MATKL._text}}</div>
+                <div class="quantity">{{deleteDecimal(cardJson.KWMENG._text)}}</div>
+                <div class="price">{{deleteDecimal(cardJson.NETPR._text)}}</div>
+            </div>
+            <div class="total-container m-t-50">
+                <div class="total-label">TOTAL</div>
+                <div class="total">{{cardJson.WAERK._text}}&nbsp;{{cardJson.NETWR._text}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="inquiry-details">
+        <div class="inquiry-id flex">
+            <div class="label">TERMS OF PAYMENT: &nbsp;</div>
+            <div class="value">{{cardJson.ZTERM._text}}</div>
+        </div>
+        
+    </div>
+</div>

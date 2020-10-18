@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { getDate } from 'src/app/basic-portal/helper';
+import portalDetails from '../../basic-portal/all-portal-details.json'
 
 @Component({
   selector: 'app-credit-memo-template',
@@ -9,6 +10,7 @@ import { getDate } from 'src/app/basic-portal/helper';
 export class CreditMemoTemplateComponent implements OnInit {
   @Input() selectedCardJson: any;
   @Input() cardJson: any;
+  portalDetails = portalDetails;
   constructor() { }
 
   ngOnInit(): void {
@@ -21,6 +23,17 @@ export class CreditMemoTemplateComponent implements OnInit {
         this.cardJson = data;
       }
     }
+  }
+  getTime =(data: string) => {
+    if(parseInt(data.slice(0,2)) >= 12)
+      return `${parseInt(data.slice(0,2)) - 12} : ${data.slice(2,4)} PM`
+    else
+      return `${(data.slice(0,2))} : ${data.slice(2,4)} AM`
+  }
+  getUnitPrice = (price: string, unit: string) => {
+    price = this.deleteDecimal(price);
+    unit = this.deleteDecimal(unit);
+    return (parseInt(price)/parseInt(unit));
   }
   deleteDecimal = (data) => {
     return data.split('.')[0];

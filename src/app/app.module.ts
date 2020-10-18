@@ -17,6 +17,9 @@ import { InquiryTemplateComponent } from './portal-templates/inquiry-template/in
 import { SaleOrderTemplateComponent } from './portal-templates/sale-order-template/sale-order-template.component';
 import { CreditMemoTemplateComponent } from './portal-templates/credit-memo-template/credit-memo-template.component';
 import { DeliveryListTemplateComponent } from './portal-templates/delivery-list-template/delivery-list-template.component';
+import {NgxPrintModule} from 'ngx-print';
+import { ChartsModule } from 'ng2-charts';
+import { OverallSalesTemplateComponent } from './graph/overall-sales-template/overall-sales-template.component';
 
 @NgModule({
   declarations: [
@@ -34,11 +37,14 @@ import { DeliveryListTemplateComponent } from './portal-templates/delivery-list-
     SaleOrderTemplateComponent,
     CreditMemoTemplateComponent,
     DeliveryListTemplateComponent,
+    OverallSalesTemplateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxPrintModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -13,6 +13,7 @@ import { getDate, toggleProfileOption, toggleSelect } from './helper';
   styleUrls: ['./basic-portal.component.css'],
 })
 export class BasicPortalComponent implements OnInit {
+
   jsonDetails: jsonDetailsType = {
     sampleData: [],
     sampleDataOriginal: [],
@@ -26,6 +27,7 @@ export class BasicPortalComponent implements OnInit {
     profileTypeUrl: null,
     portalType: null,
   };
+  barGraph = false;
   sidebarShrink: boolean;
   markInstance: any;
   cardSelected = false;
@@ -45,12 +47,11 @@ export class BasicPortalComponent implements OnInit {
           portalType: this.activeRouter.snapshot.params.portal_type,
         };
         this.updatePortal();
-        console.log(this.activeRouter.snapshot.params.portal_type)
       }
     });
   }
   updatePortal = () => {
-    console.log(this.activeRouter, this.optionList )
+    this.barGraph = false;
     if(this.activeRouter.snapshot.params.portal_type === 'inquiry') {
       this.fetchInquirySale("A");
     }
@@ -66,6 +67,9 @@ export class BasicPortalComponent implements OnInit {
     else if (this.activeRouter.snapshot.params.portal_type === 'credit-memo'){
       this.fetchInvoiceCredit("O");
     }
+    else if (this.activeRouter.snapshot.params.portal_type === 'orverall-sales'){
+      this.fetchInquirySale("C","G");
+    }
   }
   deleteDecimal = (data) => {
     return data.split('.')[0];
@@ -78,6 +82,7 @@ export class BasicPortalComponent implements OnInit {
         return true;
       }
     })
+    console.log(this.jsonDetails.sampleData)
   }
   getInvoiceData = (docType: string) => {
     this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
@@ -85,6 +90,7 @@ export class BasicPortalComponent implements OnInit {
         return true;
       }
     })
+    console.log(this.jsonDetails.sampleData)
   }
   ngOnInit(): void {
     if (
@@ -119,7 +125,6 @@ export class BasicPortalComponent implements OnInit {
     let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader() as unknown)
     response = await response.json();
     let result = response.records;
-    console.log("result",result);
     this.jsonDetails = {
       selectedCardJson: null,
       additionalSearchKeys: null,
@@ -130,11 +135,10 @@ export class BasicPortalComponent implements OnInit {
     this.loading = false;
     this.getInvoiceData(type);
   }
-  async fetchInquirySale(type: string){
+  async fetchInquirySale(type: string, barGraph?:string){
     let response:any = await fetch("http://localhost:8000/customer/inquiryData", this.buildHeader() as unknown)
     response = await response.json();
     let result = response.records;
-    console.log("result",result);
     this.jsonDetails = {
       selectedCardJson: null,
       additionalSearchKeys: null,
@@ -144,12 +148,15 @@ export class BasicPortalComponent implements OnInit {
     };
     this.loading = false;
     this.getInquiryData(type);
+    if(barGraph){
+      this.barGraph = true;
+      console.log(this.jsonDetails.sampleData)
+    }
   }
   async fetchDeliveryList(){
     let response:any = await fetch("http://localhost:8000/customer/deliveryList", this.buildHeader() as unknown)
     response = await response.json();
     let result = response.records;
-    console.log("result",result);
     this.jsonDetails = {
       selectedCardJson: null,
       additionalSearchKeys: null,
@@ -171,7 +178,6 @@ export class BasicPortalComponent implements OnInit {
     const target = event.target as HTMLDivElement;
     this.selectedOption = target.innerHTML.toUpperCase().trim();
     for(let [key, value] of Object.entries(this.jsonDetails.portalDetails[this.routerData.portalType].detailed_name)){
-      console.log(value, target.innerHTML);
       if((value as string).trim() == target.innerHTML.trim()){
         this.selectedOptionCode = (key as string).toUpperCase();
       }
@@ -179,7 +185,6 @@ export class BasicPortalComponent implements OnInit {
     this.toggleSelect();
   }
   updateRecordDetails = (event: MouseEvent) => {
-    console.log("updated")
     const target = getContainerElement(
       event.target as HTMLDivElement,
       'data-cards'
@@ -221,7 +226,6 @@ export class BasicPortalComponent implements OnInit {
     if (target.value.length >= 3 && this.selectedOptionCode !== undefined) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
-          console.log(data, [this.selectedOptionCode.toLowerCase()]);
           if (
             this.selectedOptionCode &&
             data[this.selectedOptionCode]._text
@@ -246,9 +250,7 @@ export class BasicPortalComponent implements OnInit {
     } else if (target.value.length >= 3) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
-          console.log(data)
           for (const [key, value] of Object.entries(data)) {
-            console.log((value as any));
             if (!(value as any)._text.toString().search(target.value)) {
               if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
                 .primary_fields.includes(key))) {

@@ -210,6 +210,9 @@
       "ARKTX": "Description",
       "MBDAT": "Mat. Availability Date",
       "MTART": "Material Type"
+    },
+    "code":{
+     "CIF":"Costs, Insurance & freight" 
     }
   },
   "payments-aging": {
@@ -250,7 +253,9 @@
       "NTGEW": "Net Weight",
       "VBELN":"Billing Doc No.",
       "VSTEL":"Shipping/Receiving Point",
-      "VTWEG":"Distribution Channel",
+      "VTWEG":"Distribution Channel"
+    },
+    "code":{
       "ZR01":"A.G Shipping Point",
       "KT01":"Shipping Point"
     }
@@ -278,6 +283,21 @@
       "VBELN":"Billing Doc No.",
       "VSTEL":"Shipping/Receiving Point",
       "VTWEG":"Distribution Channel"
+    },
+    "code":{
+      "001":"sales call",
+      "002":"trade fair sales activity",
+      "003":"television commercial",
+      "004": "customer recommendation",
+      "005": "newspaper advertisement",
+      "006":"excellent price",
+      "007":"fast delivery",
+      "008":"Good service",
+      "100":"price difference: price was too high",
+      "101":"poor quality",
+      "102":"damaged in transit",
+      "103":"quantity discrepancy",
+      "104":"material ruined"
     }
   },
   "leave-data": {
