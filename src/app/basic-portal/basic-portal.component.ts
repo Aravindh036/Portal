@@ -6,7 +6,8 @@ import { collapseSidebar, getContainerElement } from '../controllers';
 import { jsonDetailsType, routerType } from '../controllers/interface';
 // import json from './all-portal-details.json';
 import { getDate, toggleProfileOption, toggleSelect } from './helper';
-
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver'
 @Component({
   selector: 'app-basic-portal',
   templateUrl: './basic-portal.component.html',
@@ -70,6 +71,13 @@ export class BasicPortalComponent implements OnInit {
     else if (this.activeRouter.snapshot.params.portal_type === 'orverall-sales'){
       this.fetchInquirySale("C","G");
     }
+  }
+  saveGraph=()=>{
+    domtoimage.toBlob(document.querySelector('.bar-graph'))
+    .then(function(blob) {
+      console.log(blob);
+      saveAs(blob, 'portal-container.png');
+    });
   }
   deleteDecimal = (data) => {
     return data.split('.')[0];
