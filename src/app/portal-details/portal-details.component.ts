@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-portal-details',
@@ -10,7 +11,7 @@ export class PortalDetailsComponent implements OnInit {
   @Input() profileType;
   @Input() cardJson;
   loading = false;
-  constructor() {
+  constructor(private activeRouter: ActivatedRoute) {
 
   }
 
@@ -21,6 +22,12 @@ export class PortalDetailsComponent implements OnInit {
     console.log(changes);
     this.loading = true;
     setTimeout(() => this.loading = false, 1500)
+    this.activeRouter.queryParams.subscribe(params => {
+      if(params['doc']){
+        console.log("params['page']",params['doc']);
+        this.selectedCardJson = params['doc']
+      }
+    });
   }
   printDocument=()=>{
     var mywindow = window.open('', 'PRINT', 'height=400,width=600');

@@ -347,7 +347,7 @@
   "inquiry": {
     "primary_fields": ["VBELN","AUDAT","NETWR"],
     "detailed_name":{
-      "VBELN": "Sales Doc No.",
+      "VBELN": "Inquiry Doc No.",
       "AUDAT": "Created on",
       "NETWR": "Net value",
       "ANGDT": "Valid from",
