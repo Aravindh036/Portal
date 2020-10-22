@@ -20,6 +20,7 @@ import { DeliveryListTemplateComponent } from './portal-templates/delivery-list-
 import {NgxPrintModule} from 'ngx-print';
 import { ChartsModule } from 'ng2-charts';
 import { OverallSalesTemplateComponent } from './graph/overall-sales-template/overall-sales-template.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { OverallSalesTemplateComponent } from './graph/overall-sales-template/ov
     CreditMemoTemplateComponent,
     DeliveryListTemplateComponent,
     OverallSalesTemplateComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

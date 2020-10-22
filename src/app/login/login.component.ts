@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
             console.log("result",result);
             if(result.status === "1 "){
               localStorage.setItem("user_id", email);
+              localStorage.setItem("welcome", 'true');
               this.router.navigate([
                 this.activeRouter.snapshot.params.type,
                 'portal',

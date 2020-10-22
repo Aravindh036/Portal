@@ -548,3 +548,21 @@
 
 
 }
+
+.modal-container{
+  position: relative;
+}
+
+.modal-container .explore{
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  border: 0;
+  text-decoration: underline;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px ;
+  color: #204173;
+  background-color: transparent;
+  cursor: pointer;
+}
+

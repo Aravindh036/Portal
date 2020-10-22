@@ -1,5 +1,11 @@
 <div class="dashboard">
   <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
+  <app-modal [showBackdrop]='showBackdrop' style="width: 100%">
+    <div class="modal-container">
+      <img src="assets/modal/customer-welcome.svg" alt="">
+      <button class="explore" (click)="updateModalShow()">Let me explore the portal</button>
+    </div>
+  </app-modal>
   <div
     class="profile-option-backdrop hide"
     (click)="toggleProfileOption($event)"

@@ -2,29 +2,37 @@
     <div [ngClass]="{'backdrop-loading':true,'backdrop-loading-show':loading}">
         <app-loading></app-loading>
     </div>
-  <div class="auth-container">
-      <div class="auth-heading">
-          <div class="auth-top m-t-10 m-b-25">
-              <div class="auth-type">{{loginType}} Login</div>
-          </div>
-          <div class="form">
-              <div class="form-field mail-id m-t-15">
-                  <input placeholder=" " type="email" name="email" id="email-id"/>
-                  <span>User Id</span>
-                  <div class="input-validate"></div>
-              </div>
-              <div class="error-message-1">
-              </div>
-              <div class="form-field password m-t-15">
-                  <input placeholder=" " type="password" name="password" id="password-id"/>
-                  <span>Password</span>
-                  <div class="password-validate"></div>
-              </div>
-              <div class="error-message-2"></div>
-              <div class="button-end m-t-25 m-b-20">
-                  <button (click)='processCredentials()' class="submit-l">Login</button>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="auth-bg-container">
+        <div class="auth-svg">
+            <img src="assets/modal/login.svg" alt="">
+        </div>
+        <div class="auth-container">
+            <div class="kaar">
+                <img src="assets/kaar.svg" alt="">
+            </div>
+            <div class="auth-heading m-t-30">
+                <div class="auth-top m-t-10 m-b-25">
+                    <div class="auth-type">{{loginType}} Login</div>
+                </div>
+                <div class="form">
+                    <div class="form-field mail-id m-t-15">
+                        <input placeholder=" " type="email" name="email" id="email-id"/>
+                        <span>User Id</span>
+                        <div class="input-validate"></div>
+                    </div>
+                    <div class="error-message-1">
+                    </div>
+                    <div class="form-field password m-t-15">
+                        <input placeholder=" " type="password" name="password" id="password-id"/>
+                        <span>Password</span>
+                        <div class="password-validate"></div>
+                    </div>
+                    <div class="error-message-2"></div>
+                    <div class="button-end m-t-25 m-b-20">
+                        <button (click)='processCredentials()' class="submit-l">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

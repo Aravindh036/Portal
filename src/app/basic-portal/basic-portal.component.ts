@@ -35,6 +35,7 @@ export class BasicPortalComponent implements OnInit {
   originalOptionList: any;
   optionList: any;
   loading = true;
+  showBackdrop = false;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
@@ -100,11 +101,12 @@ export class BasicPortalComponent implements OnInit {
     })
     console.log(this.jsonDetails.sampleData)
   }
+  updateModalShow=()=>{
+    this.showBackdrop = true;
+    console.log("hello")
+  }
   ngOnInit(): void {
-    if (
-      !(this.routerData.profileType in portalDetails) ||
-      !(this.routerData.portalType in portalDetails)
-    ) {
+    if (!(this.routerData.profileType in portalDetails) || !(this.routerData.portalType in portalDetails)) {
       this.router.navigate(['error']);
     }
     if (localStorage.getItem('sidebar-status') !== undefined){

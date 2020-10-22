@@ -1,0 +1,6 @@
+<div [ngClass] = "{'backdrop':true, 'show-backdrop': showBackdrop}">
+    <div class="modal">
+        {{showBackdrop}}
+        <ng-content></ng-content>
+    </div>
+</div>
