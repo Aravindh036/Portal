@@ -192,6 +192,10 @@
       "MATKL": "Material Group",
       "KWMENG": "Order quantity",
       "NETPR": "Price/unit"
+    },
+    "code":{
+      "0001":"Pay immediately w/o deduction",
+      "0002": "14 days 2%, 30 net"
     }
   },
   "delivery": {

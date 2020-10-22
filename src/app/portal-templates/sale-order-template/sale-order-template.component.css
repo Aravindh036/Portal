@@ -44,7 +44,7 @@
 }
 
 .row .mat-no{
-    width: 150px;
+    width: 180px;
 
 }
 
@@ -135,4 +135,36 @@
     font-size: 25px;
     line-height: 29px;
     color: #204173;
+}
+
+
+.inquiry .nav-bar{
+    display: flex;
+    width: 100%;
+    padding: 10px;
+}
+
+.nav-bar .chip{
+    padding:10px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 1px solid #204173;
+    color: #204173;
+    font-family: 'Roboto';
+    font-size: 13px;
+}
+
+.chip-selected{
+    background-color: #204173;
+    color: #fff!important;
+}
+
+.inquiry .nav-bar div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inquiry .nav-bar div img{
+    margin: 0 20px;
 }

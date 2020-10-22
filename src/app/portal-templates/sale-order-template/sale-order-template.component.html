@@ -1,4 +1,21 @@
 <div class="inquiry">
+    <div class="nav-bar">
+        <div *ngIf="inquiry">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','inquiry']" [queryParams]="{ doc: inquiry}">
+                INQUIRY
+            </a>
+            <img src="assets/link-arrow.svg" alt="">
+        </div>
+        <a href="#" class="chip chip-selected">
+            SALE ORDER
+        </a>
+        <div *ngIf="invoice">
+            <img src="assets/link-arrow.svg" alt="">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','invoice']" [queryParams]="{ doc: invoice, inquiry: inquiry, sale: sales}">
+                INVOICE
+            </a>
+        </div>
+    </div>
     <div class="inquiry-text m-t-50 m-b-50">SALES ORDER DOCUMENT</div>
     <div class="customer-details">
         <div class="customer-id flex">
@@ -14,10 +31,6 @@
         <div class="inquiry-id flex">
             <div class="label">SALES ORDER DOCUMENT NO: &nbsp;</div>
             <div class="value">{{cardJson.VBELN._text}}</div>
-        </div>
-        <div class="inquiry-id flex">
-            <div class="label">PURCHASE ORDER NO.: &nbsp;</div>
-            <div class="value">{{cardJson.BSTNK._text}}</div>
         </div>
         <div class="created-on flex">
             <div class="label">CREATED ON: &nbsp;</div>
@@ -49,7 +62,7 @@
     <div class="inquiry-details">
         <div class="inquiry-id flex">
             <div class="label">TERMS OF PAYMENT: &nbsp;</div>
-            <div class="value">{{cardJson.ZTERM._text}}</div>
+            <div class="value">{{portalDetails["sale-order"].code[cardJson.BSTNK._text] | uppercase}} &nbsp; ({{cardJson.BSTNK._text}})</div>
         </div>
         
     </div>

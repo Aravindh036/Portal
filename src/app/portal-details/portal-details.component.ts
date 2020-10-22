@@ -11,6 +11,7 @@ export class PortalDetailsComponent implements OnInit {
   @Input() profileType;
   @Input() cardJson;
   loading = false;
+  manualCardSelect: string;
   constructor(private activeRouter: ActivatedRoute) {
 
   }
@@ -19,13 +20,18 @@ export class PortalDetailsComponent implements OnInit {
   }
   // tslint:disable-next-line: use-lifecycle-interface
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.selectedCardJson)
     console.log(changes);
     this.loading = true;
-    setTimeout(() => this.loading = false, 1500)
+    setTimeout(() => this.loading = false, 150)
     this.activeRouter.queryParams.subscribe(params => {
-      if(params['doc']){
+      if(this.selectedCardJson !== null){
+        this.manualCardSelect = this.selectedCardJson;
+      }
+      if(params['doc'] && this.selectedCardJson == null){
         console.log("params['page']",params['doc']);
-        this.selectedCardJson = params['doc']
+        this.manualCardSelect = params['doc'];
+        console.log(this.manualCardSelect)
       }
     });
   }

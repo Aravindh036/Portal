@@ -1,5 +1,4 @@
 <div class="inquiry">
-    <!-- [queryParams]="{ page: 99 }" -->
     <div class="nav-bar">
         <a href="#" class="chip chip-selected">
             INQUIRY
@@ -12,13 +11,13 @@
         </div> -->
         <div *ngIf="cardJson.VBELN_C._text">
             <img src="assets/link-arrow.svg" alt="">
-            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_C._text }">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_C._text, inquiry: cardJson.VBELN._text, invoice: cardJson.VBELN_M._text}">
                 SALE ORDER
             </a>
         </div>
         <div *ngIf="cardJson.VBELN_M._text">
             <img src="assets/link-arrow.svg" alt="">
-            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_M._text }">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','invoice']" [queryParams]="{ doc: cardJson.VBELN_M._text, inquiry: cardJson.VBELN._text, sale: cardJson.VBELN_C._text}">
                 INVOICE
             </a>
         </div>
@@ -43,10 +42,10 @@
             <div class="label">CREATED ON: &nbsp;</div>
             <div class="value">{{getDate(cardJson.AUDAT._text)}}</div>
         </div>
-        <div class="created-on flex">
+        <!-- <div class="created-on flex">
             <div class="label">VALID TILL: &nbsp;</div>
             <div class="value">{{getDate(cardJson.BNDDT._text)}}</div>
-        </div>
+        </div> -->
     </div>
     <div class="inquiry-container m-t-50">
         <div class="heading">

@@ -195,6 +195,14 @@ export class BasicPortalComponent implements OnInit {
     this.toggleSelect();
   }
   updateRecordDetails = (event: MouseEvent) => {
+    // this.router.navigate([], {
+    //   queryParams: {
+    //     'doc': null,
+    //     'inquiry': null,
+    //     'invoice': null,
+    //   },
+    //   queryParamsHandling: 'merge'
+    // })
     const target = getContainerElement(
       event.target as HTMLDivElement,
       'data-cards'
