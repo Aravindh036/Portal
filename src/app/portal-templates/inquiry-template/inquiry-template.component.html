@@ -1,4 +1,28 @@
 <div class="inquiry">
+    <!-- [queryParams]="{ page: 99 }" -->
+    <div class="nav-bar">
+        <a href="#" class="chip chip-selected">
+            INQUIRY
+        </a>
+        <!-- <div *ngIf="cardJson.VBELN_B._text">
+            <img src="assets/link-arrow.svg" alt="">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_B._text }">
+                QUOTATION
+            </a>
+        </div> -->
+        <div *ngIf="cardJson.VBELN_C._text">
+            <img src="assets/link-arrow.svg" alt="">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_C._text }">
+                SALE ORDER
+            </a>
+        </div>
+        <div *ngIf="cardJson.VBELN_M._text">
+            <img src="assets/link-arrow.svg" alt="">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_M._text }">
+                INVOICE
+            </a>
+        </div>
+    </div>
     <div class="inquiry-text m-t-50 m-b-50">INQUIRY DOCUMENT</div>
     <div class="customer-details">
         <div class="customer-id flex">
