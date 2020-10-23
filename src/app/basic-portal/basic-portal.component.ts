@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import mark from 'mark.js';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
@@ -8,6 +8,7 @@ import { jsonDetailsType, routerType } from '../controllers/interface';
 import { getDate, toggleProfileOption, toggleSelect } from './helper';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver'
+import PortalState from '../controllers/portalState';
 @Component({
   selector: 'app-basic-portal',
   templateUrl: './basic-portal.component.html',
@@ -36,7 +37,9 @@ export class BasicPortalComponent implements OnInit {
   optionList: any;
   loading = true;
   showBackdrop = false;
+  sharedStateInstance: PortalState;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
+    this.sharedStateInstance = PortalState.sharedStateInstance;
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
         this.cardSelected = false;
@@ -52,31 +55,71 @@ export class BasicPortalComponent implements OnInit {
       }
     });
   }
+  setPortalData=(data)=>{
+    this.jsonDetails.sampleDataOriginal = data;
+    this.jsonDetails.sampleData = data;
+    setTimeout(()=>{this.loading = false}, 1000)
+  }
   updatePortal = () => {
     this.barGraph = false;
     if(this.activeRouter.snapshot.params.portal_type === 'inquiry') {
-      this.fetchInquirySale("A");
+      if(this.sharedStateInstance.getInquiry()){
+          this.setPortalData(this.sharedStateInstance.getInquiry());
+          this.getInquiryData("A");
+      }
+      else{
+        this.fetchInquirySale("A");
+      }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'delivery'){
-      this.fetchDeliveryList();
+      if(this.sharedStateInstance.getDelivery()){
+          this.setPortalData(this.sharedStateInstance.getDelivery());
+      }
+      else{
+        this.fetchDeliveryList();
+      }
     }
-    else if (this.activeRouter.snapshot.params.portal_type === 'sale-order'){
-      this.fetchInquirySale("C");
+    else if (this.activeRouter.snapshot.params.portal_type === 'sale-order'){5
+      if(this.sharedStateInstance.getSalesData()){
+          this.setPortalData(this.sharedStateInstance.getSalesData());
+          this.getInquiryData("C");
+      }
+      else{
+        this.fetchInquirySale("C");
+      }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'invoice'){
-      this.fetchInvoiceCredit("M");
+      if(this.sharedStateInstance.getInvoice()){
+          this.setPortalData(this.sharedStateInstance.getInvoice());
+          this.getInvoiceData("M");
+      }
+      else{
+        this.fetchInvoiceCredit("M");
+      }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'credit-memo'){
-      this.fetchInvoiceCredit("O");
+      if(this.sharedStateInstance.getCreditMemo()){
+          this.setPortalData(this.sharedStateInstance.getCreditMemo());
+          this.getInvoiceData("O");
+      }
+      else{
+        this.fetchInvoiceCredit("O");
+      }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'orverall-sales'){
-      this.fetchInquirySale("C","G");
+      if(this.sharedStateInstance.getSalesData()){
+          this.setPortalData(this.sharedStateInstance.getSalesData());
+          this.getInquiryData("C");
+          this.barGraph = true;
+      }
+      else{
+        this.fetchInquirySale("C","G");
+      }
     }
   }
   saveGraph=()=>{
     domtoimage.toBlob(document.querySelector('.bar-graph'))
     .then(function(blob) {
-      console.log(blob);
       saveAs(blob, 'portal-container.png');
     });
   }
@@ -91,7 +134,6 @@ export class BasicPortalComponent implements OnInit {
         return true;
       }
     })
-    console.log(this.jsonDetails.sampleData)
   }
   getInvoiceData = (docType: string) => {
     this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
@@ -99,11 +141,9 @@ export class BasicPortalComponent implements OnInit {
         return true;
       }
     })
-    console.log(this.jsonDetails.sampleData)
   }
   updateModalShow=()=>{
     this.showBackdrop = true;
-    console.log("hello")
   }
   ngOnInit(): void {
     if (!(this.routerData.profileType in portalDetails) || !(this.routerData.portalType in portalDetails)) {
@@ -142,6 +182,8 @@ export class BasicPortalComponent implements OnInit {
       sampleData: result,
       portalDetails: portalDetails,
     };
+    this.sharedStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
+    this.sharedStateInstance.setInvoice(this.jsonDetails.sampleDataOriginal);
     this.loading = false;
     this.getInvoiceData(type);
   }
@@ -157,10 +199,11 @@ export class BasicPortalComponent implements OnInit {
       portalDetails: portalDetails,
     };
     this.loading = false;
+    this.sharedStateInstance.setInquiry(this.jsonDetails.sampleDataOriginal);
+    this.sharedStateInstance.setSalesData(this.jsonDetails.sampleDataOriginal);
     this.getInquiryData(type);
     if(barGraph){
       this.barGraph = true;
-      console.log(this.jsonDetails.sampleData)
     }
   }
   async fetchDeliveryList(){
@@ -175,6 +218,7 @@ export class BasicPortalComponent implements OnInit {
       portalDetails: portalDetails,
     };
     this.loading = false;
+    this.sharedStateInstance.setDelivery(this.jsonDetails.sampleDataOriginal);
   }
   toggleSelect = toggleSelect;
   toggleProfileOption = toggleProfileOption;
