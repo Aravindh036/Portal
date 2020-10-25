@@ -9,7 +9,7 @@ export class EmployeeProfileComponent implements OnInit {
   edit: boolean;
   loading: boolean;
   profilePic: File = null;
-  employeeFormElem = ['.col .name', '.col .email', '.col .company', '.col .role', '.col .fax', '.col .gstin'];
+  employeeFormElem = ['.col .name', '.col .email', '.col .role', '.col .fax'];
  
   profileDetails = {
     name: '...',
@@ -22,6 +22,9 @@ export class EmployeeProfileComponent implements OnInit {
     faxNumber: '...',
     gstinNumber: '...',
     userId: '...'
+  }
+  country = {
+    "IND": 'India'
   }
   constructor() {
     this.loading = true;
@@ -49,7 +52,7 @@ export class EmployeeProfileComponent implements OnInit {
             country: result.COUNTRY._text,
             faxNumber: result.FAX_NUMBER._text,
             gstinNumber: result.GSTIN_NUMBER._text,
-            mailID: (result.MAIL_ID._text).toLowerCase(),
+            mailID: 'demouser@gmail.com',
             name: result.NAME._text,
             phoneNumber: result.PHONE_NUMBER._text,
             userId: result.CUSTOMER_ID._text
@@ -62,6 +65,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.edit = !this.edit;
     for (const i of this.employeeFormElem){
       const input = document.querySelector(i) as HTMLInputElement;
+      console.log(input)
       input.readOnly = !this.edit;
     }
     const textarea = document.querySelector('.col .address') as HTMLTextAreaElement;

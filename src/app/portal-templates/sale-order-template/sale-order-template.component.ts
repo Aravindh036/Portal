@@ -16,6 +16,7 @@ export class SaleOrderTemplateComponent implements OnInit {
   sales: string;
   invoice: string;
   portalDetails = portalDetails;
+  customerName: string;
   constructor(private activeRouter: ActivatedRoute) { }
   sub: any;
   ngOnInit(): void {
@@ -27,6 +28,8 @@ export class SaleOrderTemplateComponent implements OnInit {
         this.invoice = params['invoice'];
       }
     });
+    this.customerName = localStorage.getItem('customerName');
+
   }
   getJson=(cardJson: any, selectedCardJson:any)=>{
     for(let data of(cardJson)){

@@ -9,11 +9,14 @@ import { getDate } from 'src/app/basic-portal/helper';
 export class InquiryTemplateComponent implements OnInit {
   @Input() selectedCardJson: any;
   @Input() cardJson: any;
+  customerName: string;
   constructor() { }
 
   ngOnInit(): void {
     this.getJson(this.cardJson, this.selectedCardJson);
     console.log(this.cardJson, this.selectedCardJson);
+    this.customerName = localStorage.getItem('customerName');
+
   }
   getJson=(cardJson: any, selectedCardJson:any)=>{
     for(let data of(cardJson)){
