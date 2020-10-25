@@ -220,8 +220,17 @@
     }
   },
   "payments-aging": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["BELNR","BUDAT","DMBTR"],
+    "detailed_name":{
+      "BUDAT":"Payment Date",
+      "BUKRS":"Company Code",
+      "GJAHR":"Fiscal Year",
+      "BELNR":"Payment & Aging Doc No.",
+      "SHKZG":"Debit/Credit Card",
+      "DMBTR":"Amount in local currency",
+      "ZTERM":"Terms of Payment",
+      "SKNTO":"Cash discounted"
+    }
   },
   "orverall-sales": {
     "primary_fields": [],

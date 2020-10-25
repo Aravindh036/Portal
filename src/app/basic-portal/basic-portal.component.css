@@ -37,11 +37,11 @@
 .dashboard .directory-name {
   font-family: "Roboto";
   font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 19px;
   letter-spacing: -0.3px;
-  color: #071a13;
+  font-weight: 500;
+  font-size: 16px;
+  color: #8F8F8F;
 }
 
 .profile button {
@@ -211,7 +211,7 @@
   border: 0.5px solid #e0e0e0;
   box-sizing: border-box;
   box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.1);
-  width: 420px;
+  width: 470px;
   height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
@@ -522,8 +522,8 @@
 
 .print{
   position: absolute;
-  top: 100px;
-  right:100px;
+  top: 200px;
+  right:300px;
 }
 
 @media print{

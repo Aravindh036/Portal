@@ -80,6 +80,14 @@ export class BasicPortalComponent implements OnInit {
         this.fetchDeliveryList();
       }
     }
+    else if (this.activeRouter.snapshot.params.portal_type === 'payments-aging'){
+      if(this.sharedStateInstance.getPaymentAging()){
+          this.setPortalData(this.sharedStateInstance.getPaymentAging());
+      }
+      else{
+        this.fetchPaymentAndAging();
+      }
+    }
     else if (this.activeRouter.snapshot.params.portal_type === 'sale-order'){5
       if(this.sharedStateInstance.getSalesData()){
           this.setPortalData(this.sharedStateInstance.getSalesData());
@@ -221,6 +229,20 @@ export class BasicPortalComponent implements OnInit {
     this.loading = false;
     this.sharedStateInstance.setDelivery(this.jsonDetails.sampleDataOriginal);
   }
+  async fetchPaymentAndAging(){
+    let response:any = await fetch("http://localhost:8000/customer/paymentAndAging", this.buildHeader() as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.loading = false;
+    this.sharedStateInstance.setPaymentAging(this.jsonDetails.sampleDataOriginal);
+  }
   toggleSelect = toggleSelect;
   toggleProfileOption = toggleProfileOption;
   updateSelectList = (event: Event) => {
@@ -289,45 +311,49 @@ export class BasicPortalComponent implements OnInit {
     if (target.value.length >= 3 && this.selectedOptionCode !== undefined) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
-          if (
-            this.selectedOptionCode &&
-            data[this.selectedOptionCode]._text
-              .toString()
-              .search(target.value)
-          ) {
-            return false;
-          } else {
-            if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
-                .primary_fields.includes(this.selectedOptionCode.toLowerCase()))) {
-                  searchResult.push(this.selectedOptionCode.toLowerCase());
-              }
-              else{
-                searchResult.push(undefined);
-              }
-            return true;
-          }
+            if (
+              this.selectedOptionCode &&
+              data[this.selectedOptionCode]._text
+                .toString()
+                .search(target.value)
+            ) {
+              return false;
+            } else {
+              if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
+                  .primary_fields.includes(this.selectedOptionCode.toLowerCase()))) {
+                    searchResult.push(this.selectedOptionCode.toLowerCase());
+                }
+                else{
+                  searchResult.push(undefined);
+                }
+              return true;
+            }
         }
       );
       this.highlightResult(target.value);
-      this.jsonDetails.additionalSearchKeys = searchResult;
+      // this.jsonDetails.additionalSearchKeys = searchResult;
     } else if (target.value.length >= 3) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
           for (const [key, value] of Object.entries(data)) {
-            if (!(value as any)._text.toString().search(target.value)) {
-              if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
-                .primary_fields.includes(key))) {
-                  searchResult.push(key);
+            console.log(key, value)
+            if((value as any)._text){
+              if (!(value as any)._text.toString().search(target.value)) {
+                if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
+                  .primary_fields.includes(key))) {
+                    searchResult.push(key);
+                }
+                else{
+                  searchResult.push(undefined);
+                }
+                return true;
               }
-              else{
-                searchResult.push(undefined);
-              }
-              return true;
             }
           }
           return false;
         }
       );
+      console.log(searchResult);
       this.jsonDetails.additionalSearchKeys = searchResult;
       this.highlightResult(target.value);
     } else {

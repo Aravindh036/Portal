@@ -23,7 +23,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/assets/portals",
-              "src/assets/modal"
+              "src/assets/modal",
+              "src/assets/template"
             ],
             "styles": [
               "src/styles.css"

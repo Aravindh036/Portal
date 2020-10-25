@@ -21,6 +21,7 @@ import {NgxPrintModule} from 'ngx-print';
 import { ChartsModule } from 'ng2-charts';
 import { OverallSalesTemplateComponent } from './graph/overall-sales-template/overall-sales-template.component';
 import { ModalComponent } from './modal/modal.component';
+import { PaymentAgingTemplateComponent } from './portal-templates/payment-aging-template/payment-aging-template.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ModalComponent } from './modal/modal.component';
     DeliveryListTemplateComponent,
     OverallSalesTemplateComponent,
     ModalComponent,
+    PaymentAgingTemplateComponent,
   ],
   imports: [
     BrowserModule,

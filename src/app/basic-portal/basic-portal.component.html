@@ -15,7 +15,7 @@
       <img src="assets/kaar.svg" alt="D" />
     </div>
     <div class="directory-name">
-      <span>Dashboard</span>
+      <span>{{routerData.profileType | uppercase}} PORTAL</span>
     </div>
     <div class="profile" (click)="toggleProfileOption()">
       <img src="assets/profile.svg" alt="P" />
@@ -120,22 +120,24 @@
                   {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
                 </div>
                 <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{[jsonDetails.additionalSearchKeys[i]]}}
+                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
                 </div>
               </div>
               <div class="card-column">
                 <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
                   <div *ngSwitchCase="'NETWR'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
                   <div *ngSwitchCase="'netwr'">{{card['KUNAG']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}</div>
-                  <div *ngSwitchCase="'ERDAT'">{{getDate(card[data | uppercase]._text)}}</div>
+                  <div *ngSwitchCase="'DMBTR'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                  <div *ngSwitchCase="'ERDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                  <div *ngSwitchCase="'BUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
                   <div *ngSwitchCase="'LMENG'">{{deleteDecimal(card[data | uppercase]._text)}}&nbsp; UNITS</div>
                   <div *ngSwitchCase="'LFIMG'">{{(card[data | uppercase]._text)}}&nbsp;{{card['GEWEI']._text}}</div>
                   <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
-
+                  
                 </div>
                 <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{card[jsonDetails.additionalSearchKeys[i]]}}
+                  {{card[jsonDetails.additionalSearchKeys[i]]._text}}
                 </div>
               </div>
             </div>

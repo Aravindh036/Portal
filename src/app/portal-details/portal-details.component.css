@@ -24,8 +24,8 @@
 
 .print{
   position: absolute;
-  bottom: 100px;
-  right:100px;
+  bottom: 160px;
+  right: 200px;
 }
 
 @media print {
