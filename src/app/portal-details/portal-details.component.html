@@ -3,7 +3,7 @@
     <app-loading></app-loading>
   </div>
   <div *ngIf="!loading" class="portal-container" id="portal-container-id">
-    <div *ngIf="manualCardSelect" class="portal-container" [ngSwitch]="profileType">
+    <div *ngIf="manualCardSelect"  [ngSwitch]="profileType">
       <app-inquiry-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'inquiry'" ></app-inquiry-template>
       <app-credit-memo-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'credit-memo'" ></app-credit-memo-template>
       <app-sale-order-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'sale-order'" ></app-sale-order-template>

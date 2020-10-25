@@ -21,7 +21,7 @@ function toggleSelect(event?: MouseEvent) {
     ) as HTMLDivElement;
     target.classList.toggle('show-select-option');
     backdrop.classList.toggle('hide');
-    (document.querySelector('.search-option') as HTMLInputElement).focus();
+    // (document.querySelector('.search-option') as HTMLInputElement).focus();
   }
 
 export {

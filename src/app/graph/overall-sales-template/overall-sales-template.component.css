@@ -1,21 +1,209 @@
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
-.bar-graph{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    width: 100%;
-    background-color: #fff;
+.bar-graph {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fff;
 }
 
-.heading{
+.heading-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.heading {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 29px;
+  color: #204173;
+  width: 100%;
+}
+
+.bar-graph .chartjs-render-monitor {
+  width: 1100px !important;
+  height: 600px !important;
+  margin-top: 100px;
+}
+
+.pie-chart .chartjs-render-monitor {
+  width: 1000px !important;
+  height: 500px !important;
+  margin-top: 100px;
+}
+
+.toggle-graph {
+  display: flex;
+  width: 840px;
+}
+
+.toggle-graph div {
+  padding: 10px 18px;
+  font-family: "Roboto";
+  color: #204173;
+  font-size: 12px;
+  background-color: #fff;
+  border: 1px solid #204173;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.toggle-graph .selected {
+  background-color: #204173;
+  color: #fff;
+}
+
+.toggle-graph .bar {
+  border-radius: 3px 0 0 3px;
+}
+
+.toggle-graph .pie {
+  border-radius: 0 3px 3px 0;
+}
+
+.selected-option {
+  border: 1px solid #a6a6a6;
+  width: 180px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  color: rgb(85, 84, 84);
+  font-weight: 600;
+  background-color: #fff;
+  font-size: 12px;
+}
+
+#filter-id {
+  position: relative;
+}
+
+.option-list-container {
+  position: absolute;
+  top: 40px;
+  transform: translateY(-10px);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.1s ease;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px #a6a6a6;
+  width: 170px;
+  z-index: 100;
+}
+
+.option-list {
+  overflow: auto;
+  max-height: 300px;
+  padding: 0 5px;
+}
+
+.option-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  margin: 5px 0;
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+}
+
+.option-item:hover {
+  background-color: #e3ebf6;
+}
+
+.search-option {
+  border: 1px solid #a6a6a6;
+  font-size: 15px;
+  padding: 5px 10px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.list-search {
+  width: 370px;
+  position: relative;
+}
+
+.list-search img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -55%);
+}
+
+.basic-portal-side-bar {
+  background: #ffffff;
+  border: 0.5px solid #e0e0e0;
+  box-sizing: border-box;
+  box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.1);
+  width: 420px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 3px;
+}
+
+.list-heading {
+  /* position: relative; */
+  width: 370px;
+  font-family: "Roboto";
+  font-weight: 500;
+  font-size: 16px;
+  color: rgba(7, 26, 19, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-filter {
+  /* position: absolute; */
+  right: 0px;
+  bottom: 5px;
+}
+
+.filter-backdrop,
+.profile-option-backdrop {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.hide {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+.show-select-option {
+  transform: translate(0);
+  visibility: visible;
+  opacity: 1;
+}
+
+.chart-filter{
+    display: flex;
+    margin-top: 50px;
+    align-items: center;
+}
+
+.chart-filter .filter-label{
     font-family: 'Roboto';
-    font-style: normal;
-    font-weight: normal;
-    font-size: 25px;
-    line-height: 29px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 10px;
     color: #204173;
-    width: 100%;
 }
-

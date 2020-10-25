@@ -25,14 +25,15 @@ export class PortalDetailsComponent implements OnInit {
     this.loading = true;
     setTimeout(() => this.loading = false, 150)
     this.activeRouter.queryParams.subscribe(params => {
-      if(this.selectedCardJson !== null){
-        this.manualCardSelect = this.selectedCardJson;
-      }
       if(params['doc'] && this.selectedCardJson == null){
         console.log("params['page']",params['doc']);
         this.manualCardSelect = params['doc'];
-        console.log(this.manualCardSelect)
+        console.log(this.manualCardSelect);
       }
+      if(this.selectedCardJson !== null){
+        this.manualCardSelect = this.selectedCardJson;
+      }
+      
     });
   }
   printDocument=()=>{

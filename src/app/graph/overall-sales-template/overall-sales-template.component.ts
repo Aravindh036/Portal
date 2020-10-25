@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { toggleSelect } from 'src/app/basic-portal/helper';
 
 @Component({
   selector: 'app-overall-sales-template',
@@ -11,14 +12,78 @@ export class OverallSalesTemplateComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
+  pieChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  }
+  yearOptionList:any[];
+  selectedOption: string;
+  graphType: string;
   barChartLabels:any;
   barChartType: string;
   barChartLegend = true;
   barChartData :any;
-  constructor() { 
-    
-  }
+  pieChartLabels:any;
+  pieChartType: string;
+  pieChartLegend = true;
+  pieChartData :any;
 
+  constructor() { 
+    this.graphType = 'bar';
+    this.yearOptionList = [];
+  }
+  updatePieChart = (year) =>{
+    let label=[], data=[];
+    console.log(this.selectedOption);
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    let obj = {}
+    for(let i of this.salesData){
+      let date = this.getDate(i.AUDAT._text);
+      if(date.getFullYear() == year){
+        if(!(monthNames[date.getMonth()] in obj)){
+          obj[monthNames[date.getMonth()]] = {};
+          obj[monthNames[date.getMonth()]].name = monthNames[date.getMonth()];
+          obj[monthNames[date.getMonth()]].value = 1;
+        }
+        else{
+          obj[monthNames[date.getMonth()]].value += 1;
+        }
+      }
+      console.log(obj)
+    }
+    let i = 0, key:string, value:any;
+    for([key, value] of Object.entries(obj)){
+      label[i] = key;
+      data[i] = value.value;
+      i++;
+    }
+    this.pieChartLabels = label;
+    this.pieChartType = 'doughnut';
+    this.pieChartLegend = true;
+    this.pieChartData = [
+      {data: data, label: 'SALES ORDER WITH RESPECTIVE NET VALUE(SAR)', backgroundColor:['#4982D7','#ff9f40','#FF6384','#FFCD56','#c9cbcf','#4ac0c0']},
+    ];
+  }
+  toggleSelect = toggleSelect;
+  updateGraph=(event, data)=>{
+    if(this.graphType != data){
+      this.graphType = data;
+    }
+  }
+  updateSelectedOption = (event: MouseEvent) => {
+    const target = event.target as HTMLDivElement;
+    this.selectedOption = target.innerHTML.toUpperCase().trim();
+    this.toggleSelect();
+    this.updatePieChart(this.selectedOption);
+  }
+  // ngOnChanges(changes: SimpleChanges){
+  //   console.log(changes, this.graphType, this.graphType == 'pie');
+  // }
+  getDate(data){
+    return new Date(parseInt(data.slice(0,4)), parseInt(data.slice(4,6)), parseInt(data.slice(6,8)));
+  }
   ngOnInit(): void {
     let label=[], data=[];
     for(let i of this.salesData){
@@ -30,13 +95,22 @@ export class OverallSalesTemplateComponent implements OnInit {
         data.push((i.NETWR._text));
       }
     }
-    console.log(label, data)
     this.barChartLabels = label;
     this.barChartType = 'bar';
     this.barChartLegend = true;
     this.barChartData = [
-      {data: data, label: 'SALES ORDER WITH RESPECTIVE NET VALUE(SAR)'},
+      {data: data, label: 'SALES ORDER WITH RESPECTIVE NET VALUE(SAR)', backgroundColor:'#4982D7', defaultFontStyle:'bold'},
     ];
+    
+    for(let i of this.salesData){
+      const date = this.getDate(i.AUDAT._text);
+      const year = date.getFullYear();
+      if(!this.yearOptionList.includes(year)){
+        this.yearOptionList.push(year);
+      }
+    }
+    this.selectedOption = this.yearOptionList[0];
+    this.updatePieChart(this.yearOptionList[0]);
   }
 
 }

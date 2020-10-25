@@ -43,6 +43,7 @@ export class BasicPortalComponent implements OnInit {
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
         this.cardSelected = false;
+        this.jsonDetails.selectedCardJson = null;
         this.loading = true;
         this.originalOptionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);
         this.optionList = Object.values(this.jsonDetails.portalDetails[this.activeRouter.snapshot.params.portal_type].detailed_name);

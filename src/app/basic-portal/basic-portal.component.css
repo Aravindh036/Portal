@@ -345,10 +345,11 @@
   width: calc(100% - 400px);
   justify-content: center;
   align-items: center;
+  background-color: rgba(187, 187, 187, 0.3);
 }
 
 .dashboard-content-unshrink {
-  width: calc(100% - 440px);
+  width: calc(100% - 423px);
 }
 
 .dashboard-content .getting-started img {

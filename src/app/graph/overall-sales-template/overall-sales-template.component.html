@@ -1,12 +1,57 @@
 <div class="bar-graph">
-    <div class="heading">OVERALL SALES GRAPH</div>
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType"
-            width="1300px"
-            >
-    </canvas>
+  <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
+    <div class="heading-nav">
+        <div class="heading">OVERALL SALES GRAPH</div>
+        <div class="toggle-graph">
+                <div [ngClass]="{'bar': true, 'selected': graphType == 'bar'}" (click)="updateGraph($event, 'bar')">
+                        COST OF EACH SALE ORDER GRAPH
+                </div>
+                <div [ngClass]="{'pie': true, 'selected': graphType == 'pie'}" (click)="updateGraph($event, 'pie')">
+                        NUMBER OF SALE ORDER GRAPH
+                </div>
+        </div>
+    </div>
+    <div *ngIf="graphType == 'pie'" class="pie-chart">
+        <div class="chart-filter">
+          <div class="filter-label">YEAR</div>
+          <div name="filter" id="filter-id">
+            <div (click)="toggleSelect($event)" class="selected-option">
+              <span>{{
+                selectedOption != null ? selectedOption : "SELECT A FIELD"
+              }}</span>
+              <img src="assets/down-arrow.svg"
+                alt=">"
+                style="margin-top: -3px"/>
+            </div>
+            <div class="option-list-container">
+              <div class="option-list" id="custom-scroll">
+                <div
+                  (click)="updateSelectedOption($event)"
+                  *ngFor="let option of (yearOptionList)"
+                  class="option-item">
+                  {{ option }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <canvas baseChart
+                [datasets]="pieChartData"
+                [labels]="pieChartLabels"
+                [options]="pieChartOptions"
+                [legend]="pieChartLegend"
+                [chartType]="pieChartType"
+                >
+        </canvas>
+    </div>
+    <div *ngIf="graphType == 'bar'" class="bar-graph">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType"
+                >
+        </canvas>
+    </div>
   </div>

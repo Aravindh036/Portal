@@ -30,8 +30,8 @@
 
 @media print {
   .inquiry{
-    width: 90%;
-    height: calc(100vh - 120px);
+    width: 100%;
+    /* height: calc(100vh - 120px); */
     margin: 0 auto;
   }
 
@@ -167,4 +167,17 @@
       display: flex;
       justify-content:space-between;
   }
+}
+
+.portal-container{
+    width: 1000px;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 50px 50px 150px 50px;
+}
+
+.portal-details{
+    display: flex;
+    justify-content:center;
+    align-items: center;
 }
