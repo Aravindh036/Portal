@@ -7,11 +7,13 @@
       <span>PROFILE SETTINGS</span>
     </div>
     <div class="profile">
-      <button class="go-to-btn">GO TO PORTAL</button>
+      <button class="go-to-btn" [routerLink]="[portalType, 'portal',portalDetails[this.activeRouter.snapshot.params.type][0].portal_list[0].url]">GO TO PORTAL</button>
       <img src="assets/profile.svg" alt="P" />
     </div>
   </nav>
-  <div class="profile-container">
-      <app-employee-profile style="width: 100%; height: 100%;"></app-employee-profile>
+  <div class="profile-container" [ngSwitch]="portalType">
+    <app-employee-profile *ngSwitchCase="'customer'" style="width: 100%; height: 100%;"></app-employee-profile>
+    <app-generic-profile *ngSwitchDefault style="width: 100%; height: 100%;"></app-generic-profile>
+
   </div>
 </div>

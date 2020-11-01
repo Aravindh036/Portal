@@ -9,17 +9,26 @@
                 QUOTATION
             </a>
         </div> -->
-        <div *ngIf="cardJson.VBELN_C._text">
+        <div class="tooltip" *ngIf="cardJson.VBELN_C._text">
             <img src="assets/link-arrow.svg" alt="">
-            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_C._text, inquiry: cardJson.VBELN._text, invoice: cardJson.VBELN_M._text}">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','sale-order']" [queryParams]="{ doc: cardJson.VBELN_C._text, inquiry: cardJson.VBELN._text, invoice: cardJson.VBELN_M._text, delivery: cardJson.POSNR._text}">
                 SALE ORDER
             </a>
+            <span class="tooltiptext">{{cardJson.VBELN_C._text}}</span>
         </div>
-        <div *ngIf="cardJson.VBELN_M._text">
+        <div class="tooltip" *ngIf="cardJson.POSNR._text">
             <img src="assets/link-arrow.svg" alt="">
-            <a href="#" class="chip" [routerLink]="['/customer','portal','invoice']" [queryParams]="{ doc: cardJson.VBELN_M._text, inquiry: cardJson.VBELN._text, sale: cardJson.VBELN_C._text}">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','delivery']" [queryParams]="{ doc: cardJson.POSNR._text, inquiry: cardJson.VBELN._text, sale: cardJson.VBELN_C._text, invoice: cardJson.VBELN_M._text}">
+                DELIVERY
+            </a>
+            <span class="tooltiptext">{{cardJson.POSNR._text}}</span>
+        </div>
+        <div class="tooltip" *ngIf="cardJson.VBELN_M._text">
+            <img src="assets/link-arrow.svg" alt="">
+            <a href="#" class="chip" [routerLink]="['/customer','portal','invoice']" [queryParams]="{ doc: cardJson.VBELN_M._text, inquiry: cardJson.VBELN._text, sale: cardJson.VBELN_C._text, delivery: cardJson.POSNR._text}">
                 INVOICE
             </a>
+            <span class="tooltiptext">{{cardJson.VBELN_M._text}}</span>
         </div>
     </div>
     <div class="inquiry-text m-t-50 m-b-50">INQUIRY DOCUMENT</div>

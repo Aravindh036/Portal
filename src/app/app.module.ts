@@ -22,6 +22,9 @@ import { ChartsModule } from 'ng2-charts';
 import { OverallSalesTemplateComponent } from './graph/overall-sales-template/overall-sales-template.component';
 import { ModalComponent } from './modal/modal.component';
 import { PaymentAgingTemplateComponent } from './portal-templates/payment-aging-template/payment-aging-template.component';
+import { GenericProfileComponent } from './profile-templates/generic-profile/generic-profile.component';
+import { QuotationTemplateComponent } from './portal-templates/quotation-template/quotation-template.component';
+import { PurchaseOrderTemplateComponent } from './portal-templates/purchase-order-template/purchase-order-template.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { PaymentAgingTemplateComponent } from './portal-templates/payment-aging-
     OverallSalesTemplateComponent,
     ModalComponent,
     PaymentAgingTemplateComponent,
+    GenericProfileComponent,
+    QuotationTemplateComponent,
+    PurchaseOrderTemplateComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   profileType: any;
-  constructor(private activeRouter: ActivatedRoute, private router: Router) {}
+  portalDetails = portalDetails;
+  portalType: any;
+  constructor(public activeRouter: ActivatedRoute, public router: Router) {
+    this.portalType = "/" + this.activeRouter.snapshot.params.type;
+  }
 
   ngOnInit(): void {
     this.profileType = this.activeRouter.snapshot.params.type;

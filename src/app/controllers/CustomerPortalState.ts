@@ -1,5 +1,5 @@
-export default class PortalState {
-    static sharedStateInstance = new PortalState();
+export default class CustomerPortalState {
+    static sharedStateInstance = new CustomerPortalState();
     inquiry: any = null;
     invoice: any = null;
     salesData: any = null;
@@ -42,5 +42,12 @@ export default class PortalState {
     getDelivery(){
         return this.delivery;
     }
-
+    getOverallSales(){
+        if(this.inquiry && this.invoice && this.salesData){
+            return true;
+        }
+        else{
+            return  false;
+        }
+    }
 }

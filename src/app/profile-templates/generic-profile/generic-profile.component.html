@@ -1,0 +1,56 @@
+<div class="employee-profile" id="custom-scroll">
+    <div [ngClass]="{'backdrop-loading':true,'backdrop-loading-show':loading}">
+      <app-loading></app-loading>
+    </div>
+    <div class="edit-save m-t-50">
+      <button (click)="toggleEdit()" *ngIf="!edit" class="edit btn-a">Edit</button>
+      <button (click)="toggleSave()" *ngIf="edit" class="save btn-primary">Save</button>
+    </div>
+    <div class="employee-profile-container">
+      <div class="basic-details-container">
+        <div class="basic-details-heading">Basic</div>
+        <div class="row">
+          <div class="profile-pic">
+            <div class="current-profile-pic">
+              <input (change)='updateProfilePic($event)' type="file" accept="image/*" #file>
+              <img (click)="file.click()" src="assets/upload-pic.svg" alt="">
+            </div>
+          </div>
+          <div class="basic-details">
+            <div class="col">
+              <input type="text" [(ngModel)]="profileDetails.name" readonly class="input-div name">
+              <input type="text" [(ngModel)]="profileDetails.mail_id" readonly class="input-div email m-t-10">
+              <!-- <div class="">Maran</div>
+              <div class="">maran@kaartech.com</div> -->
+            </div>
+            <div class="col m-t-40">
+              <label  class="label-light-grey">Phone Number</label>
+              <input [(ngModel)]="profileDetails.telephone" type="text" readonly class="input-light-grey role m-t-25">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="employee-profile-container">
+      <div class="basic-details-container">
+        <div class="basic-details-heading">Additional Details</div>
+        <div class="row">
+          <div class="profile-pic">
+            
+          </div>
+          <div class="basic-details">
+            <div class="col m-t-40">
+              <label  class="label-light-grey">Billing Address</label>
+              <textarea readonly class="textarea-light-grey address m-t-25" cols="30" rows="2" >{{profileDetails.address}}, {{profileDetails.city}} - {{profileDetails.postalCode}},&nbsp; {{country[profileDetails.country]}}
+              </textarea>
+            </div>
+            <div class="col m-t-40">
+              <label  class="label-light-grey">Fax Number</label>
+              <input [(ngModel)]="profileDetails.faxnumber" type="text" readonly class="input-light-grey fax m-t-25">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

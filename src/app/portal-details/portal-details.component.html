@@ -10,6 +10,8 @@
       <app-delivery-list-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'delivery'" ></app-delivery-list-template>
       <app-invoice-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'invoice'" ></app-invoice-template>
       <app-payment-aging-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'payments-aging'" ></app-payment-aging-template>
+      <app-quotation-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'quotation'" ></app-quotation-template>
+      <app-purchase-order-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'purchase-order'" ></app-purchase-order-template>
     </div>
     <button *ngIf="manualCardSelect" class="print btn btn-primary" printSectionId="portal-container-id" ngxPrint [useExistingCss]="true">PRINT</button>
     <div *ngIf="!manualCardSelect" class="getting-started">

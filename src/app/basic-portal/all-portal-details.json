@@ -237,12 +237,42 @@
     "detailed_name":{}
   },
   "quotation": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["EBELN","AEDAT","RLWRT"],
+    "detailed_name":{
+      "EBELN":"Quotation Doc No.",
+      "BUKRS":"Company Code",
+      "STATU":"Status of the Doc",
+      "AEDAT":"Created Date",
+      "RLWRT":"Total value upon release",
+      "EKORG":"Purchase Organization",
+      "EBELP":"ITEM",
+      "TXZO1":"Description of the Product",
+      "MATNR": "Material No.",
+      "EMATN":"Material",
+      "WERKS":"Plant",
+      "MENGE":"Order Quantity",
+      "NETPR":"Price/unit",
+      "NETWR":"Net value"
+    }
   },
   "purchase-order": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["EBELN","AEDAT","RLWRT"],
+    "detailed_name":{
+      "EBELN":"Purchase Doc No.",
+      "BUKRS":"Company Code",
+      "STATU":"Status of the Doc",
+      "AEDAT":"Created Date",
+      "RLWRT":"Total value upon release",
+      "EKORG":"Purchase Organization",
+      "EBELP":"Item",
+      "TXZO1":"Description of the Product",
+      "MATNR": "Material No.",
+      "EMATN":"Material",
+      "WERKS":"Plant",
+      "MENGE":"Order Quantity",
+      "NETPR":"Price/unit",
+      "NETWR":"Net value"
+    }
   },
   "goods-receipt": {
     "primary_fields": [],

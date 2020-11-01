@@ -15,8 +15,6 @@ export class LoginComponent implements OnInit {
   loading: boolean;
   loginType: string;
   processCredentials = () => {
-    console.log("out fun")
-    console.log("in fun")
     const emailElem = document.querySelector('#email-id') as HTMLInputElement;
       const passwordElem = document.querySelector(
         '#password-id'
@@ -33,7 +31,7 @@ export class LoginComponent implements OnInit {
       };
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      const raw = JSON.stringify({ userID:email, password: password });
+      const raw = JSON.stringify({ user_id:email, password: password, type: this.activeRouter.snapshot.params.type });
       let requestOptions = {
           method: 'POST',
           headers: myHeaders,
@@ -41,23 +39,25 @@ export class LoginComponent implements OnInit {
           redirect: 'follow'
       };
       this.loading = true;
-      fetch("http://localhost:8000/customer/login", requestOptions as unknown)
+      fetch("http://localhost:8000/generic/login", requestOptions as unknown)
           .then(response => response.json())
           .then(result => {
             console.log("result",result);
-            if(result.status === "1 "){
+            if(result.status === "4 "){
+              validateCredentials(true,true,false);
+              console.log("wrong password");
+              this.loading = false; 
+            }
+            else if(result.status !== "0"){
+              console.log(result);
               localStorage.setItem("user_id", email);
-              localStorage.setItem("customerName", 'DHINESH@KAARTECH');
+              localStorage.setItem("customerName", result.status);
               localStorage.setItem("welcome", 'true');
               this.router.navigate([
                 this.activeRouter.snapshot.params.type,
                 'portal',
                 portalDetails[this.activeRouter.snapshot.params.type][0].portal_list[0].url
               ]);
-            }
-            else if(result.status === "0 "){
-              validateCredentials(true,true,false);
-              console.log("wrong password")
             }
           })
           .catch(error => console.log('error', error));

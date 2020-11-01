@@ -8,7 +8,8 @@ import { jsonDetailsType, routerType } from '../controllers/interface';
 import { getDate, toggleProfileOption, toggleSelect } from './helper';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver'
-import PortalState from '../controllers/portalState';
+import CustomerPortalState from '../controllers/CustomerPortalState';
+import VendorPortalState from '../controllers/VendorPortalState';
 @Component({
   selector: 'app-basic-portal',
   templateUrl: './basic-portal.component.html',
@@ -37,9 +38,13 @@ export class BasicPortalComponent implements OnInit {
   optionList: any;
   loading = true;
   showBackdrop = false;
-  sharedStateInstance: PortalState;
+  sharedCustomerStateInstance: CustomerPortalState;
+  sharedVendorStateInstance: VendorPortalState;
+  username: string;
+  customerID: string;
   constructor(private activeRouter: ActivatedRoute, private router: Router) {
-    this.sharedStateInstance = PortalState.sharedStateInstance;
+    this.sharedCustomerStateInstance = CustomerPortalState.sharedStateInstance;
+    this.sharedVendorStateInstance = VendorPortalState.sharedStateInstance;
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
         this.cardSelected = false;
@@ -52,20 +57,49 @@ export class BasicPortalComponent implements OnInit {
           profileTypeUrl: '/' + this.activeRouter.snapshot.params.type,
           portalType: this.activeRouter.snapshot.params.portal_type,
         };
-        this.updatePortal();
+        if(this.routerData.profileType === "customer"){
+          this.updateCustomerPortal();
+        }
+        else if(this.routerData.profileType === "vendor"){
+          this.updateVendorPortal();
+        }
+        console.log("kk")
+        console.log(this.routerData, this.originalOptionList, this.optionList )
       }
     });
+  }
+  async updateVendorPortal(){
+    this.barGraph = false;
+    if(this.activeRouter.snapshot.params.portal_type === 'quotation') {
+      if(this.sharedVendorStateInstance.getQuotation()){
+          this.setPortalData(this.sharedVendorStateInstance.getQuotation());
+          this.getQuotationPurchaseData("A")
+      }
+      else{
+        this.fetchQuotationPurchase("A");
+      }
+    } 
+    else if(this.activeRouter.snapshot.params.portal_type === 'purchase-order') {
+      if(this.sharedVendorStateInstance.getPurchaseOrder()){
+          this.setPortalData(this.sharedVendorStateInstance.getPurchaseOrder());
+          this.getQuotationPurchaseData("F")
+      }
+      else{
+        this.fetchQuotationPurchase("F");
+      }
+    }
   }
   setPortalData=(data)=>{
     this.jsonDetails.sampleDataOriginal = data;
     this.jsonDetails.sampleData = data;
     setTimeout(()=>{this.loading = false}, 1000)
   }
-  updatePortal = () => {
+  async updateCustomerPortal() {
+    console.log("in customer portal update")
     this.barGraph = false;
     if(this.activeRouter.snapshot.params.portal_type === 'inquiry') {
-      if(this.sharedStateInstance.getInquiry()){
-          this.setPortalData(this.sharedStateInstance.getInquiry());
+      if(this.sharedCustomerStateInstance.getInquiry()){
+          this.setPortalData(this.sharedCustomerStateInstance.getInquiry());
           this.getInquiryData("A");
       }
       else{
@@ -73,24 +107,24 @@ export class BasicPortalComponent implements OnInit {
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'delivery'){
-      if(this.sharedStateInstance.getDelivery()){
-          this.setPortalData(this.sharedStateInstance.getDelivery());
+      if(this.sharedCustomerStateInstance.getDelivery()){
+          this.setPortalData(this.sharedCustomerStateInstance.getDelivery());
       }
       else{
         this.fetchDeliveryList();
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'payments-aging'){
-      if(this.sharedStateInstance.getPaymentAging()){
-          this.setPortalData(this.sharedStateInstance.getPaymentAging());
+      if(this.sharedCustomerStateInstance.getPaymentAging()){
+          this.setPortalData(this.sharedCustomerStateInstance.getPaymentAging());
       }
       else{
         this.fetchPaymentAndAging();
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'sale-order'){5
-      if(this.sharedStateInstance.getSalesData()){
-          this.setPortalData(this.sharedStateInstance.getSalesData());
+      if(this.sharedCustomerStateInstance.getSalesData()){
+          this.setPortalData(this.sharedCustomerStateInstance.getSalesData());
           this.getInquiryData("C");
       }
       else{
@@ -98,8 +132,8 @@ export class BasicPortalComponent implements OnInit {
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'invoice'){
-      if(this.sharedStateInstance.getInvoice()){
-          this.setPortalData(this.sharedStateInstance.getInvoice());
+      if(this.sharedCustomerStateInstance.getInvoice()){
+          this.setPortalData(this.sharedCustomerStateInstance.getInvoice());
           this.getInvoiceData("M");
       }
       else{
@@ -107,8 +141,8 @@ export class BasicPortalComponent implements OnInit {
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'credit-memo'){
-      if(this.sharedStateInstance.getCreditMemo()){
-          this.setPortalData(this.sharedStateInstance.getCreditMemo());
+      if(this.sharedCustomerStateInstance.getCreditMemo()){
+          this.setPortalData(this.sharedCustomerStateInstance.getCreditMemo());
           this.getInvoiceData("O");
       }
       else{
@@ -116,13 +150,15 @@ export class BasicPortalComponent implements OnInit {
       }
     }
     else if (this.activeRouter.snapshot.params.portal_type === 'orverall-sales'){
-      if(this.sharedStateInstance.getSalesData()){
-          this.setPortalData(this.sharedStateInstance.getSalesData());
-          this.getInquiryData("C");
+      if(this.sharedCustomerStateInstance.getOverallSales()){
+          this.setPortalData(this.sharedCustomerStateInstance.getInquiry());
+          this.getInquiryData("A");
           this.barGraph = true;
       }
       else{
-        this.fetchInquirySale("C","G");
+        this.barGraph = true;
+        await this.fetchInquirySale("C","G");
+        await this.fetchInvoiceCredit("O");
       }
     }
   }
@@ -135,6 +171,8 @@ export class BasicPortalComponent implements OnInit {
   deleteDecimal = (data) => {
     return data.split('.')[0];
   }
+
+  //********************************** query function for customer */
   selectedOption: string;
   selectedOptionCode: string;
   getInquiryData = (docType: string) => {
@@ -142,15 +180,27 @@ export class BasicPortalComponent implements OnInit {
       if(data.ZTERM._text === docType){
         return true;
       }
-    })
+    });
+    this.jsonDetails.sampleDataOriginal = this.jsonDetails.sampleData;
   }
   getInvoiceData = (docType: string) => {
     this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
       if(data.VTWEG._text === docType){
         return true;
       }
+    });
+    this.jsonDetails.sampleDataOriginal = this.jsonDetails.sampleData;
+  }
+  //**************************************** */
+  //*******************************query function for vendor */
+  getQuotationPurchaseData = (docType: string) => {
+    this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter((data) => {
+      if(data.BSTYP._text === docType){
+        return true;
+      }
     })
   }
+  //****************************************
   updateModalShow=()=>{
     this.showBackdrop = true;
   }
@@ -167,11 +217,21 @@ export class BasicPortalComponent implements OnInit {
     else{
       this.sidebarShrink = false;
     }
+    this.username = localStorage.getItem('customerName');
+    this.customerID = localStorage.getItem('user_id')
+    console.log(this.username, this.customerID)
   }
-  buildHeader = () => {
+  //******************************************** */ CUSTOMER API FETCH REQUEST
+  buildHeader = (user_id?: string) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    const raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
+    let raw;
+    if(user_id){
+      raw = JSON.stringify({ userID: user_id});
+    }
+    else{
+      raw = JSON.stringify({ userID:localStorage.getItem("user_id")});
+    }
     let requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -191,8 +251,8 @@ export class BasicPortalComponent implements OnInit {
       sampleData: result,
       portalDetails: portalDetails,
     };
-    this.sharedStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
-    this.sharedStateInstance.setInvoice(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setInvoice(this.jsonDetails.sampleDataOriginal);
     this.loading = false;
     this.getInvoiceData(type);
   }
@@ -208,8 +268,8 @@ export class BasicPortalComponent implements OnInit {
       portalDetails: portalDetails,
     };
     this.loading = false;
-    this.sharedStateInstance.setInquiry(this.jsonDetails.sampleDataOriginal);
-    this.sharedStateInstance.setSalesData(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setInquiry(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setSalesData(this.jsonDetails.sampleDataOriginal);
     this.getInquiryData(type);
     if(barGraph){
       this.barGraph = true;
@@ -227,7 +287,7 @@ export class BasicPortalComponent implements OnInit {
       portalDetails: portalDetails,
     };
     this.loading = false;
-    this.sharedStateInstance.setDelivery(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setDelivery(this.jsonDetails.sampleDataOriginal);
   }
   async fetchPaymentAndAging(){
     let response:any = await fetch("http://localhost:8000/customer/paymentAndAging", this.buildHeader() as unknown)
@@ -241,8 +301,29 @@ export class BasicPortalComponent implements OnInit {
       portalDetails: portalDetails,
     };
     this.loading = false;
-    this.sharedStateInstance.setPaymentAging(this.jsonDetails.sampleDataOriginal);
+    this.sharedCustomerStateInstance.setPaymentAging(this.jsonDetails.sampleDataOriginal);
   }
+  //******************************************** */
+
+  //********************************************* */ VENDOR API FETCH REQUEST
+  async fetchQuotationPurchase(type:string){
+    let response:any = await fetch("http://localhost:8000/vendor/quotationPurchase", this.buildHeader("0004000002") as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedVendorStateInstance.setQuotation(this.jsonDetails.sampleDataOriginal);
+    this.sharedVendorStateInstance.setPurchaseOrder(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+    this.getQuotationPurchaseData(type);
+  }
+  //******************************************** */
   toggleSelect = toggleSelect;
   toggleProfileOption = toggleProfileOption;
   updateSelectList = (event: Event) => {

@@ -14,6 +14,7 @@ export class SaleOrderTemplateComponent implements OnInit {
   @Input() cardJson: any;
   inquiry: string;
   sales: string;
+  delivery: string;
   invoice: string;
   portalDetails = portalDetails;
   customerName: string;
@@ -24,7 +25,9 @@ export class SaleOrderTemplateComponent implements OnInit {
     console.log(this.cardJson, this.selectedCardJson);
     this.activeRouter.queryParams.subscribe(params => {
       if(params['doc']){
+        this.sales = params['doc'];
         this.inquiry = params['inquiry'];
+        this.delivery = params['delivery'];
         this.invoice = params['invoice'];
       }
     });

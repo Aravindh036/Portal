@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { getDate } from 'src/app/basic-portal/helper';
 import portalDetails from '../../basic-portal/all-portal-details.json'
 
@@ -12,13 +13,24 @@ export class DeliveryListTemplateComponent implements OnInit {
   @Input() cardJson: any;
   portalDetails = portalDetails;
   customerName: string;
-  constructor() { }
+  inquiry: string;
+  sales: string;
+  invoice: string;
+  delivery: string;
+  constructor(private activeRouter: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getJson(this.cardJson, this.selectedCardJson);
     console.log(this.cardJson, this.selectedCardJson);
     this.customerName = localStorage.getItem('customerName');
-
+    this.activeRouter.queryParams.subscribe(params => {
+      if(params['doc']){
+        this.inquiry = params['inquiry'];
+        this.sales = params['sale'];
+        this.invoice = params['invoice'];
+        this.delivery = params['doc'];
+      }
+    });
   }
   getJson=(cardJson: any, selectedCardJson:any)=>{
     for(let data of(cardJson)){

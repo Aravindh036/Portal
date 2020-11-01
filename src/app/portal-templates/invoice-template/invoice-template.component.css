@@ -2,7 +2,9 @@
   width: 100%;
   /* height: calc(100vh - 120px); */
   margin: 0 auto;
+  padding-top: 100px;
 }
+
 
 *{
   font-family: 'Open Sans', sans-serif;
@@ -134,4 +136,8 @@
 
 .payed div{
   font-size: 20px;
+}
+
+.nav-bar{
+  margin-top: 20px;
 }

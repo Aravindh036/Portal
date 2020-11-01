@@ -1,13 +1,13 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-.bar-graph {
+/* .bar-graph {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 100%;
   background-color: #fff;
-}
+} */
 
 .heading-nav {
   display: flex;
@@ -206,4 +206,40 @@
     font-weight: bold;
     margin: 0 10px;
     color: #204173;
+}
+
+.bargraph-nav{
+  height: calc(100vh - 160px);
+  width: 180px;
+  background-color: #204173;
+  padding: 20px 10px;
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+.bargraph-nav .bargraph-nav-item{
+  font-family: "Roboto";
+  font-size: 13px;
+  color: #fff;
+  padding: 5px 10px;
+  width: 100%;
+  border-radius: 3px;
+  text-align: center;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.bargraph-nav .bargraph-nav-item:hover{
+  background-color: #3661a3;
+  color: #fff;
+}
+
+.bargraph-nav-item-selected{
+  color: #204173!important;
+  background-color: #fff!important;
+}
+
+.bar-graph{
+  display: flex;
+  align-items: center;
 }
