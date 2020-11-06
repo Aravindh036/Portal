@@ -88,6 +88,38 @@ export class BasicPortalComponent implements OnInit {
         this.fetchQuotationPurchase("F");
       }
     }
+    else if(this.activeRouter.snapshot.params.portal_type === 'goods-receipt') {
+      if(this.sharedVendorStateInstance.getPurchaseOrder()){
+          this.setPortalData(this.sharedVendorStateInstance.getGoodsReceipt());
+      }
+      else{
+        this.fetchGoodsReceipt();
+      }
+    }
+    else if(this.activeRouter.snapshot.params.portal_type === 'invoice') {
+      if(this.sharedVendorStateInstance.getPurchaseOrder()){
+          this.setPortalData(this.sharedVendorStateInstance.getInvoice());
+      }
+      else{
+        this.fetchInvoice();
+      }
+    }
+    else if(this.activeRouter.snapshot.params.portal_type === 'payments-overdues') {
+      if(this.sharedVendorStateInstance.getPurchaseOrder()){
+          this.setPortalData(this.sharedVendorStateInstance.getPaymentOverdue());
+      }
+      else{
+        this.fetchPaymentOverdue();
+      }
+    }
+    else if(this.activeRouter.snapshot.params.portal_type === 'credit-memo') {
+      if(this.sharedVendorStateInstance.getPurchaseOrder()){
+          this.setPortalData(this.sharedVendorStateInstance.getCreditMemo());
+      }
+      else{
+        this.fetchCreditmemo();
+      }
+    }
   }
   setPortalData=(data)=>{
     this.jsonDetails.sampleDataOriginal = data;
@@ -221,7 +253,6 @@ export class BasicPortalComponent implements OnInit {
     this.customerID = localStorage.getItem('user_id')
     console.log(this.username, this.customerID)
   }
-  //******************************************** */ CUSTOMER API FETCH REQUEST
   buildHeader = (user_id?: string) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -240,6 +271,7 @@ export class BasicPortalComponent implements OnInit {
     };
     return requestOptions;
   }
+  //******************************************** */ CUSTOMER API FETCH REQUEST
   async fetchInvoiceCredit(type:string){
     let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader() as unknown)
     response = await response.json();
@@ -322,6 +354,67 @@ export class BasicPortalComponent implements OnInit {
     this.loading = false;
     console.log(result);
     this.getQuotationPurchaseData(type);
+  }
+  async fetchGoodsReceipt(){
+    let response:any = await fetch("http://localhost:8000/vendor/goodsReceipt", this.buildHeader("0004000002") as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedVendorStateInstance.setGoodsReceipt(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+    // this.getQuotationPurchaseData(type);
+  }
+  async fetchInvoice(){
+    let response:any = await fetch("http://localhost:8000/vendor/invoice", this.buildHeader("0004000002") as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedVendorStateInstance.setInvoice(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
+  async fetchPaymentOverdue(){
+    let response:any = await fetch("http://localhost:8000/vendor/paymentOverdue", this.buildHeader("0004000002") as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedVendorStateInstance.setInvoice(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
+  async fetchCreditmemo(){
+    let response:any = await fetch("http://localhost:8000/vendor/creditmemo", this.buildHeader("0004000002") as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedVendorStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
   }
   //******************************************** */
   toggleSelect = toggleSelect;
