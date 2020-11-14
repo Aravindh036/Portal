@@ -5,6 +5,7 @@
       <div [ngSwitch]="routerData.profileType">
         <img *ngSwitchCase="'customer'" src="assets/modal/customer-welcome.svg" alt="">
         <img *ngSwitchCase="'vendor'" src="assets/modal/vendor-welcome.svg" alt="">
+        <img *ngSwitchCase="'employee'" src="assets/modal/employee-welcome.svg" alt="">
       </div>
       <button class="explore" (click)="updateModalShow()">Let me explore the portal</button>
     </div>
@@ -69,9 +70,31 @@
     <div *ngIf="loading" class="loading-container" style="width: 100%;">
       <app-loading></app-loading>
     </div>
-    <div *ngIf="!loading && barGraph" class="bar-graph">
-      <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
-      <button class="print btn btn-primary" (click)="saveGraph()" >PRINT</button>
+    <div [ngSwitch]="moduleDetails">
+      <div *ngSwitchCase="'bar-graph'">
+        <div *ngIf="!loading && barGraph" class="bar-graph">
+          <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
+          <button class="print btn btn-primary" (click)="saveGraph()" >PRINT</button>
+        </div>
+      </div>
+      <div *ngSwitchCase="'employee-leave-data'">
+        <mwl-calendar-month-view
+          [viewDate]="viewDate"
+          [events]="events"
+          [refresh]="refresh"
+          [activeDayIsOpen]="activeDayIsOpen"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="handleEvent('Clicked', $event.event)"
+          (eventTimesChanged)="eventTimesChanged($event)"
+        >
+        </mwl-calendar-month-view>
+      </div>
+      <div *ngSwitchCase="'employee-salary-data'">
+
+      </div>
+      <div *ngSwitchCase="'employee-leave-request'">
+
+      </div>
     </div>
     <div *ngIf="!loading && !barGraph" class="portal-content">
       <div class="basic-portal-side-bar">
@@ -134,7 +157,12 @@
                 <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
                   <div *ngSwitchCase="'NETWR'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
                   <div *ngSwitchCase="'netwr'">{{card['KUNAG']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngSwitchCase="'DMBTR'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  <div *ngIf="card['WAERS']" >
+                    <div *ngSwitchCase="'DMBTR'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  </div>
+                  <div *ngIf="card['ADD3']" >
+                    <div *ngSwitchCase="'DMBTR'">{{card['ADD3']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                  </div>
                   <div *ngSwitchCase="'RLWRT'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
                   <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
                   <div *ngSwitchCase="'AEDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>

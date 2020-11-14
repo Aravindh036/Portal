@@ -54,15 +54,19 @@ export class GenericProfileComponent implements OnInit {
             address: result.status.records.STRAS._text,
             city: result.status.records.ORT01._text,
             country: result.status.records.LAND1._text,
-            faxnumber: result.status.records.TELFX._text,
+            faxnumber: localStorage.getItem('customerFax') || result.status.records.TELFX._text,
             postalCode: result.status.records.PSTLZ._text,
-            name: result.status.records.NAME1._text,
-            telephone: result.status.records.TELF1._text,
+            name: localStorage.getItem('customerName') || result.status.records.NAME1._text,
+            telephone: localStorage.getItem('customerPhone') || result.status.records.TELF1._text,
             user_id: result.status.records.LIFNR._text,
             street: result.status.records.ADRNR._text,
-            mail_id:'demouser@kaartech.com'
+            mail_id: localStorage.getItem('customerMail') || 'demouser@kaartech.com'
           }
           this.loading = false;
+          const profilePicElement = document.querySelector(
+            '.current-profile-pic'
+          ) as HTMLDivElement;
+            profilePicElement.style.backgroundImage = 'url(' + localStorage.getItem('profileImage')+ ')';
         })
         .catch(error => console.log('error', error));
   }
@@ -98,7 +102,11 @@ export class GenericProfileComponent implements OnInit {
         body: raw,
         redirect: 'follow'
     };
-    fetch("http://localhost:8000/customer/profileUpdate", requestOptions as unknown)
+    localStorage.setItem('customerName',this.profileDetails.name)
+    localStorage.setItem('customerMail',this.profileDetails.mail_id)
+    localStorage.setItem('customerPhone',this.profileDetails.telephone)
+    localStorage.setItem('customerFax',this.profileDetails.faxnumber)
+    fetch("http://localhost:8000/generic/profileUpdate", requestOptions as unknown)
         .then(response => response.json())
         .then(result => {
           console.log("result",result);
@@ -122,6 +130,7 @@ export class GenericProfileComponent implements OnInit {
       reader.readAsDataURL(this.profilePic);
       reader.onloadend = () => {
         profilePicElement.style.backgroundImage = 'url(' + reader.result + ')';
+        localStorage.setItem('profileImage','https://remote-file-share.s3.ap-south-1.amazonaws.com/profile-photo.jpeg');
       };
     }
   }

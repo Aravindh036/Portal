@@ -98,7 +98,12 @@
           "short_form": "LD"
         },
         {
-          "full_form": "SALARY PAY COMPONENT",
+          "full_form": "LEAVE REQUEST",
+          "url": "leave-request",
+          "short_form": "LR"
+        },
+        {
+          "full_form": "SALARY PAY",
           "url": "salary-pay",
           "short_form": "SP"
         }
@@ -275,8 +280,20 @@
     }
   },
   "goods-receipt": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["MBLNR","EBELN","DMBTR"],
+    "detailed_name":{
+      "MBLNR":"Material Doc.",
+      "MJAHR":"Material Doc. Year",
+      "BWART":"Movement Type",
+      "EBELN":"Purchase Doc No.",
+      "MATNR":"Material No.",
+      "WERKS":"Plant",
+      "LGORT":"Stor. Location",
+      "WAERS":"Currency",
+      "DMBTR":"Amount in local currency",
+      "MENGE":"Order Quantity",
+      "MEINS":"Base Unit"
+    }
   },
   "invoice": {
     "primary_fields": ["VBELN","ERDAT","netwr"],
@@ -304,8 +321,18 @@
     }
   },
   "payments-overdues": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["ADD1","ZFBDT","DMBTR"],
+    "detailed_name":{
+      "EBLEN":"Purchase Doc No.",
+      "ZFBDT":"Baseline date",
+      "ZTERM":"Payment terms",
+      "DMBTR":"Amount in local currency",
+      "MWSTS":"Local Currency Tax",
+      "BUDAT":"Posting date",
+      "ADD1":"Document No.",
+      "ADD2":"Fiscal year",
+      "ADD3":"Currency"
+    }
   },
   "credit-memo": {
     "primary_fields": ["VBELN","LMENG","netwr"],

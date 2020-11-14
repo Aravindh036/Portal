@@ -1,0 +1,47 @@
+<div class="inquiry">
+    <div class="inquiry-text m-t-50 m-b-50">GOODS RECEIPT DOCUMENT</div>
+    <div class="customer-details">
+        <div class="customer-id flex">
+            <div class="label">MATERAIL DOCUMENT ID: &nbsp;</div>
+            <div class="value">{{cardJson.MBLNR._text}}</div>
+        </div>
+        <div class="name flex">
+            <div class="label">NAME: &nbsp;</div>
+            <div class="value">{{customerName}}</div>
+        </div>
+    </div>
+    <div class="inquiry-details">
+        <div class="created-on flex">
+            <div class="label">{{'Material Doc. Year' | uppercase}}: &nbsp;</div>
+            <div class="value">{{(cardJson.MJAHR._text)}}</div>
+        </div>
+        <div class="created-on flex">
+            <div class="label">{{'Purchase Doc No.'|uppercase}}&nbsp;</div>
+            <div class="value">{{(cardJson.EBELN._text)}}</div>
+        </div>
+    </div>
+    <div class="inquiry-container ">
+        <div class="inquiry-details m-t-20">
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Material No.:' | uppercase}}&nbsp;</div>
+                <div class="value">{{cardJson.MATNR._text}}</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Order Quantity:' | uppercase}}&nbsp;</div>
+                <div class="value">{{cardJson.MENGE._text}}</div>
+            </div>
+            <div class="created-on payed flex m-t-30">
+                <div class="label">{{'Amount in local currency' | uppercase}} &nbsp;</div>
+                <div class="value">{{[cardJson.WAERS._text]}}&nbsp; {{cardJson.DMBTR._text}}</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'storage location :' | uppercase}}&nbsp;</div>
+                <div class="value">{{'main stores' | uppercase}} ({{cardJson.LGORT._text}})</div>
+            </div>
+            <div class="inquiry-id flex payed m-t-30">
+                <div class="label">{{'Movement Type:' | uppercase}}&nbsp;</div>
+                <div class="value">GR GOODS RECEIPT ({{(cardJson.BWART._text)}})</div>
+            </div>
+      </div>
+    </div>
+</div>

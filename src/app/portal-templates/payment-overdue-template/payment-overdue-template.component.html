@@ -1,0 +1,61 @@
+<div class="payment-aging">
+    <div class="heading m-t-20">PAYMENTS OVERDUE</div>
+    <div class="theme-box-placeholder m-t-30"></div>
+    <div class="theme-boxes">
+        <div class="customer-id box">
+            <div class="label">CUSTOMER<br/> ID</div>
+            <div class="box-row">
+                <img src="assets/template/user.svg" alt="">
+                <div class="value">{{customerID}}</div>
+            </div>
+        </div>
+        <div class="document-id box">
+            <div class="label">PAYMENT DOCUMENT NO</div>
+            <div class="box-row">
+                <img src="assets/template/document.svg" alt="">
+                <div class="value">{{cardJson.ADD1._text}}</div>
+            </div>
+        </div>
+        <div class="payment-date box">
+            <div class="label">BASELINE <br/> DATE</div>
+            <div class="box-row">
+                <img src="assets/template/date.svg" alt="">
+                <div class="value">{{getDate(cardJson.ZFBDT._text)}}</div>
+            </div>
+        </div>
+        <div class="amount box">
+            <div class="label">AMOUNT IN LOCAL CURRENCY</div>
+            <div class="box-row">
+                <img src="assets/template/money.svg" alt="">
+                <div class="value">{{cardJson.ADD3._text}}&nbsp;{{cardJson.DMBTR._text}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="payment-container m-t-40">
+        <div class="row">
+            <div class="label">FISICAL YEAR</div>
+            <div class="value">{{cardJson.ADD2._text}}</div>
+        </div>
+        <!-- <div class="row">
+            <div class="label">COMPANY CODE</div>
+            <div class="value">{{cardJson.BUKRS._text}}</div>
+        </div> -->
+        <!-- <div class="row">
+            <div class="label">PAYMENT MODE  (DEBIT/CREDIT)</div>
+            <div class="value">{{cardPayment[cardJson.SHKZG._text]}}</div>
+        </div> -->
+        <div class="row">
+            <div class="label">POSTING DATE</div>
+            <div class="value">{{getDate(cardJson.BUDAT._text)}}</div>
+        </div>
+        <div *ngIf="cardJson.ZTERM._text" class="row">
+            <div class="label">TERMS OF PAYMENT</div>
+            <!-- <div class="value">{{cardJson.ZTERM._text}}</div> -->
+            <div class="value"> - </div>
+        </div>
+        <div class="row">
+            <div class="label">{{'TAX in Local Currency' | uppercase}}</div>
+            <div class="value">{{cardJson.ADD3._text}}&nbsp;{{cardJson.DMBTR._text}}</div>
+        </div>
+    </div>
+</div>

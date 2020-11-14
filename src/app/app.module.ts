@@ -25,6 +25,11 @@ import { PaymentAgingTemplateComponent } from './portal-templates/payment-aging-
 import { GenericProfileComponent } from './profile-templates/generic-profile/generic-profile.component';
 import { QuotationTemplateComponent } from './portal-templates/quotation-template/quotation-template.component';
 import { PurchaseOrderTemplateComponent } from './portal-templates/purchase-order-template/purchase-order-template.component';
+import { GoodsReceiptTemplateComponent } from './portal-templates/goods-receipt-template/goods-receipt-template.component';
+import { PaymentOverdueTemplateComponent } from './portal-templates/payment-overdue-template/payment-overdue-template.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 @NgModule({
   declarations: [
@@ -48,13 +53,19 @@ import { PurchaseOrderTemplateComponent } from './portal-templates/purchase-orde
     GenericProfileComponent,
     QuotationTemplateComponent,
     PurchaseOrderTemplateComponent,
+    GoodsReceiptTemplateComponent,
+    PaymentOverdueTemplateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     NgxPrintModule,
-    ChartsModule
+    ChartsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

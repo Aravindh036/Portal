@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import mark from 'mark.js';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import portalDetails from './all-portal-details.json';
@@ -10,11 +10,46 @@ import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver'
 import CustomerPortalState from '../controllers/CustomerPortalState';
 import VendorPortalState from '../controllers/VendorPortalState';
+import EmployeePortalState from '../controllers/EmployeePortalState';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+
+// calendar types
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours,
+} from 'date-fns';
+
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF',
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA',
+  },
+};
+
+
 @Component({
   selector: 'app-basic-portal',
   templateUrl: './basic-portal.component.html',
   styleUrls: ['./basic-portal.component.css'],
 })
+
 export class BasicPortalComponent implements OnInit {
 
   jsonDetails: jsonDetailsType = {
@@ -40,11 +75,120 @@ export class BasicPortalComponent implements OnInit {
   showBackdrop = false;
   sharedCustomerStateInstance: CustomerPortalState;
   sharedVendorStateInstance: VendorPortalState;
+  sharedEmployeeStateInstance: EmployeePortalState;
   username: string;
   customerID: string;
-  constructor(private activeRouter: ActivatedRoute, private router: Router) {
+  moduleDetails: string;
+
+  // ********************** Calendar dependencies
+  @ViewChild('modalContent', { static: true }) 
+  activeDayIsOpen: boolean = true;
+  modalContent: TemplateRef<any>;
+  viewDate: Date = new Date();
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
+      a11yLabel: 'Edit',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleEvent('Edited', event);
+      },
+    },
+    {
+      label: '<i class="fas fa-fw fa-trash-alt"></i>',
+      a11yLabel: 'Delete',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.events = this.events.filter((iEvent) => iEvent !== event);
+        this.handleEvent('Deleted', event);
+      },
+    },
+  ];
+  refresh: Subject<any> = new Subject();
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+  events: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true,
+      },
+      draggable: true,
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'An event with no end date',
+      color: colors.yellow,
+      actions: this.actions,
+    },
+    {
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),
+      title: 'A long event that spans 2 months',
+      color: colors.blue,
+      allDay: true,
+    },
+    {
+      start: addHours(startOfDay(new Date()), 2),
+      end: addHours(new Date(), 2),
+      title: 'A draggable and resizable event',
+      color: colors.yellow,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true,
+      },
+      draggable: true,
+    },
+  ];
+
+  handleEvent(action: string, event: CalendarEvent): void {
+    this.modalData = { event, action };
+    this.modal.open(this.modalContent, { size: 'lg' });
+  }
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd,
+  }: CalendarEventTimesChangedEvent): void {
+    this.events = this.events.map((iEvent) => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd,
+        };
+      }
+      return iEvent;
+    });
+    this.handleEvent('Dropped or resized', event);
+  }
+  // *****************************
+
+  constructor(private activeRouter: ActivatedRoute, private router: Router, private modal: NgbModal) {
     this.sharedCustomerStateInstance = CustomerPortalState.sharedStateInstance;
     this.sharedVendorStateInstance = VendorPortalState.sharedStateInstance;
+    this.sharedEmployeeStateInstance = EmployeePortalState.sharedStateInstance;
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
         this.cardSelected = false;
@@ -63,13 +207,47 @@ export class BasicPortalComponent implements OnInit {
         else if(this.routerData.profileType === "vendor"){
           this.updateVendorPortal();
         }
-        console.log("kk")
+        else if(this.routerData.profileType === "employee"){
+          this.updateEmployeePortal();
+        }
         console.log(this.routerData, this.originalOptionList, this.optionList )
       }
     });
   }
+
+  async updateEmployeePortal(){
+    this.barGraph = false;
+    this.loading = false;
+    this.moduleDetails = '';
+    if(this.activeRouter.snapshot.params.portal_type === 'leave-data') {
+      this.moduleDetails = 'employee-leave-data';
+      this.barGraph = true;
+      if(this.sharedEmployeeStateInstance.getLeaveData()){
+          this.setPortalData(this.sharedEmployeeStateInstance.getLeaveData());
+      }
+      else{
+        // this.fetchLeaveData();
+      }
+    } 
+    else if(this.activeRouter.snapshot.params.portal_type === 'leave-request') {
+      this.barGraph = true;
+    }
+    else if(this.activeRouter.snapshot.params.portal_type === 'salary-pay') {
+      this.barGraph = true;
+      this.moduleDetails = 'employee-salary-data';
+      if(this.sharedEmployeeStateInstance.getSalaryData()){
+          this.setPortalData(this.sharedEmployeeStateInstance.getSalaryData());
+      }
+      else{
+        this.fetchSalaryData();
+        console.log("hello");
+      }
+    }
+  }
+
   async updateVendorPortal(){
     this.barGraph = false;
+    this.moduleDetails = '';
     if(this.activeRouter.snapshot.params.portal_type === 'quotation') {
       if(this.sharedVendorStateInstance.getQuotation()){
           this.setPortalData(this.sharedVendorStateInstance.getQuotation());
@@ -98,10 +276,15 @@ export class BasicPortalComponent implements OnInit {
     }
     else if(this.activeRouter.snapshot.params.portal_type === 'invoice') {
       if(this.sharedVendorStateInstance.getPurchaseOrder()){
-          this.setPortalData(this.sharedVendorStateInstance.getInvoice());
+      //     this.setPortalData(this.sharedVendorStateInstance.getInvoice());
+      // }
+      // else{
+      //   this.fetchInvoice();
+      // }
+        this.getInvoiceData("M");
       }
       else{
-        this.fetchInvoice();
+        this.fetchInvoiceCredit("M","0000000018");
       }
     }
     else if(this.activeRouter.snapshot.params.portal_type === 'payments-overdues') {
@@ -115,9 +298,14 @@ export class BasicPortalComponent implements OnInit {
     else if(this.activeRouter.snapshot.params.portal_type === 'credit-memo') {
       if(this.sharedVendorStateInstance.getPurchaseOrder()){
           this.setPortalData(this.sharedVendorStateInstance.getCreditMemo());
+      // }
+      // else{
+      //   this.fetchCreditmemo();
+      // }
+        this.getInvoiceData("O");
       }
       else{
-        this.fetchCreditmemo();
+        this.fetchInvoiceCredit("O","0000000018");
       }
     }
   }
@@ -129,12 +317,16 @@ export class BasicPortalComponent implements OnInit {
   async updateCustomerPortal() {
     console.log("in customer portal update")
     this.barGraph = false;
+    this.moduleDetails = '';
     if(this.activeRouter.snapshot.params.portal_type === 'inquiry') {
+    console.log("in customer portal update in if")
       if(this.sharedCustomerStateInstance.getInquiry()){
+    console.log("in customer portal update in if if")
           this.setPortalData(this.sharedCustomerStateInstance.getInquiry());
           this.getInquiryData("A");
       }
       else{
+    console.log("in customer portal update in if else")
         this.fetchInquirySale("A");
       }
     }
@@ -186,9 +378,11 @@ export class BasicPortalComponent implements OnInit {
           this.setPortalData(this.sharedCustomerStateInstance.getInquiry());
           this.getInquiryData("A");
           this.barGraph = true;
+          this.moduleDetails = 'bar-graph';
       }
       else{
         this.barGraph = true;
+        this.moduleDetails = 'bar-graph';
         await this.fetchInquirySale("C","G");
         await this.fetchInvoiceCredit("O");
       }
@@ -203,6 +397,7 @@ export class BasicPortalComponent implements OnInit {
   deleteDecimal = (data) => {
     return data.split('.')[0];
   }
+
 
   //********************************** query function for customer */
   selectedOption: string;
@@ -272,8 +467,8 @@ export class BasicPortalComponent implements OnInit {
     return requestOptions;
   }
   //******************************************** */ CUSTOMER API FETCH REQUEST
-  async fetchInvoiceCredit(type:string){
-    let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader() as unknown)
+  async fetchInvoiceCredit(type:string, userId?:string){
+    let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader(userId) as unknown)
     response = await response.json();
     let result = response.records;
     this.jsonDetails = {
@@ -305,6 +500,7 @@ export class BasicPortalComponent implements OnInit {
     this.getInquiryData(type);
     if(barGraph){
       this.barGraph = true;
+      this.moduleDetails = 'bar-graph';
     }
   }
   async fetchDeliveryList(){
@@ -417,6 +613,45 @@ export class BasicPortalComponent implements OnInit {
     console.log(result);
   }
   //******************************************** */
+    //********************************** employee API FETCH REQUEST*/
+
+  buildGenericHeader = (data:any = {}) => {
+    var {user_id} = data;
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let raw;
+    if(user_id){
+      raw = JSON.stringify({ user_id: user_id});
+    }
+    else{
+      raw = JSON.stringify({ user_id:localStorage.getItem("user_id"), portal: this.routerData.profileType, type: this.routerData.portalType });
+    }
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+    return requestOptions;
+  }
+    //********************************** employee API FETCH REQUEST*/
+    async fetchSalaryData(){
+      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader() as unknown)
+      response = await response.json();
+      let result = response.records;
+      this.jsonDetails = {
+        selectedCardJson: null,
+        additionalSearchKeys: null,
+        sampleDataOriginal: result,
+        sampleData: result,
+        portalDetails: portalDetails,
+      };
+      this.sharedVendorStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
+      this.loading = false;
+      console.log(result);
+    }
+  //**************************************** */
+
   toggleSelect = toggleSelect;
   toggleProfileOption = toggleProfileOption;
   updateSelectList = (event: Event) => {

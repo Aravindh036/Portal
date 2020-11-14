@@ -1,0 +1,29 @@
+  // "credit-memo-v": {
+  //   "primary_fields": ["BELNR","BLDAT","BMBTR"],
+  //   "detailed_name":{
+  //     "BELNR":"Billing Doc No.",
+  //     "BLDAT":"Posting Date",
+  //     "WAERS":"Currency",
+  //     "BMBTR":"Amount in loc. Currency",
+  //     "BUZEI":"Line Item",
+  //     "EBELN":"Purchase Doc No.",
+  //     "MATNR":"Material No.",
+  //     "WERKS":"Plant",
+  //     "EBELP":"Item"
+  //   },
+  //   "code":{
+  //     "001":"sales call",
+  //     "002":"trade fair sales activity",
+  //     "003":"television commercial",
+  //     "004": "customer recommendation",
+  //     "005": "newspaper advertisement",
+  //     "006":"excellent price",
+  //     "007":"fast delivery",
+  //     "008":"Good service",
+  //     "100":"price difference: price was too high",
+  //     "101":"poor quality",
+  //     "102":"damaged in transit",
+  //     "103":"quantity discrepancy",
+  //     "104":"material ruined"
+  //   }
+  // },
