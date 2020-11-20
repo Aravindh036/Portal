@@ -36,7 +36,7 @@
   <div class="dashboard-container">
     <div class="basic-sidebar">
       <div class="collapse-container">
-        <div class="collapse">
+        <div class="custom-collapse">
           <img
             (click)="collapseSidebar()"
             attr.rotated="{{sidebarShrink}}"
@@ -50,7 +50,7 @@
               *ngFor="let portalName of data.portal_list"
               [routerLink]="[routerData.profileTypeUrl, 'portal', portalName.url]"
               routerLinkActive="sidebar-item-active"
-              [ngClass]="{'sidebar-item':true,'tooltip':true,'sidebar-item-shrink':sidebarShrink}"
+              [ngClass]="{'sidebar-item':true,'custom-tooltip':true,'sidebar-item-shrink':sidebarShrink}"
               attr.full-form="{{ portalName.full_form }}"
               attr.short-form="{{ portalName.short_form }}"
             >
@@ -70,7 +70,7 @@
     <div *ngIf="loading" class="loading-container" style="width: 100%;">
       <app-loading></app-loading>
     </div>
-    <div [ngSwitch]="moduleDetails">
+    <div *ngIf="!loading && barGraph" class="switch-container" [ngSwitch]="moduleDetails">
       <div *ngSwitchCase="'bar-graph'">
         <div *ngIf="!loading && barGraph" class="bar-graph">
           <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
@@ -78,6 +78,35 @@
         </div>
       </div>
       <div *ngSwitchCase="'employee-leave-data'">
+        <div class="col-md-4">
+          <div class="btn-group">
+            <div
+              class="btn btn-primary"
+              mwlCalendarPreviousView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()"
+            >
+              Previous
+            </div>
+            <div
+              class="btn btn-outline-secondary"
+              mwlCalendarToday
+              [(viewDate)]="viewDate"
+            >
+              Today
+            </div>
+            <div
+              class="btn btn-primary"
+              mwlCalendarNextView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()"
+            >
+              Next
+            </div>
+          </div>
+        </div>
         <mwl-calendar-month-view
           [viewDate]="viewDate"
           [events]="events"
@@ -188,3 +217,26 @@
     </div>
   </div>
 </div>
+<ng-template #modalContent let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Event action occurred</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div>
+    <div>
+      Event:
+      <pre>{{ modalData?.event | json }}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      OK
+    </button>
+  </div>
+</ng-template>

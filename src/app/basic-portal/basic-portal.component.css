@@ -386,12 +386,12 @@
   transition: all 0.2s ease;
 }
 
-.collapse-container .collapse {
+.collapse-container .custom-collapse {
   position: relative;
   height: 70px;
 }
 
-.collapse-container .collapse img {
+.collapse-container .custom-collapse img {
   position: absolute;
   right: -16px;
   top: 10px;
@@ -594,4 +594,10 @@
 
 .profile{
   margin-right: 5px;
+}
+
+.switch-container{
+  width: 90%;
+  height: calc(100vh - 120px);
+  padding: 0 100px;
 }

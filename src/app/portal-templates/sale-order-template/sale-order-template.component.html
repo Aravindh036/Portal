@@ -1,6 +1,6 @@
 <div class="inquiry">
     <div class="nav-bar">
-        <div class="tooltip left" *ngIf="inquiry">
+        <div class="custom-tooltip left" *ngIf="inquiry">
             <a href="#" class="chip" [routerLink]="['/customer','portal','inquiry']" [queryParams]="{ doc: inquiry}">
                 INQUIRY
             </a>
@@ -10,14 +10,14 @@
         <a href="#" class="chip chip-selected">
             SALE ORDER
         </a>
-        <div class="tooltip" *ngIf="delivery">
+        <div class="custom-tooltip" *ngIf="delivery">
             <img src="assets/link-arrow.svg" alt="">
             <a href="#" class="chip" [routerLink]="['/customer','portal','delivery']" [queryParams]="{ doc: delivery, inquiry: inquiry, sale: sales, invoice: invoice}">
                 DELIVERY
             </a>
             <span class="tooltiptext">{{delivery}}</span>
         </div>
-        <div class="tooltip" *ngIf="invoice">
+        <div class="custom-tooltip" *ngIf="invoice">
             <img src="assets/link-arrow.svg" alt="">
             <a href="#" class="chip" [routerLink]="['/customer','portal','invoice']" [queryParams]="{ doc: invoice, inquiry: inquiry, sale: sales, delivery: delivery}">
                 INVOICE

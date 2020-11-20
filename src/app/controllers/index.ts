@@ -151,7 +151,7 @@ function validateCredentials(
 function collapseSidebar(){
   const sidebar = document.querySelector('.basic-sidebar') as HTMLDivElement;
   const toggleButtonState = document.querySelector(
-    '.collapse img'
+    '.custom-collapse img'
   ) as HTMLElement;
   const sidebarItems = (sidebar.querySelectorAll(
     '.sidebar-item'

@@ -11,7 +11,7 @@ import { saveAs } from 'file-saver'
 import CustomerPortalState from '../controllers/CustomerPortalState';
 import VendorPortalState from '../controllers/VendorPortalState';
 import EmployeePortalState from '../controllers/EmployeePortalState';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -65,6 +65,15 @@ export class BasicPortalComponent implements OnInit {
     profileTypeUrl: null,
     portalType: null,
   };
+  leaveRequest = {
+    leave_type:null,
+    leave_date: null,
+    start_time: null,
+    end_time: null,
+    hours: null,
+    reporting: null,
+    reason: null,
+  }
   barGraph = false;
   sidebarShrink: boolean;
   markInstance: any;
@@ -81,10 +90,10 @@ export class BasicPortalComponent implements OnInit {
   moduleDetails: string;
 
   // ********************** Calendar dependencies
-  @ViewChild('modalContent', { static: true }) 
+  @ViewChild('modalContent', { static: true })   modalContent: TemplateRef<any>;
   activeDayIsOpen: boolean = true;
-  modalContent: TemplateRef<any>;
   viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
@@ -102,6 +111,9 @@ export class BasicPortalComponent implements OnInit {
       },
     },
   ];
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
   refresh: Subject<any> = new Subject();
   modalData: {
     action: string;
@@ -113,7 +125,6 @@ export class BasicPortalComponent implements OnInit {
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
       color: colors.red,
-      actions: this.actions,
       allDay: true,
       resizable: {
         beforeStart: true,
@@ -125,7 +136,6 @@ export class BasicPortalComponent implements OnInit {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
       color: colors.yellow,
-      actions: this.actions,
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
@@ -139,7 +149,6 @@ export class BasicPortalComponent implements OnInit {
       end: addHours(new Date(), 2),
       title: 'A draggable and resizable event',
       color: colors.yellow,
-      actions: this.actions,
       resizable: {
         beforeStart: true,
         afterEnd: true,
@@ -226,13 +235,13 @@ export class BasicPortalComponent implements OnInit {
           this.setPortalData(this.sharedEmployeeStateInstance.getLeaveData());
       }
       else{
-        // this.fetchLeaveData();
+        this.fetchLeaveData();
       }
     } 
     else if(this.activeRouter.snapshot.params.portal_type === 'leave-request') {
       this.barGraph = true;
     }
-    else if(this.activeRouter.snapshot.params.portal_type === 'salary-pay') {
+    else if(this.activeRouter.snapshot.params.portal_type === 'salary-data') {
       this.barGraph = true;
       this.moduleDetails = 'employee-salary-data';
       if(this.sharedEmployeeStateInstance.getSalaryData()){
@@ -615,16 +624,25 @@ export class BasicPortalComponent implements OnInit {
   //******************************************** */
     //********************************** employee API FETCH REQUEST*/
 
-  buildGenericHeader = (data:any = {}) => {
-    var {user_id} = data;
+  buildGenericHeader = (type, data?) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     let raw;
-    if(user_id){
-      raw = JSON.stringify({ user_id: user_id});
-    }
-    else{
+    if(type == "display"){
       raw = JSON.stringify({ user_id:localStorage.getItem("user_id"), portal: this.routerData.profileType, type: this.routerData.portalType });
+    }
+    else if(type == "update" && data == "leave-request"){
+      raw = JSON.stringify({
+        request_id: Math.floor(Math.random() * Math.floor(1000)),
+        user_id: localStorage.getItem("user_id"),
+        leave_type: this.leaveRequest.leave_type,
+        leave_date: this.leaveRequest.leave_date,
+        start_time: this.leaveRequest.start_time,
+        end_time: this.leaveRequest.end_time,
+        hours: this.leaveRequest.hours,
+        reporting: this.leaveRequest.reporting,
+        reason: this.leaveRequest.reason,
+      });
     }
     let requestOptions = {
         method: 'POST',
@@ -636,7 +654,7 @@ export class BasicPortalComponent implements OnInit {
   }
     //********************************** employee API FETCH REQUEST*/
     async fetchSalaryData(){
-      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader() as unknown)
+      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
       response = await response.json();
       let result = response.records;
       this.jsonDetails = {
@@ -646,10 +664,43 @@ export class BasicPortalComponent implements OnInit {
         sampleData: result,
         portalDetails: portalDetails,
       };
-      this.sharedVendorStateInstance.setCreditMemo(this.jsonDetails.sampleDataOriginal);
+      this.sharedEmployeeStateInstance.setSalaryData(this.jsonDetails.sampleDataOriginal);
       this.loading = false;
       console.log(result);
     }
+
+    async fetchLeaveData(){
+      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
+      response = await response.json();
+      let result = response.records;
+      this.jsonDetails = {
+        selectedCardJson: null,
+        additionalSearchKeys: null,
+        sampleDataOriginal: result,
+        sampleData: result,
+        portalDetails: portalDetails,
+      };
+      this.sharedEmployeeStateInstance.setLeaveData(this.jsonDetails.sampleDataOriginal);
+      this.loading = false;
+      console.log(result);
+    }
+
+    async makeLeaveRequest(){
+      let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader("update", "leave-request") as unknown)
+      response = await response.json();
+      let result = response.records;
+      this.jsonDetails = {
+        selectedCardJson: null,
+        additionalSearchKeys: null,
+        sampleDataOriginal: result,
+        sampleData: result,
+        portalDetails: portalDetails,
+      };
+      // this.sharedEmployeeStateInstance.set(this.jsonDetails.sampleDataOriginal);
+      this.loading = false;
+      console.log(result);
+    }
+    
   //**************************************** */
 
   toggleSelect = toggleSelect;

@@ -104,7 +104,7 @@
         },
         {
           "full_form": "SALARY PAY",
-          "url": "salary-pay",
+          "url": "salary-data",
           "short_form": "SP"
         }
       ]
@@ -374,7 +374,7 @@
     "primary_fields": [],
     "detailed_name":{}
   },
-  "salary-pay": {
+  "salary-data": {
     "primary_fields": [],
     "detailed_name":{}
   },

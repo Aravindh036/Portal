@@ -30,6 +30,8 @@ import { PaymentOverdueTemplateComponent } from './portal-templates/payment-over
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
     AppRoutingModule,
     FormsModule,
     NgxPrintModule,
+    BrowserAnimationsModule,
     ChartsModule,
+    NgbModalModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
