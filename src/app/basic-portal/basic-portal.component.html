@@ -78,32 +78,37 @@
         </div>
       </div>
       <div *ngSwitchCase="'employee-leave-data'">
-        <div class="col-md-4">
-          <div class="btn-group">
-            <div
-              class="btn btn-primary"
-              mwlCalendarPreviousView
-              [view]="view"
-              [(viewDate)]="viewDate"
-              (viewDateChange)="closeOpenMonthViewDay()"
-            >
-              Previous
-            </div>
-            <div
-              class="btn btn-outline-secondary"
-              mwlCalendarToday
-              [(viewDate)]="viewDate"
-            >
-              Today
-            </div>
-            <div
-              class="btn btn-primary"
-              mwlCalendarNextView
-              [view]="view"
-              [(viewDate)]="viewDate"
-              (viewDateChange)="closeOpenMonthViewDay()"
-            >
-              Next
+        <div class="calendar-header">
+          <div class="col-md-4">
+            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+          </div>
+          <div class="col-md-4">
+            <div class="btn-group">
+              <div
+                class="btn btn-primary previous"
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Previous
+              </div>
+              <div
+                class="btn btn-outline-secondary"
+                mwlCalendarToday
+                [(viewDate)]="viewDate"
+              >
+                Today
+              </div>
+              <div
+                class="btn btn-primary next"
+                mwlCalendarNextView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Next
+              </div>
             </div>
           </div>
         </div>
@@ -121,8 +126,45 @@
       <div *ngSwitchCase="'employee-salary-data'">
 
       </div>
-      <div *ngSwitchCase="'employee-leave-request'">
-
+    <div *ngSwitchCase="'employee-leave-request'" class='employee-leave-request'>
+      <div class="basic-portal-side-bar leave-request-sidebar">
+        <div class="list-heading m-b-10 m-t-20">
+          <span>Leave Request Records</span>
+        </div>
+        <div class="data-cards-container" id="custom-scroll">
+          <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+          <div
+            class="data-cards"
+            (click)="updateRecordDetails($event)"
+            *ngFor="let card of jsonDetails.sampleData; let i=index" 
+            attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
+            <div class="card-container">
+              <div class="card-column">
+                <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                </div>
+                <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
+                </div>
+              </div>
+              <div class="card-column">
+                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                  <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                </div>
+                <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                  {{card[jsonDetails.additionalSearchKeys[i]]._text}}
+                </div>
+              </div>
+            </div>
+            <div class="card-bg"></div>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
+        <div class="create-request">
+          <button type="button" class="btn btn-primary" (click)="handleLeaveRequestModal()">Create Request</button>
+        </div>
+        <app-portal-details style="width: 100%" [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
       </div>
     </div>
     <div *ngIf="!loading && !barGraph" class="portal-content">
@@ -219,24 +261,94 @@
 </div>
 <ng-template #modalContent let-close="close">
   <div class="modal-header">
-    <h5 class="modal-title">Event action occurred</h5>
-    <button type="button" class="close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <div class="leave-text m-t-50 m-b-40">LEAVE DETAILS</div>
   </div>
-  <div class="modal-body">
-    <div>
-      Action:
-      <pre>{{ modalData?.action }}</pre>
-    </div>
-    <div>
-      Event:
-      <pre>{{ modalData?.event | json }}</pre>
+  <div class="modal-body modal-body-calendar" id="custom-scroll">
+    <div class="payment-container">
+      <div class="row">
+        <div class="label">PERSONNEL NUMBER</div>
+        <div class="value">{{modalData?.event.meta.FIELD1._text}}</div>
+      </div>
+      <div class="row">
+        <div class="label">LEAVE DATE</div>
+        <div class="value">{{getDate(modalData?.event.meta.FIELD11._text)}}</div>
+      </div>
+      <div class="row">
+        <div class="label">START TIME</div>
+        <div class="value">9:00 AM</div>
+      </div>
+      <div class="row">
+        <div class="label">END TIME</div>
+        <div class="value">6:00 PM</div>
+      </div>
+      <div class="row">
+        <div class="label">ABSENT TYPE</div>
+        <div class="value">{{modalData?.event.meta.FIELD3._text}}</div>
+      </div>
+      <div class="row">
+        <div class="label">ABSENT QUOTA CONSUMED</div>
+        <div class="value">{{modalData?.event.meta.FIELD4._text}}</div>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>
+  </div>
+</ng-template>
+
+<ng-template #leaveRequestModal let-close="close">
+  <div class="modal-body" id="custom-scroll">
+    <div class="payment-container1">
+      <div class="modal-header">
+        <div class="leave-text">LEAVE REQUEST</div>
+      </div>
+      <div class="leave-request-body">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="select-absent-type">ABSENT TYPE</label>
+            <select class="form-control" id="select-absent-type">
+              <option>Vacation</option>
+              <option>Special Leave</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="input-end-time">DATE</label>
+            <input type="date" class="form-control" id="input-date">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="input-start-time">START TIME</label>
+            <input type="time" class="form-control" id="input-start-time">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="input-end-time">END TIME</label>
+            <input type="time" class="form-control" id="input-end-time">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="input-start-time">ABSENCE HOURS</label>
+            <input type="number" class="form-control" id="input-absent-hours">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="input-end-time">APPROVER</label>
+            <input type="text" readonly class="form-control" value="Rajesh">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="leave-note">NOTE</label>
+          <textarea class="form-control" id="textarea-leave-note" rows="3"></textarea>
+        </div>
+        <div class="form-group row m-t-20">
+          <div class="col-sm-10">
+            <button (click)="createLeaveRequest()" type="submit" class="btn btn-primary">Create Request</button>
+            <div class="create-request-button" (click)="close()"></div>
+          </div>
+      </div>
+      </div>
+    </div>
   </div>
 </ng-template>

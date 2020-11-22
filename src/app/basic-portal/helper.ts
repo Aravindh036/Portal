@@ -8,7 +8,7 @@ function toggleProfileOption(event?: MouseEvent){
 }
 
 function getDate(data: string){
-    let date = new Date(parseInt(data.slice(0,4)), parseInt(data.slice(4,6)), parseInt(data.slice(6,8)))  
+    let date = new Date(parseInt(data.slice(0,4)), parseInt(data.slice(4,6)) - 1, parseInt(data.slice(6,8)))  
     return date.toDateString();
 }
 

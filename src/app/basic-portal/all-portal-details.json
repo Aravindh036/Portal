@@ -378,6 +378,14 @@
     "primary_fields": [],
     "detailed_name":{}
   },
+  "leave-request": {
+  "primary_fields": ["FIELD1","FIELD3","FIELD4"],
+  "detailed_name":{
+    "FIELD1":"REQUEST NUMBER",
+    "FIELD3":"LEAVE TYPE",
+    "FIELD4":"LEAVE DATE"
+  }
+  },
   "notification": {
     "primary_fields": [],
     "detailed_name":{}

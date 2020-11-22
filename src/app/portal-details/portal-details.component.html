@@ -14,6 +14,7 @@
       <app-purchase-order-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'purchase-order'" ></app-purchase-order-template>
       <app-goods-receipt-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'goods-receipt'" ></app-goods-receipt-template>
       <app-payment-overdue-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'payments-overdues'" ></app-payment-overdue-template>
+      <app-leave-request-template style="width: 100%" [selectedCardJson]="manualCardSelect" [cardJson]="cardJson" *ngSwitchCase="'leave-request'" ></app-leave-request-template>
     </div>
     <button *ngIf="manualCardSelect" class="print btn btn-primary" printSectionId="portal-container-id" ngxPrint [useExistingCss]="true">PRINT</button>
     <div *ngIf="!manualCardSelect" class="getting-started">

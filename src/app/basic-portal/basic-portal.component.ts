@@ -89,6 +89,15 @@ export class BasicPortalComponent implements OnInit {
   customerID: string;
   moduleDetails: string;
 
+  // ********************** Leave Request dependencies
+
+  @ViewChild('leaveRequestModal', { static: true })   leaveRequestModal: TemplateRef<any>;
+  handleLeaveRequestModal(): void {
+    this.modal.open(this.leaveRequestModal, { size: 'lg' });
+  }
+
+  // ********************************************
+
   // ********************** Calendar dependencies
   @ViewChild('modalContent', { static: true })   modalContent: TemplateRef<any>;
   activeDayIsOpen: boolean = true;
@@ -119,43 +128,7 @@ export class BasicPortalComponent implements OnInit {
     action: string;
     event: CalendarEvent;
   };
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true,
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-  ];
+  events: CalendarEvent[] = [];
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
@@ -226,7 +199,7 @@ export class BasicPortalComponent implements OnInit {
 
   async updateEmployeePortal(){
     this.barGraph = false;
-    this.loading = false;
+    this.loading = true;
     this.moduleDetails = '';
     if(this.activeRouter.snapshot.params.portal_type === 'leave-data') {
       this.moduleDetails = 'employee-leave-data';
@@ -240,6 +213,9 @@ export class BasicPortalComponent implements OnInit {
     } 
     else if(this.activeRouter.snapshot.params.portal_type === 'leave-request') {
       this.barGraph = true;
+      // this.loading = false;
+      this.moduleDetails = 'employee-leave-request';
+      this.fetchLeaveRequest();
     }
     else if(this.activeRouter.snapshot.params.portal_type === 'salary-data') {
       this.barGraph = true;
@@ -249,7 +225,6 @@ export class BasicPortalComponent implements OnInit {
       }
       else{
         this.fetchSalaryData();
-        console.log("hello");
       }
     }
   }
@@ -441,7 +416,8 @@ export class BasicPortalComponent implements OnInit {
     this.showBackdrop = true;
   }
   ngOnInit(): void {
-    if (!(this.routerData.profileType in portalDetails) || !(this.routerData.portalType in portalDetails)) {
+    console.log(this.routerData.profileType, this.routerData.portalType, (this.routerData.profileType !== null || this.routerData.portalType !== null));
+    if ((this.routerData.profileType !== null || this.routerData.portalType !== null) && (!(this.routerData.profileType in portalDetails) || !(this.routerData.portalType in portalDetails))) {
       this.router.navigate(['error']);
     }
     if (localStorage.getItem('sidebar-status') !== undefined){
@@ -656,7 +632,7 @@ export class BasicPortalComponent implements OnInit {
     async fetchSalaryData(){
       let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
       response = await response.json();
-      let result = response.records;
+      let result = response.records == undefined ? []:response.records;
       this.jsonDetails = {
         selectedCardJson: null,
         additionalSearchKeys: null,
@@ -668,11 +644,24 @@ export class BasicPortalComponent implements OnInit {
       this.loading = false;
       console.log(result);
     }
-
+    async fetchLeaveRequest(){
+      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
+      response = await response.json();
+      let result = response.records == undefined ? []:response.records;
+      this.jsonDetails = {
+        selectedCardJson: null,
+        additionalSearchKeys: null,
+        sampleDataOriginal: result,
+        sampleData: result,
+        portalDetails: portalDetails,
+      };
+      this.loading = false;
+      console.log(result);
+    }
     async fetchLeaveData(){
       let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
       response = await response.json();
-      let result = response.records;
+      let result = response.records == undefined ? []:response.records;
       this.jsonDetails = {
         selectedCardJson: null,
         additionalSearchKeys: null,
@@ -681,6 +670,27 @@ export class BasicPortalComponent implements OnInit {
         portalDetails: portalDetails,
       };
       this.sharedEmployeeStateInstance.setLeaveData(this.jsonDetails.sampleDataOriginal);
+      console.log(new Date(getDate('20200603')));
+      const leaveData: CalendarEvent[] = [];
+      if(result){
+        for(let i of result ){
+          let leaveDataItem: CalendarEvent;
+          leaveDataItem = {
+            start: startOfDay(new Date(getDate('20201103'))),
+            title: 'Check details',
+            meta: i,
+            color: colors.red,
+            allDay: true,
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+            draggable: true, 
+          }
+          leaveData.push(leaveDataItem);
+        }
+        this.events = leaveData;
+      }
       this.loading = false;
       console.log(result);
     }
@@ -843,4 +853,31 @@ export class BasicPortalComponent implements OnInit {
     collapseSidebar();
   }
   getDate = getDate;
+  async createLeaveRequest(){
+    const leave_type = (document.querySelector('#select-absent-type') as HTMLInputElement).value;
+    const leave_date = (document.querySelector('#input-date') as HTMLInputElement).value;;
+    const start_time = (document.querySelector('#input-start-time') as HTMLInputElement).value;;
+    const end_time = (document.querySelector('#input-end-time') as HTMLInputElement).value;;
+    const hours = (document.querySelector('#input-absent-hours') as HTMLInputElement).value;;
+    const reason = (document.querySelector('#textarea-leave-note') as HTMLTextAreaElement).value;
+    if(leave_type && leave_date && start_time && end_time && hours && reason){
+      this.loading = true;
+      let button = document.querySelector('.create-request-button') as HTMLButtonElement;
+      button.click();
+      this.leaveRequest = {
+        leave_type,
+        leave_date,
+        start_time: start_time,
+        end_time: end_time,
+        hours: hours,
+        reporting: 'Rajesh',
+        reason: reason,
+      }
+      let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader("update", "leave-request") as unknown)
+      response = await response.json();
+      let result = response;
+      this.loading = false;
+      console.log(result);
+    }
+  }
 }

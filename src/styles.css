@@ -287,6 +287,7 @@ body{
   padding: 16px 36px;
   border: 0;
   cursor: pointer;
+  border: 1px solid grey;
 }
 
 .btn-outline-secondary:hover{
@@ -294,6 +295,6 @@ body{
   color:#204173;
 }
 
-.btn-primary:hover{
-  background-color: #162B4D;
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus{
+  background-color: #162B4D!important;
 }

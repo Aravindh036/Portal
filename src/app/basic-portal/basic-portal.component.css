@@ -598,6 +598,90 @@
 
 .switch-container{
   width: 90%;
-  height: calc(100vh - 120px);
-  padding: 0 100px;
+  height: calc(100vh - 65px);
+  /* padding: 0 100px; */
 }
+
+.leave-text{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 29px;
+  color: #204173;
+  padding: 0 20px;
+}
+
+.modal-body-calendar{
+  overflow:auto;
+  max-height: calc(100vh - 350px);
+}
+
+
+.payment-container{
+  padding: 30px 40px;
+}
+
+.payment-container .row{
+  display: flex;
+  padding: 17px 0;
+}
+
+.payment-container .row .label{
+  width: 300px;
+}
+
+.payment-container .row .label, .payment-container .row .value{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 14px;
+  letter-spacing: -0.3px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.previous, .next{
+  width: 130px;
+}
+
+.calendar-header{
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+}
+
+.leave-request-body{
+  padding: 20px 40px;
+}
+
+.leave-request-sidebar{
+  width: 350px;
+}
+
+.employee-leave-request{
+  display: flex;
+  align-items: center;
+}
+
+.employee-leave-request .list-heading{
+  width: 300px;
+  display:block;
+}
+
+.dashboard-content-leave-request{
+  display: block;
+  width: calc(100% - 345px);
+}
+
+.create-request{
+  position: relative;
+  width: 100%;
+}
+
+.create-request button{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+

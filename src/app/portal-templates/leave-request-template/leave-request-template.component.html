@@ -1,0 +1,44 @@
+<div class="payment-aging">
+    <div class="heading m-t-20">LEAVE REQUEST</div>
+    <div class="theme-box-placeholder m-t-30"></div>
+    <div class="theme-boxes">
+        <div class="customer-id box">
+            <div class="label">EMPLOYEE<br/> ID</div>
+            <div class="box-row">
+                <img src="assets/template/user.svg" alt="">
+                <div class="value">{{cardJson.FIELD2._text}}</div>
+            </div>
+        </div>
+        <div class="document-id box">
+            <div class="label">LEAVE <br/>REQUEST NO</div>
+            <div class="box-row">
+                <img src="assets/template/document.svg" alt="">
+                <div class="value">{{cardJson.FIELD1._text}}</div>
+            </div>
+        </div>
+        <div class="payment-date box">
+            <div class="label">LEAVE<br/> DATE</div>
+            <div class="box-row">
+                <img src="assets/template/date.svg" alt="">
+                <div class="value">{{getDate(cardJson.FIELD4._text)}}</div>
+            </div>
+        </div>
+        <div class="amount box">
+            <div class="label">LEAVE <br/> CATEGORY</div>
+            <div class="box-row">
+                <img src="assets/template/money.svg" alt="">
+                <div class="value">{{cardJson.FIELD3._text}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="payment-container m-t-40">
+        <div class="row">
+            <div class="label">APPROVER</div>
+            <div class="value">{{cardJson.FIELD8._text}}</div>
+        </div>
+        <div class="row">
+            <div class="label">NOTE</div>
+            <div class="value">{{cardJson.FIELD9._text}}</div>
+        </div>
+    </div>
+</div>

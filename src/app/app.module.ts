@@ -32,6 +32,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LeaveRequestTemplateComponent } from './portal-templates/leave-request-template/leave-request-template.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PurchaseOrderTemplateComponent,
     GoodsReceiptTemplateComponent,
     PaymentOverdueTemplateComponent,
+    LeaveRequestTemplateComponent,
   ],
   imports: [
     BrowserModule,
