@@ -33,6 +33,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LeaveRequestTemplateComponent } from './portal-templates/leave-request-template/leave-request-template.component';
+import { SalaryTemplateComponent } from './portal-templates/salary-template/salary-template.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { LeaveRequestTemplateComponent } from './portal-templates/leave-request-
     GoodsReceiptTemplateComponent,
     PaymentOverdueTemplateComponent,
     LeaveRequestTemplateComponent,
+    SalaryTemplateComponent,
   ],
   imports: [
     BrowserModule,

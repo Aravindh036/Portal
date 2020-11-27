@@ -123,8 +123,44 @@
         >
         </mwl-calendar-month-view>
       </div>
-      <div *ngSwitchCase="'employee-salary-data'">
+      <div *ngSwitchCase="'employee-salary-data'" class="employee-salary-data">
 
+        <div class="basic-portal-side-bar leave-request-sidebar">
+          <div class="list-heading m-b-10 m-t-20">
+            <span>Salary Data Records</span>
+          </div>
+          <div class="data-cards-container" id="custom-scroll">
+            <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+            <div
+              class="data-cards"
+              (click)="updateRecordDetails($event)"
+              *ngFor="let card of jsonDetails.sampleData; let i=index" 
+              attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
+              <div class="card-container">
+                <div class="card-column">
+                  <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                  </div>
+                  <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
+                  </div>
+                </div>
+                <div class="card-column">
+                  <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                    <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                  </div>
+                  <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                    {{card[jsonDetails.additionalSearchKeys[i]]._text}}
+                  </div>
+                </div>
+              </div>
+              <div class="card-bg"></div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
+          <app-portal-details style="width: 100%" [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+        </div>
       </div>
     <div *ngSwitchCase="'employee-leave-request'" class='employee-leave-request'>
       <div class="basic-portal-side-bar leave-request-sidebar">

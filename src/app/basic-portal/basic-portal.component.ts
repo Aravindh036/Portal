@@ -876,7 +876,7 @@ export class BasicPortalComponent implements OnInit {
       let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader("update", "leave-request") as unknown)
       response = await response.json();
       let result = response;
-      this.loading = false;
+      this.fetchLeaveRequest();
       console.log(result);
     }
   }

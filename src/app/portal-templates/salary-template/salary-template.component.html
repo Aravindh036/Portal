@@ -1,0 +1,55 @@
+<div class="inquiry">
+    <div class="inquiry-text">SALARY DETAILS</div>
+    <div class="heading">
+        <div class="row">
+            <div class="mat-name">Kaar Technologies</div>
+        </div>
+    </div>
+    <div class="details">
+        <div class="customer-details">
+            <div class="customer-id flex">
+                <div class="label">PERSONNEL ID:&nbsp;</div>
+                <div class="value">{{cardJson.FIELD1._text}}</div>
+            </div>
+            <div class="name flex">
+                <div class="label">BANK: &nbsp;</div>
+                <div class="value">IDBI Bank</div>
+            </div>
+        </div>
+        <div class="inquiry-details">
+            <div class="inquiry-id flex">
+                <div class="label">NAME: &nbsp;</div>
+                <div class="value">{{customerName}}</div>
+            </div>
+            <div class="created-on flex">
+                <div class="label">LOCATION: &nbsp;</div>
+                <div class="value">CHENNAI</div>
+            </div>
+        </div>
+    </div>
+    <div class="inquiry-container">
+        <div class="heading">
+            <div class="row">
+                <div class="quantity">S NO.</div>
+                <div class="mat-name">DESCRIPTION</div>
+                <div class="price">EARNING ({{cardJson.FIELD7._text}})</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row m-t-25">
+                <div class="quantity">1</div>
+                <div class="mat-name">{{cardJson.FIELD11._text}}</div>
+                <div class="price">{{cardJson.FIELD12._text}}</div>
+            </div>
+            <div class="row m-t-25">
+                <div class="quantity">2</div>
+                <div class="mat-name">{{cardJson.FIELD13._text}}</div>
+                <div class="price">{{cardJson.FIELD14._text}}</div>
+            </div>
+            <div class="total-container m-t-50">
+                <div class="total-label">Net Pay</div>
+                <div class="total">{{cardJson.FIELD7._text}}&nbsp;{{cardJson.FIELD10._text}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -659,12 +659,12 @@
   width: 350px;
 }
 
-.employee-leave-request{
+.employee-leave-request, .employee-salary-data{
   display: flex;
   align-items: center;
 }
 
-.employee-leave-request .list-heading{
+.employee-leave-request .list-heading, .employee-salary-data .list-heading{
   width: 300px;
   display:block;
 }

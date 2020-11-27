@@ -375,8 +375,12 @@
     "detailed_name":{}
   },
   "salary-data": {
-    "primary_fields": [],
-    "detailed_name":{}
+    "primary_fields": ["FIELD2","FIELD9","FIELD10"],
+    "detailed_name":{
+      "FIELD2":"DATE",
+      "FIELD9":"Work hours/Period",
+      "FIELD10":"Annual Pay"
+    }
   },
   "leave-request": {
   "primary_fields": ["FIELD1","FIELD3","FIELD4"],

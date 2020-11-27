@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { getDate } from 'src/app/basic-portal/helper';
 import portalDetails from '../../basic-portal/all-portal-details.json'
+
 @Component({
-  selector: 'app-leave-request-template',
-  templateUrl: './leave-request-template.component.html',
-  styleUrls: ['./leave-request-template.component.css']
+  selector: 'app-salary-template',
+  templateUrl: './salary-template.component.html',
+  styleUrls: ['./salary-template.component.css']
 })
-export class LeaveRequestTemplateComponent implements OnInit {
+export class SalaryTemplateComponent implements OnInit {
 
  
   @Input() selectedCardJson: any;
@@ -16,15 +17,17 @@ export class LeaveRequestTemplateComponent implements OnInit {
     'S':"DEBIT",
     'H':"CREDIT"
   }
+  customerName: string;
   constructor() { }
 
   ngOnInit(): void {
     this.getJson(this.cardJson, this.selectedCardJson);
+    this.customerName = localStorage.getItem('customerName');
     console.log(this.cardJson, this.selectedCardJson);
   }
   getJson=(cardJson: any, selectedCardJson:any)=>{
     for(let data of(cardJson)){
-      if(data['FIELD1']._text === selectedCardJson){
+      if(data['FIELD2']._text === selectedCardJson){
         this.cardJson = data;
       }
     }
@@ -39,4 +42,5 @@ export class LeaveRequestTemplateComponent implements OnInit {
   }
   getDate = getDate;
   getDateWithoutParsing = (data) => ( new Date(data).toDateString())
+
 }
