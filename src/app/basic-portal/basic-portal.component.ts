@@ -16,17 +16,19 @@ import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
+interface genericBuilder {
+ type: string,
+ module?: string,
+ params?: string   
+}
+
 // calendar types
 import {
   startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours,
 } from 'date-fns';
+import MaintenancePortalState from '../controllers/MaintenancePortalState';
 
 const colors: any = {
   red: {
@@ -85,10 +87,30 @@ export class BasicPortalComponent implements OnInit {
   sharedCustomerStateInstance: CustomerPortalState;
   sharedVendorStateInstance: VendorPortalState;
   sharedEmployeeStateInstance: EmployeePortalState;
+  sharedMaintenanceStateInstance: MaintenancePortalState;
   username: string;
   customerID: string;
   moduleDetails: string;
+  searchByDate: boolean = false;
 
+  // ********************** Maintenance Notification dependencies
+  @ViewChild('getNotificationAPIModal', { static: true })   getNotificationAPIModal: TemplateRef<any>;
+  fetchNotificationTemplate=() => {
+    let maintenancePlant = (document.querySelector('#select-maintenance-plant') as HTMLInputElement).value;
+    let maintenancePlantArray = maintenancePlant.split('(')[1];
+    maintenancePlant = maintenancePlantArray.split(")")[0];
+
+    let button = document.querySelector('.maintenance-plant-button') as HTMLButtonElement;
+    button.click();
+    this.loading = true;
+    this.moduleDetails = 'maintenance-notification';
+    if(this.sharedMaintenanceStateInstance.getNotification()){
+      this.setPortalData(this.sharedMaintenanceStateInstance.getNotification());
+    }
+    else{
+      this.fetchNotificationData(maintenancePlant);
+    }
+  }
   // ********************** Leave Request dependencies
 
   @ViewChild('leaveRequestModal', { static: true })   leaveRequestModal: TemplateRef<any>;
@@ -103,23 +125,7 @@ export class BasicPortalComponent implements OnInit {
   activeDayIsOpen: boolean = true;
   viewDate: Date = new Date();
   view: CalendarView = CalendarView.Month;
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      },
-    },
-  ];
+
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
   }
@@ -171,6 +177,7 @@ export class BasicPortalComponent implements OnInit {
     this.sharedCustomerStateInstance = CustomerPortalState.sharedStateInstance;
     this.sharedVendorStateInstance = VendorPortalState.sharedStateInstance;
     this.sharedEmployeeStateInstance = EmployeePortalState.sharedStateInstance;
+    this.sharedMaintenanceStateInstance = MaintenancePortalState.sharedStateInstance;
     router.events.subscribe((data) => {
       if (data instanceof NavigationEnd){
         this.cardSelected = false;
@@ -192,11 +199,46 @@ export class BasicPortalComponent implements OnInit {
         else if(this.routerData.profileType === "employee"){
           this.updateEmployeePortal();
         }
+        else if(this.routerData.profileType === "maintenance"){
+          this.updateMaintenancePortal();
+        }
         console.log(this.routerData, this.originalOptionList, this.optionList )
       }
     });
   }
-
+  updateSearchType=()=>{
+    this.searchByDate = !this.searchByDate;
+    this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal;
+  }
+  openNotificationAPIModal=()=>{
+    this.modal.open(this.getNotificationAPIModal, { size: 'lg' }).result.then((result) => {
+      console.log(result);
+    }, (reason) => {
+      if(reason == 0 || reason == 1) {
+        this.openNotificationAPIModal();
+      }
+    });
+  }
+  async updateMaintenancePortal(){
+    this.barGraph = false;
+    this.loading = true;
+    this.moduleDetails = '';
+    if(this.activeRouter.snapshot.params.portal_type === 'notification') {
+      this.barGraph = true;
+      this.loading = false;
+      this.openNotificationAPIModal();
+    } 
+    else if(this.activeRouter.snapshot.params.portal_type === 'work-order') {
+      this.barGraph = true;
+      this.moduleDetails = 'maintenance-order';
+      if(this.sharedMaintenanceStateInstance.getOrder()){
+          this.setPortalData(this.sharedMaintenanceStateInstance.getOrder());
+      }
+      else{
+        this.fetchOrderData();
+      }
+    }
+  }
   async updateEmployeePortal(){
     this.barGraph = false;
     this.loading = true;
@@ -451,6 +493,44 @@ export class BasicPortalComponent implements OnInit {
     };
     return requestOptions;
   }
+
+  //******************************************** */ MAINTENANCE API FETCH REQUEST
+  async fetchNotificationData(maintenance: string){
+    let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader({type:"display",module:'notification',params:maintenance}) as unknown)
+    response = await response.json();
+    let result = response.records == undefined ? []:response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedMaintenanceStateInstance.setNotification(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
+
+  async fetchOrderData(){
+    let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader({type:"display"}) as unknown)
+    response = await response.json();
+    let result = response.records == undefined ? []:response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedMaintenanceStateInstance.setOrder(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
+
+
+  //******************************************** 
+
+
   //******************************************** */ CUSTOMER API FETCH REQUEST
   async fetchInvoiceCredit(type:string, userId?:string){
     let response:any = await fetch("http://localhost:8000/customer/invoiceDetails", this.buildHeader(userId) as unknown)
@@ -598,16 +678,33 @@ export class BasicPortalComponent implements OnInit {
     console.log(result);
   }
   //******************************************** */
-    //********************************** employee API FETCH REQUEST*/
 
-  buildGenericHeader = (type, data?) => {
+
+  //********************************** GENERIC HEADER BUILDER*/
+  
+  buildGenericHeader = (data: genericBuilder) => {
+    console.log(data.type, data.module, data.params);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     let raw;
-    if(type == "display"){
+    if(data.type == "display" && data.module == "leave-data"){
+      raw = JSON.stringify({
+        user_id: "90000002",
+        portal: this.routerData.profileType, 
+        type: this.routerData.portalType 
+      });
+    }
+    else if(data.type == "display" && data.module == "notification"){
+      raw = JSON.stringify({
+        user_id: data.params,
+        portal: this.routerData.profileType, 
+        type: this.routerData.portalType 
+      });
+    }
+    else if(data.type == "display"){
       raw = JSON.stringify({ user_id:localStorage.getItem("user_id"), portal: this.routerData.profileType, type: this.routerData.portalType });
     }
-    else if(type == "update" && data == "leave-request"){
+    else if(data.type == "update" && data.module == "leave-request"){
       raw = JSON.stringify({
         request_id: Math.floor(Math.random() * Math.floor(1000)),
         user_id: localStorage.getItem("user_id"),
@@ -620,6 +717,7 @@ export class BasicPortalComponent implements OnInit {
         reason: this.leaveRequest.reason,
       });
     }
+    
     let requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -628,88 +726,90 @@ export class BasicPortalComponent implements OnInit {
     };
     return requestOptions;
   }
-    //********************************** employee API FETCH REQUEST*/
-    async fetchSalaryData(){
-      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
-      response = await response.json();
-      let result = response.records == undefined ? []:response.records;
-      this.jsonDetails = {
-        selectedCardJson: null,
-        additionalSearchKeys: null,
-        sampleDataOriginal: result,
-        sampleData: result,
-        portalDetails: portalDetails,
-      };
-      this.sharedEmployeeStateInstance.setSalaryData(this.jsonDetails.sampleDataOriginal);
-      this.loading = false;
-      console.log(result);
-    }
-    async fetchLeaveRequest(){
-      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
-      response = await response.json();
-      let result = response.records == undefined ? []:response.records;
-      this.jsonDetails = {
-        selectedCardJson: null,
-        additionalSearchKeys: null,
-        sampleDataOriginal: result,
-        sampleData: result,
-        portalDetails: portalDetails,
-      };
-      this.loading = false;
-      console.log(result);
-    }
-    async fetchLeaveData(){
-      let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader("display") as unknown)
-      response = await response.json();
-      let result = response.records == undefined ? []:response.records;
-      this.jsonDetails = {
-        selectedCardJson: null,
-        additionalSearchKeys: null,
-        sampleDataOriginal: result,
-        sampleData: result,
-        portalDetails: portalDetails,
-      };
-      this.sharedEmployeeStateInstance.setLeaveData(this.jsonDetails.sampleDataOriginal);
-      console.log(new Date(getDate('20200603')));
-      const leaveData: CalendarEvent[] = [];
-      if(result){
-        for(let i of result ){
-          let leaveDataItem: CalendarEvent;
-          leaveDataItem = {
-            start: startOfDay(new Date(getDate('20201103'))),
-            title: 'Check details',
-            meta: i,
-            color: colors.red,
-            allDay: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-            draggable: true, 
-          }
-          leaveData.push(leaveDataItem);
-        }
-        this.events = leaveData;
-      }
-      this.loading = false;
-      console.log(result);
-    }
+  //********************************** 
 
-    async makeLeaveRequest(){
-      let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader("update", "leave-request") as unknown)
-      response = await response.json();
-      let result = response.records;
-      this.jsonDetails = {
-        selectedCardJson: null,
-        additionalSearchKeys: null,
-        sampleDataOriginal: result,
-        sampleData: result,
-        portalDetails: portalDetails,
-      };
-      // this.sharedEmployeeStateInstance.set(this.jsonDetails.sampleDataOriginal);
-      this.loading = false;
-      console.log(result);
+
+  //********************************** employee API FETCH REQUEST*/
+  async fetchSalaryData(){
+    let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader({type:'display'}) as unknown)
+    response = await response.json();
+    let result = response.records == undefined ? []:response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedEmployeeStateInstance.setSalaryData(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
+  async fetchLeaveRequest(){
+    let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader({type:"display"}) as unknown)
+    response = await response.json();
+    let result = response.records == undefined ? []:response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.loading = false;
+    console.log(result);
+  }
+  async fetchLeaveData(){
+    let response:any = await fetch("http://localhost:8000/generic/dashboard", this.buildGenericHeader({type:"display", module:"leave-data"}) as unknown)
+    response = await response.json();
+    let result = response.records == undefined ? []:response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    this.sharedEmployeeStateInstance.setLeaveData(this.jsonDetails.sampleDataOriginal);
+    const leaveData: CalendarEvent[] = [];
+    if(result){
+      for(let i of result ){
+        let leaveDataItem: CalendarEvent;
+        leaveDataItem = {
+          start: startOfDay(new Date(getDate('20201203'))),
+          title: 'Check details',
+          meta: i,
+          color: colors.red,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true, 
+        }
+        leaveData.push(leaveDataItem);
+      }
+      this.events = leaveData;
     }
+    this.loading = false;
+    console.log(result);
+  }
+
+  async makeLeaveRequest(){
+    let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader({type:"update",module:"leave-request"}) as unknown)
+    response = await response.json();
+    let result = response.records;
+    this.jsonDetails = {
+      selectedCardJson: null,
+      additionalSearchKeys: null,
+      sampleDataOriginal: result,
+      sampleData: result,
+      portalDetails: portalDetails,
+    };
+    // this.sharedEmployeeStateInstance.set(this.jsonDetails.sampleDataOriginal);
+    this.loading = false;
+    console.log(result);
+  }
     
   //**************************************** */
 
@@ -775,17 +875,23 @@ export class BasicPortalComponent implements OnInit {
     }
   }
 
-  updateCardlist = (event: InputEvent) => {
-    const target = event.target as HTMLInputElement;
+  updateCardlist = (event: InputEvent, date?:boolean) => {
+    let targetValue = (event.target as HTMLInputElement).value;
     const searchResult = [];
-    if (target.value.length >= 3 && this.selectedOptionCode !== undefined) {
+    console.log(targetValue);
+    if(date) {
+      let dateArray = targetValue.split("-");
+      targetValue = dateArray[0] + dateArray[2] + dateArray[1];
+    }
+    console.log(targetValue);
+    if (targetValue.length >= 3 && this.selectedOptionCode !== undefined) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
             if (
               this.selectedOptionCode &&
               data[this.selectedOptionCode]._text
                 .toString()
-                .search(target.value)
+                .search(targetValue)
             ) {
               return false;
             } else {
@@ -800,15 +906,15 @@ export class BasicPortalComponent implements OnInit {
             }
         }
       );
-      this.highlightResult(target.value);
+      this.highlightResult(targetValue);
       // this.jsonDetails.additionalSearchKeys = searchResult;
-    } else if (target.value.length >= 3) {
+    } else if (targetValue.length >= 3) {
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal.filter(
         (data) => {
           for (const [key, value] of Object.entries(data)) {
-            console.log(key, value)
+            // console.log(key, value)
             if((value as any)._text){
-              if (!(value as any)._text.toString().search(target.value)) {
+              if (!(value as any)._text.toString().search(targetValue)) {
                 if (!(this.jsonDetails.portalDetails[this.routerData.portalType]
                   .primary_fields.includes(key))) {
                     searchResult.push(key);
@@ -823,9 +929,9 @@ export class BasicPortalComponent implements OnInit {
           return false;
         }
       );
-      console.log(searchResult);
+      // console.log(searchResult);
       this.jsonDetails.additionalSearchKeys = searchResult;
-      this.highlightResult(target.value);
+      this.highlightResult(targetValue);
     } else {
       this.clearHighlight();
       this.jsonDetails.sampleData = this.jsonDetails.sampleDataOriginal;
@@ -873,11 +979,12 @@ export class BasicPortalComponent implements OnInit {
         reporting: 'Rajesh',
         reason: reason,
       }
-      let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader("update", "leave-request") as unknown)
+      let response:any = await fetch("http://localhost:8000/employee/leaveRequest", this.buildGenericHeader({type:"update",module:"leave-request"}) as unknown)
       response = await response.json();
       let result = response;
       this.fetchLeaveRequest();
       console.log(result);
     }
   }
+  getDateWithoutParsing = (data) => ( new Date(data).toDateString())
 }

@@ -1,445 +1,428 @@
 {
-  "customer": [
-    {
-      "type": "Sales and Distribution",
-      "portal_list": [
-        {
-          "full_form": "INQUIRY DATA",
-          "url": "inquiry",
-          "short_form": "I"
+    "customer": [{
+            "type": "Sales and Distribution",
+            "portal_list": [{
+                    "full_form": "INQUIRY DATA",
+                    "url": "inquiry",
+                    "short_form": "I"
+                },
+                {
+                    "full_form": "SALE ORDER DATA",
+                    "url": "sale-order",
+                    "short_form": "SO"
+                },
+                {
+                    "full_form": "LIST OF DELIVERY",
+                    "url": "delivery",
+                    "short_form": "LD"
+                }
+            ]
         },
         {
-          "full_form": "SALE ORDER DATA",
-          "url": "sale-order",
-          "short_form": "SO"
-        },
-        {
-          "full_form": "LIST OF DELIVERY",
-          "url": "delivery",
-          "short_form": "LD"
+            "type": "Finance",
+            "portal_list": [{
+                    "full_form": "INVOICE DETAILS",
+                    "url": "invoice",
+                    "short_form": "ID"
+                },
+                {
+                    "full_form": "PAYMENTS AND AGING",
+                    "url": "payments-aging",
+                    "short_form": "PA"
+                },
+                {
+                    "full_form": "CREDIT MEMO",
+                    "url": "credit-memo",
+                    "short_form": "CM"
+                },
+                {
+                    "full_form": "OVERALL SALES DATA",
+                    "url": "orverall-sales",
+                    "short_form": "OS"
+                }
+            ]
         }
-      ]
+    ],
+    "vendor": [{
+            "type": "Material Management",
+            "portal_list": [{
+                    "full_form": "QUOTATION DETAILS",
+                    "url": "quotation",
+                    "short_form": "Q"
+                },
+                {
+                    "full_form": "PURCHASE ORDER",
+                    "url": "purchase-order",
+                    "short_form": "PO"
+                },
+                {
+                    "full_form": "GOODS RECEIPT DETAILS",
+                    "url": "goods-receipt",
+                    "short_form": "GR"
+                }
+            ]
+        },
+        {
+            "type": "Finance",
+            "portal_list": [{
+                    "full_form": "INVOICE DETAILS",
+                    "url": "invoice",
+                    "short_form": "ID"
+                },
+                {
+                    "full_form": "PAYMENTS OVERDUES",
+                    "url": "payments-overdues",
+                    "short_form": "P"
+                },
+                {
+                    "full_form": "CREDIT MEMO",
+                    "url": "credit-memo",
+                    "short_form": "CM"
+                }
+            ]
+        }
+    ],
+    "employee": [{
+        "type": "Human Resource",
+        "portal_list": [{
+                "full_form": "LEAVE DATA",
+                "url": "leave-data",
+                "short_form": "LD"
+            },
+            {
+                "full_form": "LEAVE REQUEST",
+                "url": "leave-request",
+                "short_form": "LR"
+            },
+            {
+                "full_form": "SALARY PAY",
+                "url": "salary-data",
+                "short_form": "SP"
+            }
+        ]
+    }],
+    "maintenance": [{
+        "type": "Plant Maintenance",
+        "portal_list": [{
+                "full_form": "NOTIFICATION",
+                "url": "notification",
+                "short_form": "N"
+            },
+            {
+                "full_form": "WORK ORDER",
+                "url": "work-order",
+                "short_form": "WO"
+            }
+        ]
+    }],
+    "shop_floor": [{
+        "type": "Production Planning",
+        "portal_list": [{
+                "full_form": "PLANNED ORDER",
+                "url": "planned-order",
+                "short_form": "PO"
+            },
+            {
+                "full_form": "PRODUCTION ORDER",
+                "url": "production-order",
+                "short_form": "PR"
+            }
+        ]
+    }],
+    "EHSM": [{
+        "type": "Environmental Health and Safety Management",
+        "portal_list": [{
+                "full_form": "INCIDENT MANAGEMENT",
+                "url": "incident-management",
+                "short_form": "IN"
+            },
+            {
+                "full_form": "RISK ASSESSMENT",
+                "url": "risk-assessment",
+                "short_form": "RA"
+            }
+        ]
+    }],
+    "quality_check": [{
+        "type": "Quality Management",
+        "portal_list": [{
+                "full_form": "INSPECTION LOTS",
+                "url": "inspection-lots",
+                "short_form": "IL"
+            },
+            {
+                "full_form": "RESULT RECORDING",
+                "url": "result-recording",
+                "short_form": "RR"
+            },
+            {
+                "full_form": "USAGE DECISION",
+                "url": "usage-Decision",
+                "short_form": "UD"
+            }
+        ]
+    }],
+    "sale-order": {
+        "primary_fields": ["VBELN", "AUDAT", "NETWR"],
+        "detailed_name": {
+            "VBELN": "Sales Doc No.",
+            "AUDAT": "Created on",
+            "NETWR": "Net value",
+            "ANGDT": "Valid from",
+            "BSTNK": "PO Number",
+            "ZTERM": "Terms of Payment",
+            "POSNR": "Sales Document Item",
+            "MATNR": "Material No.",
+            "MATKL": "Material Group",
+            "KWMENG": "Order quantity",
+            "NETPR": "Price/unit"
+        },
+        "code": {
+            "0001": "Pay immediately w/o deduction",
+            "0002": "14 days 2%, 30 net"
+        }
     },
-    {
-      "type": "Finance",
-      "portal_list": [
-        {
-          "full_form": "INVOICE DETAILS",
-          "url": "invoice",
-          "short_form": "ID"
+    "delivery": {
+        "primary_fields": ["VBELN", "ERDAT", "LFIMG"],
+        "detailed_name": {
+            "VBELN": "Delivery ID",
+            "ERZET": "Time Created On",
+            "ERDAT": "Created On",
+            "LFDAT": "Delivery Date",
+            "INCOI": "Incoterms",
+            "TRAGR": "Transport Group",
+            "FKDAT": "Billing Date",
+            "LFIMG": "Delivery Quantity",
+            "NTGEW": "Net Weight",
+            "GEWEI": "Weight Unit",
+            "ARKTX": "Description",
+            "MBDAT": "Mat. Availability Date",
+            "MTART": "Material Type"
         },
-        {
-          "full_form": "PAYMENTS AND AGING",
-          "url": "payments-aging",
-          "short_form": "PA"
-        },
-        {
-          "full_form": "CREDIT MEMO",
-          "url": "credit-memo",
-          "short_form": "CM"
-        },
-        {
-          "full_form": "OVERALL SALES DATA",
-          "url": "orverall-sales",
-          "short_form": "OS"
+        "code": {
+            "CIF": "Costs, Insurance & freight"
         }
-      ]
-    }
-  ],
-  "vendor": [
-    {
-      "type": "Material Management",
-      "portal_list": [
-        {
-          "full_form": "QUOTATION DETAILS",
-          "url": "quotation",
-          "short_form": "Q"
-        },
-        {
-          "full_form": "PURCHASE ORDER",
-          "url": "purchase-order",
-          "short_form": "PO"
-        },
-        {
-          "full_form": "GOODS RECEIPT DETAILS",
-          "url": "goods-receipt",
-          "short_form": "GR"
-        }
-      ]
     },
-    {
-      "type": "Finance",
-      "portal_list": [
-        {
-          "full_form": "INVOICE DETAILS",
-          "url": "invoice",
-          "short_form": "ID"
-        },
-        {
-          "full_form": "PAYMENTS OVERDUES",
-          "url": "payments-overdues",
-          "short_form": "P"
-        },
-        {
-          "full_form": "CREDIT MEMO",
-          "url": "credit-memo",
-          "short_form": "CM"
+    "payments-aging": {
+        "primary_fields": ["BELNR", "BUDAT", "DMBTR"],
+        "detailed_name": {
+            "BUDAT": "Payment Date",
+            "BUKRS": "Company Code",
+            "GJAHR": "Fiscal Year",
+            "BELNR": "Payment & Aging Doc No.",
+            "SHKZG": "Debit/Credit Card",
+            "DMBTR": "Amount in local currency",
+            "ZTERM": "Terms of Payment",
+            "SKNTO": "Cash discounted"
         }
-      ]
-    }
-  ],
-  "employee": [
-    {
-      "type": "Human Resource",
-      "portal_list": [
-        {
-          "full_form": "LEAVE DATA",
-          "url": "leave-data",
-          "short_form": "LD"
-        },
-        {
-          "full_form": "LEAVE REQUEST",
-          "url": "leave-request",
-          "short_form": "LR"
-        },
-        {
-          "full_form": "SALARY PAY",
-          "url": "salary-data",
-          "short_form": "SP"
-        }
-      ]
-    }
-  ],
-  "maintenance": [
-    {
-      "type": "Plant Maintenance",
-      "portal_list": [
-        {
-          "full_form": "NOTIFICATION",
-          "url": "notification",
-          "short_form": "N"
-        },
-        {
-          "full_form": "WORK ORDER",
-          "url": "work-order",
-          "short_form": "WO"
-        }
-      ]
-    }
-  ],
-  "shop_floor": [
-    {
-      "type": "Production Planning",
-      "portal_list": [
-        {
-          "full_form": "PLANNED ORDER",
-          "url": "planned-order",
-          "short_form": "PO"
-        },
-        {
-          "full_form": "PRODUCTION ORDER",
-          "url": "production-order",
-          "short_form": "PR"
-        }
-      ]
-    }
-  ],
-  "EHSM": [
-    {
-      "type": "Environmental Health and Safety Management",
-      "portal_list": [
-        {
-          "full_form": "INCIDENT MANAGEMENT",
-          "url": "incident-management",
-          "short_form": "IN"
-        },
-        {
-          "full_form": "RISK ASSESSMENT",
-          "url": "risk-assessment",
-          "short_form": "RA"
-        }
-      ]
-    }
-  ],
-  "quality_check": [
-    {
-      "type": "Quality Management",
-      "portal_list": [
-        {
-          "full_form": "INSPECTION LOTS",
-          "url": "inspection-lots",
-          "short_form": "IL"
-        },
-        {
-          "full_form": "RESULT RECORDING",
-          "url": "result-recording",
-          "short_form": "RR"
-        },
-        {
-          "full_form": "USAGE DECISION",
-          "url": "usage-Decision",
-          "short_form": "UD"
-        }
-      ]
-    }
-  ],
-  "sale-order": {
-    "primary_fields": ["VBELN","AUDAT","NETWR"],
-    "detailed_name":{
-      "VBELN": "Sales Doc No.",
-      "AUDAT": "Created on",
-      "NETWR": "Net value",
-      "ANGDT": "Valid from",
-      "BSTNK": "PO Number",
-      "ZTERM": "Terms of Payment",
-      "POSNR": "Sales Document Item",
-      "MATNR": "Material No.",
-      "MATKL": "Material Group",
-      "KWMENG": "Order quantity",
-      "NETPR": "Price/unit"
     },
-    "code":{
-      "0001":"Pay immediately w/o deduction",
-      "0002": "14 days 2%, 30 net"
-    }
-  },
-  "delivery": {
-    "primary_fields": ["VBELN","ERDAT","LFIMG"],
-    "detailed_name":{
-      "VBELN":"Delivery ID",
-      "ERZET": "Time Created On",
-      "ERDAT": "Created On",
-      "LFDAT":"Delivery Date" ,
-      "INCOI": "Incoterms",
-      "TRAGR": "Transport Group",
-      "FKDAT": "Billing Date",
-      "LFIMG": "Delivery Quantity",
-      "NTGEW": "Net Weight",
-      "GEWEI": "Weight Unit",
-      "ARKTX": "Description",
-      "MBDAT": "Mat. Availability Date",
-      "MTART": "Material Type"
+    "orverall-sales": {
+        "primary_fields": [],
+        "detailed_name": {}
     },
-    "code":{
-     "CIF":"Costs, Insurance & freight" 
-    }
-  },
-  "payments-aging": {
-    "primary_fields": ["BELNR","BUDAT","DMBTR"],
-    "detailed_name":{
-      "BUDAT":"Payment Date",
-      "BUKRS":"Company Code",
-      "GJAHR":"Fiscal Year",
-      "BELNR":"Payment & Aging Doc No.",
-      "SHKZG":"Debit/Credit Card",
-      "DMBTR":"Amount in local currency",
-      "ZTERM":"Terms of Payment",
-      "SKNTO":"Cash discounted"
-    }
-  },
-  "orverall-sales": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "quotation": {
-    "primary_fields": ["EBELN","AEDAT","RLWRT"],
-    "detailed_name":{
-      "EBELN":"Quotation Doc No.",
-      "BUKRS":"Company Code",
-      "STATU":"Status of the Doc",
-      "AEDAT":"Created Date",
-      "RLWRT":"Total value upon release",
-      "EKORG":"Purchase Organization",
-      "EBELP":"ITEM",
-      "TXZO1":"Description of the Product",
-      "MATNR": "Material No.",
-      "EMATN":"Material",
-      "WERKS":"Plant",
-      "MENGE":"Order Quantity",
-      "NETPR":"Price/unit",
-      "NETWR":"Net value"
-    }
-  },
-  "purchase-order": {
-    "primary_fields": ["EBELN","AEDAT","RLWRT"],
-    "detailed_name":{
-      "EBELN":"Purchase Doc No.",
-      "BUKRS":"Company Code",
-      "STATU":"Status of the Doc",
-      "AEDAT":"Created Date",
-      "RLWRT":"Total value upon release",
-      "EKORG":"Purchase Organization",
-      "EBELP":"Item",
-      "TXZO1":"Description of the Product",
-      "MATNR": "Material No.",
-      "EMATN":"Material",
-      "WERKS":"Plant",
-      "MENGE":"Order Quantity",
-      "NETPR":"Price/unit",
-      "NETWR":"Net value"
-    }
-  },
-  "goods-receipt": {
-    "primary_fields": ["MBLNR","EBELN","DMBTR"],
-    "detailed_name":{
-      "MBLNR":"Material Doc.",
-      "MJAHR":"Material Doc. Year",
-      "BWART":"Movement Type",
-      "EBELN":"Purchase Doc No.",
-      "MATNR":"Material No.",
-      "WERKS":"Plant",
-      "LGORT":"Stor. Location",
-      "WAERS":"Currency",
-      "DMBTR":"Amount in local currency",
-      "MENGE":"Order Quantity",
-      "MEINS":"Base Unit"
-    }
-  },
-  "invoice": {
-    "primary_fields": ["VBELN","ERDAT","netwr"],
-    "detailed_name":{
-      "ALAND": "Country",
-      "ARKTX": "Product Description",
-      "BRGEW": "Weight Unit",
-      "BUKRS":"Company Code",
-      "ERDAT":"Created On",
-      "ERZET":"Time Created On",
-      "FKDAT":"Billing Date",
-      "FKIMG": "Billed Quantity",
-      "KUNRG":"Payer",
-      "LMENG": "Required Quantity",
-      "MATNR": "Material No.",
-      "netwr": "Net value",
-      "NTGEW": "Net Weight",
-      "VBELN":"Billing Doc No.",
-      "VSTEL":"Shipping/Receiving Point",
-      "VTWEG":"Distribution Channel"
+    "quotation": {
+        "primary_fields": ["EBELN", "AEDAT", "RLWRT"],
+        "detailed_name": {
+            "EBELN": "Quotation Doc No.",
+            "BUKRS": "Company Code",
+            "STATU": "Status of the Doc",
+            "AEDAT": "Created Date",
+            "RLWRT": "Total value upon release",
+            "EKORG": "Purchase Organization",
+            "EBELP": "ITEM",
+            "TXZO1": "Description of the Product",
+            "MATNR": "Material No.",
+            "EMATN": "Material",
+            "WERKS": "Plant",
+            "MENGE": "Order Quantity",
+            "NETPR": "Price/unit",
+            "NETWR": "Net value"
+        }
     },
-    "code":{
-      "ZR01":"A.G Shipping Point",
-      "KT01":"Shipping Point"
-    }
-  },
-  "payments-overdues": {
-    "primary_fields": ["ADD1","ZFBDT","DMBTR"],
-    "detailed_name":{
-      "EBLEN":"Purchase Doc No.",
-      "ZFBDT":"Baseline date",
-      "ZTERM":"Payment terms",
-      "DMBTR":"Amount in local currency",
-      "MWSTS":"Local Currency Tax",
-      "BUDAT":"Posting date",
-      "ADD1":"Document No.",
-      "ADD2":"Fiscal year",
-      "ADD3":"Currency"
-    }
-  },
-  "credit-memo": {
-    "primary_fields": ["VBELN","LMENG","netwr"],
-    "detailed_name":{
-      "ALAND": "Country",
-      "ARKTX": "Product Description",
-      "BRGEW": "Weight Unit",
-      "BUKRS":"Company Code",
-      "ERDAT":"Created On",
-      "ERZET":"Time Created On",
-      "FKDAT":"Billing Date",
-      "FKIMG": "Billed Quantity",
-      "KUNRG":"Payer",
-      "LMENG": "Required Quantity",
-      "MATNR": "Material No.",
-      "netwr": "Net value",
-      "NTGEW": "Net Weight",
-      "VBELN":"Billing Doc No.",
-      "VSTEL":"Shipping/Receiving Point",
-      "VTWEG":"Distribution Channel"
+    "purchase-order": {
+        "primary_fields": ["EBELN", "AEDAT", "RLWRT"],
+        "detailed_name": {
+            "EBELN": "Purchase Doc No.",
+            "BUKRS": "Company Code",
+            "STATU": "Status of the Doc",
+            "AEDAT": "Created Date",
+            "RLWRT": "Total value upon release",
+            "EKORG": "Purchase Organization",
+            "EBELP": "Item",
+            "TXZO1": "Description of the Product",
+            "MATNR": "Material No.",
+            "EMATN": "Material",
+            "WERKS": "Plant",
+            "MENGE": "Order Quantity",
+            "NETPR": "Price/unit",
+            "NETWR": "Net value"
+        }
     },
-    "code":{
-      "001":"sales call",
-      "002":"trade fair sales activity",
-      "003":"television commercial",
-      "004": "customer recommendation",
-      "005": "newspaper advertisement",
-      "006":"excellent price",
-      "007":"fast delivery",
-      "008":"Good service",
-      "100":"price difference: price was too high",
-      "101":"poor quality",
-      "102":"damaged in transit",
-      "103":"quantity discrepancy",
-      "104":"material ruined"
+    "goods-receipt": {
+        "primary_fields": ["MBLNR", "EBELN", "DMBTR"],
+        "detailed_name": {
+            "MBLNR": "Material Doc.",
+            "MJAHR": "Material Doc. Year",
+            "BWART": "Movement Type",
+            "EBELN": "Purchase Doc No.",
+            "MATNR": "Material No.",
+            "WERKS": "Plant",
+            "LGORT": "Stor. Location",
+            "WAERS": "Currency",
+            "DMBTR": "Amount in local currency",
+            "MENGE": "Order Quantity",
+            "MEINS": "Base Unit"
+        }
+    },
+    "invoice": {
+        "primary_fields": ["VBELN", "ERDAT", "netwr"],
+        "detailed_name": {
+            "ALAND": "Country",
+            "ARKTX": "Product Description",
+            "BRGEW": "Weight Unit",
+            "BUKRS": "Company Code",
+            "ERDAT": "Created On",
+            "ERZET": "Time Created On",
+            "FKDAT": "Billing Date",
+            "FKIMG": "Billed Quantity",
+            "KUNRG": "Payer",
+            "LMENG": "Required Quantity",
+            "MATNR": "Material No.",
+            "netwr": "Net value",
+            "NTGEW": "Net Weight",
+            "VBELN": "Billing Doc No.",
+            "VSTEL": "Shipping/Receiving Point",
+            "VTWEG": "Distribution Channel"
+        },
+        "code": {
+            "ZR01": "A.G Shipping Point",
+            "KT01": "Shipping Point"
+        }
+    },
+    "payments-overdues": {
+        "primary_fields": ["ADD1", "ZFBDT", "DMBTR"],
+        "detailed_name": {
+            "EBLEN": "Purchase Doc No.",
+            "ZFBDT": "Baseline date",
+            "ZTERM": "Payment terms",
+            "DMBTR": "Amount in local currency",
+            "MWSTS": "Local Currency Tax",
+            "BUDAT": "Posting date",
+            "ADD1": "Document No.",
+            "ADD2": "Fiscal year",
+            "ADD3": "Currency"
+        }
+    },
+    "credit-memo": {
+        "primary_fields": ["VBELN", "LMENG", "netwr"],
+        "detailed_name": {
+            "ALAND": "Country",
+            "ARKTX": "Product Description",
+            "BRGEW": "Weight Unit",
+            "BUKRS": "Company Code",
+            "ERDAT": "Created On",
+            "ERZET": "Time Created On",
+            "FKDAT": "Billing Date",
+            "FKIMG": "Billed Quantity",
+            "KUNRG": "Payer",
+            "LMENG": "Required Quantity",
+            "MATNR": "Material No.",
+            "netwr": "Net value",
+            "NTGEW": "Net Weight",
+            "VBELN": "Billing Doc No.",
+            "VSTEL": "Shipping/Receiving Point",
+            "VTWEG": "Distribution Channel"
+        },
+        "code": {
+            "001": "sales call",
+            "002": "trade fair sales activity",
+            "003": "television commercial",
+            "004": "customer recommendation",
+            "005": "newspaper advertisement",
+            "006": "excellent price",
+            "007": "fast delivery",
+            "008": "Good service",
+            "100": "price difference: price was too high",
+            "101": "poor quality",
+            "102": "damaged in transit",
+            "103": "quantity discrepancy",
+            "104": "material ruined"
+        }
+    },
+    "leave-data": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "salary-data": {
+        "primary_fields": ["FIELD2", "FIELD9", "FIELD10"],
+        "detailed_name": {
+            "FIELD2": "DATE",
+            "FIELD9": "Work hours/Period",
+            "FIELD10": "Net Pay"
+        }
+    },
+    "leave-request": {
+        "primary_fields": ["FIELD1", "FIELD3", "FIELD4"],
+        "detailed_name": {
+            "FIELD1": "REQUEST NUMBER",
+            "FIELD3": "LEAVE TYPE",
+            "FIELD4": "LEAVE DATE"
+        }
+    },
+    "notification": {
+        "primary_fields": ["FIELD1", "FIELD3", "FIELD4"],
+        "detailed_name": {
+            "FIELD1": "Notification Number",
+            "FIELD3": "Type",
+            "FIELD4": "Notification Date"
+        }
+    },
+    "work-order": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "planned-order": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "production-order": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "incident-management": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "risk-assessment": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "inspection-lots": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "result-recording": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "usage-Decision": {
+        "primary_fields": [],
+        "detailed_name": {}
+    },
+    "inquiry": {
+        "primary_fields": ["VBELN", "AUDAT", "NETWR"],
+        "detailed_name": {
+            "VBELN": "Inquiry Doc No.",
+            "AUDAT": "Created on",
+            "NETWR": "Net value",
+            "ANGDT": "Valid from",
+            "BSTNK": "PO Number",
+            "ZTERM": "Terms of Payment",
+            "POSNR": "Sales Document Item",
+            "MATNR": "Material No.",
+            "MATKL": "Material Group",
+            "KWMENG": "Order quantity",
+            "NETPR": "Price/unit"
+        }
     }
-  },
-  "leave-data": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "salary-data": {
-    "primary_fields": ["FIELD2","FIELD9","FIELD10"],
-    "detailed_name":{
-      "FIELD2":"DATE",
-      "FIELD9":"Work hours/Period",
-      "FIELD10":"Annual Pay"
-    }
-  },
-  "leave-request": {
-  "primary_fields": ["FIELD1","FIELD3","FIELD4"],
-  "detailed_name":{
-    "FIELD1":"REQUEST NUMBER",
-    "FIELD3":"LEAVE TYPE",
-    "FIELD4":"LEAVE DATE"
-  }
-  },
-  "notification": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "work-order": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "planned-order": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "production-order": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "incident-management": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "risk-assessment": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "inspection-lots": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "result-recording": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "usage-Decision": {
-    "primary_fields": [],
-    "detailed_name":{}
-  },
-  "inquiry": {
-    "primary_fields": ["VBELN","AUDAT","NETWR"],
-    "detailed_name":{
-      "VBELN": "Inquiry Doc No.",
-      "AUDAT": "Created on",
-      "NETWR": "Net value",
-      "ANGDT": "Valid from",
-      "BSTNK": "PO Number",
-      "ZTERM": "Terms of Payment",
-      "POSNR": "Sales Document Item",
-      "MATNR": "Material No.",
-      "MATKL": "Material Group",
-      "KWMENG": "Order quantity",
-      "NETPR": "Price/unit"
-    }
-  }
 }

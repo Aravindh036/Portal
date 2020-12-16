@@ -1,390 +1,478 @@
 <div class="dashboard">
-  <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
-  <app-modal [showBackdrop]='showBackdrop' style="width: 100%">
-    <div class="modal-container">
-      <div [ngSwitch]="routerData.profileType">
-        <img *ngSwitchCase="'customer'" src="assets/modal/customer-welcome.svg" alt="">
-        <img *ngSwitchCase="'vendor'" src="assets/modal/vendor-welcome.svg" alt="">
-        <img *ngSwitchCase="'employee'" src="assets/modal/employee-welcome.svg" alt="">
-      </div>
-      <button class="explore" (click)="updateModalShow()">Let me explore the portal</button>
-    </div>
-  </app-modal>
-  <div
-    class="profile-option-backdrop hide"
-    (click)="toggleProfileOption($event)"
-  ></div>
-  <nav class="nav-container">
-    <div routerLink='/' class="logo-1">
-      <img src="assets/kaar.svg" alt="D" />
-    </div>
-    <div class="directory-name">
-      <span>{{routerData.profileType | uppercase}} PORTAL</span>
-    </div>
-    <div class="profile" (click)="toggleProfileOption()">
-      <div class="profile-details">
-        <div class="name">{{username}}</div>
-        <div class="user-id">{{customerID}}</div>
-      </div>
-      <img src="assets/profile.svg" alt="P" />
-      <div class="profile-options">
-        <div [routerLink]="[routerData.profileTypeUrl, 'profile']" class="options">Profile Settings</div>
-        <div routerLink="/" class="options m-t-5">Logout</div>
-      </div>
-    </div>
-  </nav>
-  <div class="dashboard-container">
-    <div class="basic-sidebar">
-      <div class="collapse-container">
-        <div class="custom-collapse">
-          <img
-            (click)="collapseSidebar()"
-            attr.rotated="{{sidebarShrink}}"
-            src="assets/collapse-icon.svg"
-            alt=""
-          />
+    <div class="filter-backdrop hide" (click)="toggleSelect($event)"></div>
+    <app-modal [showBackdrop]='showBackdrop' style="width: 100%">
+        <div class="modal-container">
+            <div [ngSwitch]="routerData.profileType">
+                <img *ngSwitchCase="'customer'" src="assets/modal/customer-welcome.svg" alt="">
+                <img *ngSwitchCase="'vendor'" src="assets/modal/vendor-welcome.svg" alt="">
+                <img *ngSwitchCase="'employee'" src="assets/modal/employee-welcome.svg" alt="">
+                <img *ngSwitchCase="'maintenance'" src="assets/modal/maintenance-welcome.svg" alt="">
+            </div>
+            <button class="explore" (click)="updateModalShow()">Let me explore the portal</button>
         </div>
-        <div class="sidebar-items">
-          <div *ngFor="let data of jsonDetails.portalDetails[routerData.profileType]">
-            <div
-              *ngFor="let portalName of data.portal_list"
-              [routerLink]="[routerData.profileTypeUrl, 'portal', portalName.url]"
-              routerLinkActive="sidebar-item-active"
-              [ngClass]="{'sidebar-item':true,'custom-tooltip':true,'sidebar-item-shrink':sidebarShrink}"
-              attr.full-form="{{ portalName.full_form }}"
-              attr.short-form="{{ portalName.short_form }}"
-            >
-              <div *ngIf="sidebarShrink">
-                {{ portalName.short_form }}
-              </div>
-              <div *ngIf="!sidebarShrink">
-                {{ portalName.full_form }}
-              </div>
-              <span class="tooltiptext">Tooltip text</span>
+    </app-modal>
+    <div class="profile-option-backdrop hide" (click)="toggleProfileOption($event)"></div>
+    <nav class="nav-container">
+        <div routerLink='/' class="logo-1">
+            <img src="assets/kaar.svg" alt="D" />
+        </div>
+        <div class="directory-name">
+            <span>{{routerData.profileType | uppercase}} PORTAL</span>
+        </div>
+        <div class="profile" (click)="toggleProfileOption()">
+            <div class="profile-details">
+                <div class="name">{{username}}</div>
+                <div class="user-id">{{customerID}}</div>
+            </div>
+            <img src="assets/profile.svg" alt="P" />
+            <div class="profile-options">
+                <div [routerLink]="[routerData.profileTypeUrl, 'profile']" class="options">Profile Settings</div>
+                <div routerLink="/" class="options m-t-5">Logout</div>
+            </div>
+        </div>
+    </nav>
+    <div class="dashboard-container">
+        <div class="basic-sidebar">
+            <div class="collapse-container">
+                <div class="custom-collapse">
+                    <img (click)="collapseSidebar()" attr.rotated="{{sidebarShrink}}" src="assets/collapse-icon.svg" alt="" />
+                </div>
+                <div class="sidebar-items">
+                    <div *ngFor="let data of jsonDetails.portalDetails[routerData.profileType]">
+                        <div *ngFor="let portalName of data.portal_list" [routerLink]="[routerData.profileTypeUrl, 'portal', portalName.url]" routerLinkActive="sidebar-item-active" [ngClass]="{'sidebar-item':true,'custom-tooltip':true,'sidebar-item-shrink':sidebarShrink}" attr.full-form="{{ portalName.full_form }}"
+                            attr.short-form="{{ portalName.short_form }}">
+                            <div *ngIf="sidebarShrink">
+                                {{ portalName.short_form }}
+                            </div>
+                            <div *ngIf="!sidebarShrink">
+                                {{ portalName.full_form }}
+                            </div>
+                            <span class="tooltiptext">Tooltip text</span>
 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="loading" class="loading-container" style="width: 100%;">
-      <app-loading></app-loading>
-    </div>
-    <div *ngIf="!loading && barGraph" class="switch-container" [ngSwitch]="moduleDetails">
-      <div *ngSwitchCase="'bar-graph'">
-        <div *ngIf="!loading && barGraph" class="bar-graph">
-          <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
-          <button class="print btn btn-primary" (click)="saveGraph()" >PRINT</button>
-        </div>
-      </div>
-      <div *ngSwitchCase="'employee-leave-data'">
-        <div class="calendar-header">
-          <div class="col-md-4">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-          </div>
-          <div class="col-md-4">
-            <div class="btn-group">
-              <div
-                class="btn btn-primary previous"
-                mwlCalendarPreviousView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-              >
-                Previous
-              </div>
-              <div
-                class="btn btn-outline-secondary"
-                mwlCalendarToday
-                [(viewDate)]="viewDate"
-              >
-                Today
-              </div>
-              <div
-                class="btn btn-primary next"
-                mwlCalendarNextView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-              >
-                Next
-              </div>
-            </div>
-          </div>
-        </div>
-        <mwl-calendar-month-view
-          [viewDate]="viewDate"
-          [events]="events"
-          [refresh]="refresh"
-          [activeDayIsOpen]="activeDayIsOpen"
-          (dayClicked)="dayClicked($event.day)"
-          (eventClicked)="handleEvent('Clicked', $event.event)"
-          (eventTimesChanged)="eventTimesChanged($event)"
-        >
-        </mwl-calendar-month-view>
-      </div>
-      <div *ngSwitchCase="'employee-salary-data'" class="employee-salary-data">
-
-        <div class="basic-portal-side-bar leave-request-sidebar">
-          <div class="list-heading m-b-10 m-t-20">
-            <span>Salary Data Records</span>
-          </div>
-          <div class="data-cards-container" id="custom-scroll">
-            <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
-            <div
-              class="data-cards"
-              (click)="updateRecordDetails($event)"
-              *ngFor="let card of jsonDetails.sampleData; let i=index" 
-              attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
-              <div class="card-container">
-                <div class="card-column">
-                  <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
-                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
-                  </div>
-                  <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
-                  </div>
-                </div>
-                <div class="card-column">
-                  <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
-                    <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
-                  </div>
-                  <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                    {{card[jsonDetails.additionalSearchKeys[i]]._text}}
-                  </div>
-                </div>
-              </div>
-              <div class="card-bg"></div>
-            </div>
-          </div>
-        </div>
-        <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
-          <app-portal-details style="width: 100%" [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
-        </div>
-      </div>
-    <div *ngSwitchCase="'employee-leave-request'" class='employee-leave-request'>
-      <div class="basic-portal-side-bar leave-request-sidebar">
-        <div class="list-heading m-b-10 m-t-20">
-          <span>Leave Request Records</span>
-        </div>
-        <div class="data-cards-container" id="custom-scroll">
-          <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
-          <div
-            class="data-cards"
-            (click)="updateRecordDetails($event)"
-            *ngFor="let card of jsonDetails.sampleData; let i=index" 
-            attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
-            <div class="card-container">
-              <div class="card-column">
-                <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
-                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
-                </div>
-                <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
-                </div>
-              </div>
-              <div class="card-column">
-                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
-                  <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
-                </div>
-                <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{card[jsonDetails.additionalSearchKeys[i]]._text}}
-                </div>
-              </div>
-            </div>
-            <div class="card-bg"></div>
-          </div>
-        </div>
-      </div>
-      <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
-        <div class="create-request">
-          <button type="button" class="btn btn-primary" (click)="handleLeaveRequestModal()">Create Request</button>
-        </div>
-        <app-portal-details style="width: 100%" [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
-      </div>
-    </div>
-    <div *ngIf="!loading && !barGraph" class="portal-content">
-      <div class="basic-portal-side-bar">
-        <div class="list-heading m-b-10 m-t-20">
-          <span>Portal Records</span>
-          <div class="sort-by">
-            <span>&nbsp;Search by:</span>
-            <div class="category-filter m-t-5">
-              <div name="filter" id="filter-id">
-                <div (click)="toggleSelect($event)" class="selected-option">
-                  <span>{{
-                    selectedOption != null ? selectedOption : "SELECT A FIELD"
-                  }}</span>
-                  <img src="assets/down-arrow.svg"
-                    alt=">"
-                    style="margin-top: -3px"/>
-                </div>
-                <div class="option-list-container">
-                  <input
-                    type="text"
-                    (input)="updateSelectList($event)"
-                    class="search-option"
-                    placeholder="Field name"/>
-                  <div class="option-list" id="custom-scroll">
-                    <div
-                      (click)="updateSelectedOption($event)"
-                      *ngFor="let option of (optionList)"
-                      class="option-item">
-                      {{ option }}
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-        <div class="list-search">
-          <img src="assets/search.svg" alt="🔍" />
-          <input type="text" class="search-field"
-            placeholder="Search"
-            (input)="updateCardlist($event)"/>
+        <div *ngIf="loading" class="loading-container" style="width: 100%;">
+            <app-loading></app-loading>
         </div>
-        <div class="data-cards-container" id="custom-scroll">
-          <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
-          <div
-            class="data-cards"
-            (click)="updateRecordDetails($event)"
-            *ngFor="let card of jsonDetails.sampleData; let i=index" 
-            attr.card-id ="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}" >
-            <div class="card-container">
-              <div class="card-column">
-                <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
-                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+        <div *ngIf="!loading && barGraph" class="switch-container" [ngSwitch]="moduleDetails">
+            <div class="bar-graph" *ngSwitchCase="'bar-graph'">
+                <div *ngIf="!loading && barGraph" class="bar-graph">
+                    <app-overall-sales-template id="portal-container-id" [salesData]="jsonDetails.sampleData"></app-overall-sales-template>
+                    <button class="print btn btn-primary" (click)="saveGraph()">PRINT</button>
                 </div>
-                <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
-                </div>
-              </div>
-              <div class="card-column">
-                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
-                  <div *ngSwitchCase="'NETWR'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngSwitchCase="'netwr'">{{card['KUNAG']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngIf="card['WAERS']" >
-                    <div *ngSwitchCase="'DMBTR'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  </div>
-                  <div *ngIf="card['ADD3']" >
-                    <div *ngSwitchCase="'DMBTR'">{{card['ADD3']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  </div>
-                  <div *ngSwitchCase="'RLWRT'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
-                  <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
-                  <div *ngSwitchCase="'AEDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
-                  <div *ngSwitchCase="'ERDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
-                  <div *ngSwitchCase="'BUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
-                  <div *ngSwitchCase="'LMENG'">{{deleteDecimal(card[data | uppercase]._text)}}&nbsp; UNITS</div>
-                  <div *ngSwitchCase="'LFIMG'">{{(card[data | uppercase]._text)}}&nbsp;{{card['GEWEI']._text}}</div>
-                  <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
-                  
-                </div>
-                <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
-                  {{card[jsonDetails.additionalSearchKeys[i]]._text}}
-                </div>
-              </div>
             </div>
-            <div class="card-bg"></div>
-          </div>
+            <div *ngSwitchCase="'employee-leave-data'">
+                <div class="calendar-header">
+                    <div class="col-md-4">
+                        <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <div class="btn btn-primary previous" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                                Previous
+                            </div>
+                            <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                                Today
+                            </div>
+                            <div class="btn btn-primary next" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                                Next
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+                </mwl-calendar-month-view>
+            </div>
+            <div *ngSwitchCase="'employee-salary-data'" class="employee-salary-data">
+
+                <div class="basic-portal-side-bar leave-request-sidebar">
+                    <div class="list-heading m-b-10 m-t-20">
+                        <span>Salary Data Records</span>
+                    </div>
+                    <div class="data-cards-container" id="custom-scroll">
+                        <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+                        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of jsonDetails.sampleData; let i=index" attr.card-id="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}">
+                            <div class="card-container">
+                                <div class="card-column">
+                                    <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                                    </div>
+                                </div>
+                                <div class="card-column">
+                                    <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                                        <div *ngSwitchCase="'FIELD2'">{{getDate(card[data | uppercase]._text)}}</div>
+                                        <div *ngSwitchCase="'FIELD10'">{{card['FIELD7']._text}}&nbsp;{{'3000'}}</div>
+                                        <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-bg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
+                    <app-portal-details style="width: 100%" [selectedCardJson]="jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+                </div>
+            </div>
+            <div *ngSwitchCase="'employee-leave-request'" class='employee-leave-request'>
+                <div class="basic-portal-side-bar leave-request-sidebar">
+                    <div class="list-heading m-b-10 m-t-20">
+                        <span>Leave Request Records</span>
+                    </div>
+                    <div class="data-cards-container" id="custom-scroll">
+                        <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+                        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of jsonDetails.sampleData; let i=index" attr.card-id="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}">
+                            <div class="card-container">
+                                <div class="card-column">
+                                    <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                                    </div>
+                                </div>
+                                <div class="card-column">
+                                    <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                                        <div *ngSwitchCase="'FIELD4'">{{getDateWithoutParsing(card['FIELD4']._text)}}</div>
+                                        <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-bg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content dashboard-content-leave-request dashboard-content-unshrink">
+                    <div class="create-request">
+                        <button type="button" class="go-to-btn" (click)="handleLeaveRequestModal()">Create Request</button>
+                    </div>
+                    <app-portal-details style="width: 100%" [selectedCardJson]="jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+                </div>
+            </div>
+            <div *ngSwitchCase="'maintenance-notification'" class="portal-content">
+                <div class="basic-portal-side-bar">
+                    <div class="list-heading m-b-10 m-t-20">
+                        <span>Portal Records</span>
+                        <div class="sort-by">
+                            <span>&nbsp;Search by:</span>
+                            <div class="category-filter m-t-5">
+                                <div name="filter" id="filter-id">
+                                    <div (click)="toggleSelect($event)" class="selected-option">
+                                        <span>{{ selectedOption != null ? selectedOption : "SELECT A FIELD" }}</span>
+                                        <img src="assets/down-arrow.svg" alt=">" style="margin-top: -3px" />
+                                    </div>
+                                    <div class="option-list-container">
+                                        <input type="text" (input)="updateSelectList($event)" class="search-option" placeholder="Field name" />
+                                        <div class="option-list" id="custom-scroll">
+                                            <div (click)="updateSelectedOption($event)" *ngFor="let option of (optionList)" class="option-item">
+                                                {{ option }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-search">
+                        <img *ngIf="!searchByDate" src="assets/search.svg" alt="🔍" />
+                        <input *ngIf="!searchByDate" type="text" class="search-field" placeholder="Search" (input)="updateCardlist($event)" />
+                        <input *ngIf="searchByDate" type="date" class="form-control date-selector" placeholder="Search By Date" (input)="updateCardlist($event, true)" />
+                        <button *ngIf="!searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">Date Filter</button>
+                        <button *ngIf="searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">General Filter</button>
+                    </div>
+                    <div class="data-cards-container" id="custom-scroll">
+                        <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+                        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of jsonDetails.sampleData; let i=index" attr.card-id="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}">
+                            <div class="card-container">
+                                <div class="card-column">
+                                    <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                                    </div>
+                                    <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
+                                    </div>
+                                </div>
+                                <div class="card-column">
+                                    <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                                        <div *ngSwitchCase="'FIELD4'">{{getDate(card[data | uppercase]._text)}}</div>
+                                        <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                                    </div>
+                                    <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                        {{card[jsonDetails.additionalSearchKeys[i]]._text}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-bg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content dashboard-content-unshrink">
+                    <div class="create-notification">
+                        <button type="button" class="go-to-btn" (click)="handleLeaveRequestModal()">Create Notification</button>
+                    </div>
+                    <app-portal-details style="width: 100%" [selectedCardJson]="jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+                </div>
+            </div>
+            <div *ngSwitchCase="'maintenance-order'" class="portal-content">
+                <div class="basic-portal-side-bar">
+                    <div class="list-heading m-b-10 m-t-20">
+                        <span>Portal Records</span>
+                        <div class="sort-by">
+                            <span>&nbsp;Search by:</span>
+                            <div class="category-filter m-t-5">
+                                <div name="filter" id="filter-id">
+                                    <div (click)="toggleSelect($event)" class="selected-option">
+                                        <span>{{ selectedOption != null ? selectedOption : "SELECT A FIELD" }}</span>
+                                        <img src="assets/down-arrow.svg" alt=">" style="margin-top: -3px" />
+                                    </div>
+                                    <div class="option-list-container">
+                                        <input type="text" (input)="updateSelectList($event)" class="search-option" placeholder="Field name" />
+                                        <div class="option-list" id="custom-scroll">
+                                            <div (click)="updateSelectedOption($event)" *ngFor="let option of (optionList)" class="option-item">
+                                                {{ option }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-search">
+                        <img *ngIf="!searchByDate" src="assets/search.svg" alt="🔍" />
+                        <input *ngIf="!searchByDate" type="text" class="search-field" placeholder="Search" (input)="updateCardlist($event)" />
+                        <input *ngIf="searchByDate" type="date" class="form-control date-selector" placeholder="Search By Date" (input)="updateCardlist($event, true)" />
+                        <button *ngIf="!searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">Date Filter</button>
+                        <button *ngIf="searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">General Filter</button>
+                    </div>
+                    <div class="data-cards-container" id="custom-scroll">
+                        <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+                        <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of jsonDetails.sampleData; let i=index" attr.card-id="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}">
+                            <div class="card-container">
+                                <div class="card-column">
+                                    <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                                    </div>
+                                    <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                        {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
+                                    </div>
+                                </div>
+                                <div class="card-column">
+                                    <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                                        <div *ngSwitchCase="'FIELD4'">{{getDate(card[data | uppercase]._text)}}</div>
+                                        <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+                                    </div>
+                                    <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                        {{card[jsonDetails.additionalSearchKeys[i]]._text}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-bg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content dashboard-content-unshrink">
+                    <div class="create-notification">
+                        <button type="button" class="go-to-btn" (click)="handleLeaveRequestModal()">Create Order</button>
+                    </div>
+                    <app-portal-details style="width: 100%" [selectedCardJson]="jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="dashboard-content dashboard-content-unshrink">
-        <app-portal-details style="width: 100%" [selectedCardJson] = "jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
-      </div>
+        <div *ngIf="!loading && !barGraph" class="portal-content">
+            <div class="basic-portal-side-bar">
+                <div class="list-heading m-b-10 m-t-20">
+                    <span>Portal Records</span>
+                    <div class="sort-by">
+                        <span>&nbsp;Search by:</span>
+                        <div class="category-filter m-t-5">
+                            <div name="filter" id="filter-id">
+                                <div (click)="toggleSelect($event)" class="selected-option">
+                                    <span>{{ selectedOption != null ? selectedOption : "SELECT A FIELD" }}</span>
+                                    <img src="assets/down-arrow.svg" alt=">" style="margin-top: -3px" />
+                                </div>
+                                <div class="option-list-container">
+                                    <input type="text" (input)="updateSelectList($event)" class="search-option" placeholder="Field name" />
+                                    <div class="option-list" id="custom-scroll">
+                                        <div (click)="updateSelectedOption($event)" *ngFor="let option of (optionList)" class="option-item">
+                                            {{ option }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-search">
+                    <img *ngIf="!searchByDate" src="assets/search.svg" alt="🔍" />
+                    <input *ngIf="!searchByDate" type="text" class="search-field" placeholder="Search" (input)="updateCardlist($event)" />
+                    <input *ngIf="searchByDate" type="date" class="form-control date-selector" placeholder="Search By Date" (input)="updateCardlist($event, true)" />
+                    <button *ngIf="!searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">Date Filter</button>
+                    <button *ngIf="searchByDate" type="button" class="btn btn-outline-dark btn-sm" (click)="updateSearchType()">General Filter</button>
+                </div>
+                <div class="data-cards-container" id="custom-scroll">
+                    <div class="no-cards-found" *ngIf="(jsonDetails.sampleData.length == 0)">No Record(s) found</div>
+                    <div class="data-cards" (click)="updateRecordDetails($event)" *ngFor="let card of jsonDetails.sampleData; let i=index" attr.card-id="{{card[jsonDetails.portalDetails[routerData.portalType].primary_fields[0] | uppercase]._text}}">
+                        <div class="card-container">
+                            <div class="card-column">
+                                <div class="data-heading" *ngFor="let label of jsonDetails.portalDetails[routerData.portalType].primary_fields">
+                                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[label] | uppercase}}
+                                </div>
+                                <div class="data-heading" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                    {{jsonDetails.portalDetails[routerData.portalType].detailed_name[jsonDetails.additionalSearchKeys[i]] | uppercase}}
+                                </div>
+                            </div>
+                            <div class="card-column">
+                                <div class="data-item" *ngFor="let data of jsonDetails.portalDetails[routerData.portalType].primary_fields" [ngSwitch]="data">
+                                    <div *ngSwitchCase="'NETWR'">{{card['WAERK']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                                    <div *ngSwitchCase="'netwr'">{{card['KUNAG']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                                    <div *ngIf="card['WAERS']">
+                                        <div *ngSwitchCase="'DMBTR'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                                    </div>
+                                    <div *ngIf="card['ADD3']">
+                                        <div *ngSwitchCase="'DMBTR'">{{card['ADD3']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                                    </div>
+                                    <div *ngSwitchCase="'RLWRT'">{{card['WAERS']._text}}&nbsp;{{card[data | uppercase]._text}}</div>
+                                    <div *ngSwitchCase="'AUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                                    <div *ngSwitchCase="'AEDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                                    <div *ngSwitchCase="'ERDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                                    <div *ngSwitchCase="'BUDAT'">{{getDate(card[data | uppercase]._text)}}&nbsp;({{card[data | uppercase]._text}})</div>
+                                    <div *ngSwitchCase="'LMENG'">{{deleteDecimal(card[data | uppercase]._text)}}&nbsp; UNITS</div>
+                                    <div *ngSwitchCase="'LFIMG'">{{(card[data | uppercase]._text)}}&nbsp;{{card['GEWEI']._text}}</div>
+                                    <div *ngSwitchDefault>{{(card[data | uppercase]._text)}}</div>
+
+                                </div>
+                                <div class="data-item" *ngIf="(jsonDetails.additionalSearchKeys )&& (jsonDetails.additionalSearchKeys[i]!=undefined)">
+                                    {{card[jsonDetails.additionalSearchKeys[i]]._text}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-content dashboard-content-unshrink">
+                <app-portal-details style="width: 100%" [selectedCardJson]="jsonDetails.selectedCardJson" [profileType]="routerData.portalType" [cardJson]="jsonDetails.sampleData"></app-portal-details>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<ng-template #modalContent let-close="close">
-  <div class="modal-header">
-    <div class="leave-text m-t-50 m-b-40">LEAVE DETAILS</div>
-  </div>
-  <div class="modal-body modal-body-calendar" id="custom-scroll">
-    <div class="payment-container">
-      <div class="row">
-        <div class="label">PERSONNEL NUMBER</div>
-        <div class="value">{{modalData?.event.meta.FIELD1._text}}</div>
-      </div>
-      <div class="row">
-        <div class="label">LEAVE DATE</div>
-        <div class="value">{{getDate(modalData?.event.meta.FIELD11._text)}}</div>
-      </div>
-      <div class="row">
-        <div class="label">START TIME</div>
-        <div class="value">9:00 AM</div>
-      </div>
-      <div class="row">
-        <div class="label">END TIME</div>
-        <div class="value">6:00 PM</div>
-      </div>
-      <div class="row">
-        <div class="label">ABSENT TYPE</div>
-        <div class="value">{{modalData?.event.meta.FIELD3._text}}</div>
-      </div>
-      <div class="row">
-        <div class="label">ABSENT QUOTA CONSUMED</div>
-        <div class="value">{{modalData?.event.meta.FIELD4._text}}</div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+    <ng-template #modalContent let-close="close">
+        <div class="modal-header">
+            <div class="leave-text m-t-50 m-b-40">LEAVE DETAILS</div>
+        </div>
+        <div class="modal-body modal-body-calendar" id="custom-scroll">
+            <div class="payment-container">
+                <div class="row">
+                    <div class="label">PERSONNEL NUMBER</div>
+                    <div class="value">{{modalData?.event.meta.FIELD1._text}}</div>
+                </div>
+                <div class="row">
+                    <div class="label">LEAVE DATE</div>
+                    <div class="value">{{getDate(modalData?.event.meta.FIELD11._text)}}</div>
+                </div>
+                <div class="row">
+                    <div class="label">START TIME</div>
+                    <div class="value">9:00 AM</div>
+                </div>
+                <div class="row">
+                    <div class="label">END TIME</div>
+                    <div class="value">6:00 PM</div>
+                </div>
+                <div class="row">
+                    <div class="label">ABSENT TYPE</div>
+                    <div class="value">{{modalData?.event.meta.FIELD3._text}}</div>
+                </div>
+                <div class="row">
+                    <div class="label">ABSENT QUOTA CONSUMED</div>
+                    <div class="value">{{modalData?.event.meta.FIELD4._text}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="close()">
       OK
     </button>
-  </div>
-</ng-template>
+        </div>
+    </ng-template>
 
-<ng-template #leaveRequestModal let-close="close">
-  <div class="modal-body" id="custom-scroll">
-    <div class="payment-container1">
-      <div class="modal-header">
-        <div class="leave-text">LEAVE REQUEST</div>
-      </div>
-      <div class="leave-request-body">
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="select-absent-type">ABSENT TYPE</label>
-            <select class="form-control" id="select-absent-type">
-              <option>Vacation</option>
-              <option>Special Leave</option>
-            </select>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="input-end-time">DATE</label>
-            <input type="date" class="form-control" id="input-date">
-          </div>
+    <ng-template #leaveRequestModal let-close="close">
+        <div class="modal-body" id="custom-scroll">
+            <div class="payment-container1">
+                <div class="modal-header">
+                    <div class="leave-text">LEAVE REQUEST</div>
+                </div>
+                <div class="leave-request-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="select-absent-type">ABSENT TYPE</label>
+                            <select class="form-control" id="select-absent-type">
+                                <option>Vacation</option>
+                                <option>Special Leave</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-end-time">DATE</label>
+                            <input type="date" class="form-control" id="input-date">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="input-start-time">START TIME</label>
+                            <input type="time" class="form-control" id="input-start-time">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-end-time">END TIME</label>
+                            <input type="time" class="form-control" id="input-end-time">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="input-start-time">ABSENCE HOURS</label>
+                            <input type="number" class="form-control" id="input-absent-hours">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="input-end-time">APPROVER</label>
+                            <input type="text" readonly class="form-control" value="Rajesh">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-note">NOTE</label>
+                        <textarea class="form-control" id="textarea-leave-note" rows="3"></textarea>
+                    </div>
+                    <div class="form-group row m-t-20">
+                        <div class="col-sm-10">
+                            <button (click)="createLeaveRequest()" type="submit" class="btn btn-primary">Create Request</button>
+                            <div class="create-request-button" (click)="close()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="input-start-time">START TIME</label>
-            <input type="time" class="form-control" id="input-start-time">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="input-end-time">END TIME</label>
-            <input type="time" class="form-control" id="input-end-time">
-          </div>
+    </ng-template>
+
+    <ng-template #getNotificationAPIModal let-close="close">
+        <div class="modal-body" id="custom-scroll">
+            <div class="payment-container1">
+                <div class="modal-header">
+                    <div class="leave-text">FETCH NOTIFICATION REPORT DETAILS</div>
+                </div>
+                <div class="leave-request-body">
+                    <div class="form-group">
+                        <label for="select-maintenance-plant">SELECT MAINTENANCE PLANT</label>
+                        <select class="form-control" id="select-maintenance-plant">
+                            <option>Amul Industries, Gujarat (AM01)</option>
+                            <option>Electrical Poles Plant YP (2000)</option>
+                            <option>Pipes and Tubes Plant, Dubai (1000)</option>
+                            <option>Al latifia Trading & Contracting Co (SA02)</option>
+                            <option>Azar Meat Company (ZRRR)</option>
+                        </select>
+                    </div>
+                    <div class="form-group row m-t-20">
+                        <div class="col-sm-10">
+                            <button (click)="fetchNotificationTemplate()" type="submit" class="btn btn-primary">Fetch Notification(s)</button>
+                            <div class="maintenance-plant-button" (click)="close()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="input-start-time">ABSENCE HOURS</label>
-            <input type="number" class="form-control" id="input-absent-hours">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="input-end-time">APPROVER</label>
-            <input type="text" readonly class="form-control" value="Rajesh">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="leave-note">NOTE</label>
-          <textarea class="form-control" id="textarea-leave-note" rows="3"></textarea>
-        </div>
-        <div class="form-group row m-t-20">
-          <div class="col-sm-10">
-            <button (click)="createLeaveRequest()" type="submit" class="btn btn-primary">Create Request</button>
-            <div class="create-request-button" (click)="close()"></div>
-          </div>
-      </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
+    </ng-template>

@@ -39,7 +39,7 @@ export class GenericProfileComponent implements OnInit {
   ngOnInit(): void {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    const raw = JSON.stringify({ user_id:localStorage.getItem("user_id"), profile_type:this.profileType});
+    const raw = JSON.stringify({ user_id:'00005010', profile_type:this.profileType});
     let requestOptions = {
         method: 'POST',
         headers: myHeaders,
